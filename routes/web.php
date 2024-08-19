@@ -1,6 +1,8 @@
 <?php
 
+use App\Http\Controllers\LanguageController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\StudentController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -18,9 +20,16 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+Route::middleware(['auth', 'verified'])->controller(StudentController::class)->group(function () {
+    Route::get('/dashboard', 'dashboard')->name('dashboard');
+    Route::get('/students/form', 'form')->name('student.create');
+    Route::get('/students/form/{student?}', 'form')->name('student.edit');
+    Route::post('/students', [StudentController::class, 'store'])->name('student.store');
+    Route::put('/students/{student}', [StudentController::class, 'update'])->name('student.update');
+    Route::delete('/students/{student}', 'destroy')->name('student.destroy');
+});
+
+Route::post('/language-switch', [LanguageController::class, 'switchLanguage'])->name('language.switch');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

@@ -1,0 +1,13 @@
+{
+    "Dashboard" : "ადმინ პანელი",
+    "Add New Student" : "დაამატე ახალი მოსწავლე",
+    "Firstname" : "სახელი",
+    "Lastname" : "გვარი",
+    "Private Number" : "პირადი ნომერი",
+    "Grade" : "კლასი",
+    "Sector" : "სექტორი",
+    "Parent Mail" : "მშობლის ელ-ფოსტა",
+    "Parent Number" : "მშობლის ტელეფონის ნომერი",
+    "Pupil Status" : "მოსწავლის სტატუსი",
+    "Additional Information" : "დამატებითი ინფორმაცია"
+}

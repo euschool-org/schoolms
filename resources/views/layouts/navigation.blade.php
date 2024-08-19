@@ -9,7 +9,6 @@
                         <x-application-logo class="block h-9 w-auto fill-current text-gray-800" />
                     </a>
                 </div>
-
                 <!-- Navigation Links -->
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
                     <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
@@ -50,6 +49,15 @@
                         </form>
                     </x-slot>
                 </x-dropdown>
+            </div>
+            <div>
+                <form action="{{ route('language.switch') }}" method="POST">
+                    @csrf
+                    <select name="language" onchange="this.form.submit()">
+                        <option value="en" {{ session('locale') == 'en' ? 'selected' : '' }}>English</option>
+                        <option value="ge" {{ session('locale') == 'ge' ? 'selected' : '' }}>ქართული</option>
+                    </select>
+                </form>
             </div>
 
             <!-- Hamburger -->
