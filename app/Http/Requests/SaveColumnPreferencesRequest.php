@@ -2,9 +2,10 @@
 
 namespace App\Http\Requests;
 
+use App\Rules\ValidColumn;
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreStudentRequest extends FormRequest
+class SaveColumnPreferencesRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,14 +23,8 @@ class StoreStudentRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'firstname' => 'required|string|max:45',
-            'lastname' => 'required|string|max:45',
-            'private_number' => 'required|numeric|digits:11',
-            'grade' => 'required|integer|min:0|max:12',
-            'group' => 'required|in:ა,ბ,გ,დ',
-            'sector' => 'required|integer',
-            'pupil_status' => 'required|integer|in:-1,0,1',
-            'additional_information' => 'nullable|string',
+            'columns' => ['required', 'array'],
+            'columns.*' => ['string', new ValidColumn],
         ];
     }
 }

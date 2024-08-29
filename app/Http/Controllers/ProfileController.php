@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ProfileUpdateRequest;
+use App\Http\Requests\SaveColumnPreferencesRequest;
+use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -35,6 +37,15 @@ class ProfileController extends Controller
         $request->user()->save();
 
         return Redirect::route('profile.edit')->with('status', 'profile-updated');
+    }
+
+    public function saveColumnPreferences(SaveColumnPreferencesRequest $request, Authenticatable $user)
+    {
+        $user->update([
+            'column_preferences' => $request->input('columns'),
+        ]);
+
+        return redirect()->route('dashboard')->with('success', 'Preferences saved.');
     }
 
     /**

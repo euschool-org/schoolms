@@ -13,15 +13,23 @@ return new class extends Migration
     {
         Schema::create('students', function (Blueprint $table) {
             $table->id();
-            $table->string('firstname');
-            $table->string('lastname');
-            $table->string('private_number');
+            $table->string('firstname',45);
+            $table->string('lastname',45);
+            $table->string('private_number',11);
             $table->integer('grade');
+            $table->string('group',1);
             $table->integer('sector');
-            $table->string('parent_mail');
-            $table->string('parent_number');
-            $table->string('pupil_status');
-            $table->string('additional_information');
+            $table->integer('pupil_status');
+            $table->string('parent_mail',191)->nullable();
+            $table->string('parent_number', 9)->nullable();
+            $table->text('additional_information')->nullable();
+            $table->integer('contract_end_date')->nullable();
+            $table->float('yearly_payment')->nullable();
+            $table->string('currency', 3)->nullable();
+            $table->string('parent_account',45)->nullable();
+            $table->string('income_account',45)->nullable();
+            $table->integer('payment_quantity')->nullable();
+            $table->float('custom_discount')->nullable();
             $table->timestamps();
         });
     }

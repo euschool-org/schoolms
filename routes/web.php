@@ -1,6 +1,8 @@
 <?php
 
+use App\Http\Controllers\AttachmentController;
 use App\Http\Controllers\LanguageController;
+use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\StudentController;
 use Illuminate\Support\Facades\Route;
@@ -17,24 +19,33 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return redirect()->route('login');
 });
 
 Route::middleware(['auth', 'verified'])->controller(StudentController::class)->group(function () {
     Route::get('/dashboard', 'dashboard')->name('dashboard');
     Route::get('/students/form', 'form')->name('student.create');
-    Route::get('/students/form/{student?}', 'form')->name('student.edit');
+    Route::get('/students/form/{student}', 'form')->name('student.edit');
     Route::post('/students', [StudentController::class, 'store'])->name('student.store');
     Route::put('/students/{student}', [StudentController::class, 'update'])->name('student.update');
     Route::delete('/students/{student}', 'destroy')->name('student.destroy');
 });
 
+Route::middleware(['auth', 'verified'])->controller(PaymentController::class)->group(function () {
+    Route::post('/payment/{student}', 'store')->name('payment.store');
+});
+
+Route::middleware(['auth', 'verified'])->controller(AttachmentController::class)->group(function () {
+    Route::post('/attachment/{student}', 'store')->name('attachment.store');
+    Route::delete('/attachment/{attachment}', 'destroy')->name('attachment.destroy');
+});
 Route::post('/language-switch', [LanguageController::class, 'switchLanguage'])->name('language.switch');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    Route::patch('/profile/column-preference', [ProfileController::class, 'saveColumnPreferences'])->name('profile.column-preference');
 });
 
 require __DIR__.'/auth.php';
