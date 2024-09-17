@@ -21,7 +21,7 @@ class Student extends Model
         'pupil_status',
         'additional_information',
         'contract_end_date',
-        'yearly_payment',
+        'monthly_payment',
         'currency',
         'parent_account',
         'income_account',

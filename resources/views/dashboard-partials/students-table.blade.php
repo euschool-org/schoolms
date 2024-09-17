@@ -1,22 +1,39 @@
 <table class="w-full bg-white border border-gray-300 table-auto text-sm">
-    <thead>
-    <tr>
-        <th class="py-2 px-4 border-b text-left">#</th>
-        @foreach($selectedColumns as $column)
-            <th class="py-2 px-4 border-b text-left">{{__(ucwords(str_replace('_',' ',$column)))}}</th>
-        @endforeach
-        <th class="py-2 px-4 border-b text-left">@lang('Actions')</th>
-    </tr>
+    <thead class="bg-gray-100">
+        <tr>
+            <th class="py-1 px-4 border-b text-center">#</th>
+            @foreach($selectedColumns as $column)
+                <th class="border border-gray-300 px-6 py-1 text-center text-xs font-medium text-gray-700 uppercase tracking-wider">{{__(ucwords(str_replace('_',' ',$column)))}}</th>
+            @endforeach
+            <th class="border border-gray-300 px-6 py-1 text-center text-xs font-medium text-gray-700 uppercase tracking-wider">@lang('Actions')</th>
+        </tr>
     </thead>
-    <tbody>
+    <tbody class="bg-white">
     <!-- Loop through students here -->
     @foreach($students as $student)
-        <tr>
-            <td class="py-2 px-4 border-b">{{ $loop->iteration }}</td>
+        <tr class="hover:bg-gray-100">
+            <td class="border border-gray-300 px-6 py-1">{{ $loop->iteration }}</td>
             @foreach($selectedColumns as $column)
-                <td class="py-2 px-4 border-b">{{ $student->$column }}</td>
+                <td class="border border-gray-300 px-6 py-1 text-center truncate">
+                    @if($column == 'pupil_status_label')
+                        @php
+                            // Define a variable to store the background color based on the status
+                            $statusColor = match($student->pupil_status) {
+                                1 => 'bg-green-200 text-green-800',
+                                -1 => 'bg-red-200 text-red-800',
+                                0 => 'bg-yellow-200 text-yellow-800',
+                                default => 'bg-gray-200 text-gray-800', // Fallback color
+                            };
+                        @endphp
+                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full {{ $statusColor }}">
+                        {{ __($student->$column) }}
+                    </span>
+                    @else
+                        {{ $student->$column }}
+                    @endif
+                </td>
             @endforeach
-            <td class="py-2 px-4 border-b">
+            <td class="py-1 px-4 border-b">
                 <!-- Edit Button -->
                 <a href="{{ route('student.edit', $student->id) }}" class="text-blue-500 hover:text-blue-700">
                     <i class="fas fa-edit"></i>

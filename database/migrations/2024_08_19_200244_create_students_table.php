@@ -24,8 +24,8 @@ return new class extends Migration
             $table->string('parent_number', 9)->nullable();
             $table->text('additional_information')->nullable();
             $table->integer('contract_end_date')->nullable();
-            $table->float('yearly_payment')->nullable();
-            $table->string('currency', 3)->nullable();
+            $table->float('monthly_payment')->nullable();
+            $table->string('currency', 3)->default('EUR');
             $table->string('parent_account',45)->nullable();
             $table->string('income_account',45)->nullable();
             $table->integer('payment_quantity')->nullable();

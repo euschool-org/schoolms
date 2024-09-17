@@ -12,18 +12,30 @@ export function initModalHandlers() {
 
 export function initPaymentFormHandler() {
     document.addEventListener('DOMContentLoaded', function() {
-        const toggleVisibility = (buttonId, formId) => {
+        const toggleVisibility = (buttonId, formId, storageKey) => {
             const button = document.getElementById(buttonId);
             const form = document.getElementById(formId);
+            const visibilityState = localStorage.getItem(storageKey);
+
+            if (visibilityState === 'visible') {
+                form.classList.remove('hidden');
+            }
 
             if (button && form) {
                 button.addEventListener('click', () => {
                     form.classList.toggle('hidden');
+
+                    if (form.classList.contains('hidden')) {
+                        localStorage.setItem(storageKey, 'hidden');
+                    } else {
+                        localStorage.setItem(storageKey, 'visible');
+                    }
                 });
             }
         };
 
-        toggleVisibility('addPaymentBtn', 'paymentForm');
-        toggleVisibility('addAttachmentBtn', 'attachmentForm');
+        toggleVisibility('addPaymentBtn', 'paymentForm', 'paymentFormVisibility');
+        toggleVisibility('addAttachmentBtn', 'attachmentForm', 'attachmentFormVisibility');
+        toggleVisibility('toggleFiltersBtn', 'filterForm', 'filterFormVisibility');
     });
 }

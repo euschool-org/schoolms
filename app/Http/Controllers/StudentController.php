@@ -6,11 +6,14 @@ use App\Http\Requests\StoreStudentRequest;
 use App\Http\Requests\UpdateStudentRequest;
 use App\Models\Student;
 use App\Services\AttachmentService;
+use App\Services\StudentService;
 use Illuminate\Contracts\Auth\Authenticatable;
+use Illuminate\Http\Request;
 
 class StudentController extends Controller
 {
     public const VALID_COLUMNS = [
+        'pupil_status_label',
         'firstname',
         'lastname',
         'private_number',
@@ -19,7 +22,6 @@ class StudentController extends Controller
         'sector',
         'parent_mail',
         'parent_number',
-        'pupil_status_label',
         'additional_information',
         'contract_end_date',
         'yearly_payment',
@@ -31,13 +33,16 @@ class StudentController extends Controller
     ];
     public $attachmentService;
 
+    public $studentService;
+
     public function __construct(AttachmentService $attachmentService)
     {
         $this->attachmentService = $attachmentService;
+        $this->studentService = new StudentService();
     }
-    public function dashboard(Authenticatable $user)
+    public function dashboard(Authenticatable $user, Request $request)
     {
-        $students = Student::all();
+        $students = $this->studentService->getStudents($request);
         return view('dashboard', [
             'students' => $students,
             'selectedColumns' => json_decode($user->column_preferences,true) ?? self::VALID_COLUMNS,
@@ -67,7 +72,7 @@ class StudentController extends Controller
 
     public function update(Student $student, UpdateStudentRequest $request)
     {
-        if ($student->update($request->all())){
+        if ($student->update($request->validated())){
             return redirect()->route('student.edit',$student->id)->with('success','Student updated successfully');
         } else {
             return redirect()->route('student.edit',$student->id)->with('error','Student update failed');

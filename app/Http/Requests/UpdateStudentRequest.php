@@ -22,15 +22,25 @@ class UpdateStudentRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'firstname' => 'required|string|max:255',
-            'lastname' => 'required|string|max:255',
-            'private_number' => 'required|string|max:255',
-            'grade' => 'required|integer',
-            'sector' => 'required|integer',
-            'parent_mail' => 'required|email|max:255',
-            'parent_number' => 'required|string|max:255',
-            'pupil_status' => 'required|string|max:255',
+            'firstname' => 'nullable|string|max:255',
+            'lastname' => 'nullable|string|max:255',
+            'private_number' => 'nullable|string|max:255',
+            'grade' => 'nullable|integer',
+            'group' => 'nullable|in:ა,ბ,გ,დ,A,B,C,D',
+            'sector' => 'nullable|integer',
+            'pupil_status' => 'nullable|string|max:255',
             'additional_information' => 'nullable|string',
+            'contract_end_date' => 'nullable|integer',
+            'monthly_payment' => 'nullable|numeric',
+            'currency' => 'nullable|string|in:EUR,USD,GEL',
+            'parent_account' => 'nullable|string|max:12',
+            'income_account' => 'nullable|string|max:10',
+            'payment_quantity' => 'nullable|integer|max:10',
+            'custom_discount' => 'nullable|numeric|max:100',
+            'parent_mail' => 'nullable|email|max:255',
+            'parent_number' => 'nullable|string|max:255',
+            'email_notifications' => 'nullable|boolean',
+            'mobile_notifications' => 'nullable|boolean',
         ];
     }
 }

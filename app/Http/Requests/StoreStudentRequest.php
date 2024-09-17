@@ -26,7 +26,7 @@ class StoreStudentRequest extends FormRequest
             'lastname' => 'required|string|max:45',
             'private_number' => 'required|numeric|digits:11',
             'grade' => 'required|integer|min:0|max:12',
-            'group' => 'required|in:ა,ბ,გ,დ',
+            'group' => 'required|in:ა,ბ,გ,დ,A,B,C,D',
             'sector' => 'required|integer',
             'pupil_status' => 'required|integer|in:-1,0,1',
             'additional_information' => 'nullable|string',

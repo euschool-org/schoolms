@@ -44,6 +44,10 @@
             <option value="ბ" {{ old('group', $student->group ?? '') == 'ბ' ? 'selected' : '' }}>ბ</option>
             <option value="გ" {{ old('group', $student->group ?? '') == 'გ' ? 'selected' : '' }}>გ</option>
             <option value="დ" {{ old('group', $student->group ?? '') == 'დ' ? 'selected' : '' }}>დ</option>
+            <option value="A" {{ old('group', $student->group ?? '') == 'a' ? 'selected' : '' }}>A</option>
+            <option value="B" {{ old('group', $student->group ?? '') == 'b' ? 'selected' : '' }}>B</option>
+            <option value="C" {{ old('group', $student->group ?? '') == 'c' ? 'selected' : '' }}>C</option>
+            <option value="D" {{ old('group', $student->group ?? '') == 'd' ? 'selected' : '' }}>D</option>
         </select>
         @error('group')
         <span class="text-red-500 text-sm">{{ $message }}</span>
