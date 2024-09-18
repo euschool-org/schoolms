@@ -11,7 +11,7 @@ jobs:
 
     steps:
       - name: Print Secrets
-        run: echo "${{ variables.test }}"
+        run: echo $test
 
       - name: Checkout Code
         uses: actions/checkout@v3
