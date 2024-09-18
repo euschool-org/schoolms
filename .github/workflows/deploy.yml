@@ -27,7 +27,7 @@ jobs:
       with:
         node-version: '18'
     - run: npm install
-    - run: npm run production
+    - run: npm run build
 
     - name: Copy Files to Server
       uses: appleboy/scp-action@v0.1.1
