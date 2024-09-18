@@ -10,8 +10,9 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Debug Environment Variables
-        run: env
+      - name: Print Secrets
+        run: echo "${{ secrets.DIGITALOCEAN_SSH_KEY }}"
+
 
       - name: Checkout Code
         uses: actions/checkout@v3
