@@ -11,7 +11,7 @@ jobs:
 
     steps:
       - name: Print Secrets
-        run: echo "{{ secrets.DIGITALOCEAN_SSH_KEY }}"
+        run: echo "${{ variables.test }}"
 
       - name: Checkout Code
         uses: actions/checkout@v3
