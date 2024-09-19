@@ -15,23 +15,25 @@ export function initPaymentFormHandler() {
         const toggleVisibility = (buttonId, formId, storageKey) => {
             const button = document.getElementById(buttonId);
             const form = document.getElementById(formId);
+
+            // Ensure both button and form exist before proceeding
+            if (!button || !form) return;
+
             const visibilityState = localStorage.getItem(storageKey);
 
             if (visibilityState === 'visible') {
                 form.classList.remove('hidden');
             }
 
-            if (button && form) {
-                button.addEventListener('click', () => {
-                    form.classList.toggle('hidden');
+            button.addEventListener('click', () => {
+                form.classList.toggle('hidden');
 
-                    if (form.classList.contains('hidden')) {
-                        localStorage.setItem(storageKey, 'hidden');
-                    } else {
-                        localStorage.setItem(storageKey, 'visible');
-                    }
-                });
-            }
+                if (form.classList.contains('hidden')) {
+                    localStorage.setItem(storageKey, 'hidden');
+                } else {
+                    localStorage.setItem(storageKey, 'visible');
+                }
+            });
         };
 
         toggleVisibility('addPaymentBtn', 'paymentForm', 'paymentFormVisibility');
