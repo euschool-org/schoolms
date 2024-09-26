@@ -42,9 +42,10 @@ class StudentController extends Controller
     }
     public function dashboard(Authenticatable $user, Request $request)
     {
-        $students = $this->studentService->getStudents($request);
+        $data = $this->studentService->getStudents($request);
         return view('dashboard', [
-            'students' => $students,
+            'students' => $data['students'],
+            'total_students' => $data['total_students'],
             'selectedColumns' => json_decode($user->column_preferences,true) ?? self::VALID_COLUMNS,
             'allColumns' => self::VALID_COLUMNS,
         ]);

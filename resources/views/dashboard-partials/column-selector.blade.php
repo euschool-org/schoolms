@@ -1,7 +1,3 @@
-<button class="text-blue-500 hover:text-blue-700 ml-2" onclick="showModal('select','column',0)">
-    <i class="fas fa-cog"></i> @lang('Select Columns')
-</button>
-
 <!-- Modal Structure -->
 <div id="modal-select-column-0" class="fixed z-10 inset-0 overflow-y-auto hidden">
     <div class="flex items-center justify-center min-h-screen">

@@ -8,6 +8,7 @@ class StudentService
 {
     public function getStudents($request)
     {
+        $data= [];
         $query = Student::query();
         if ($request->filled('firstname')) {
             $query->where('firstname', 'like', '%' . $request->input('firstname') . '%');
@@ -22,15 +23,15 @@ class StudentService
         }
 
         if ($request->filled('grade')) {
-            $query->where('grade', $request->input('grade'));
+            $query->whereIn('grade', $request->input('grade'));
         }
 
         if ($request->filled('group')) {
-            $query->where('group', $request->input('group'));
+            $query->whereIn('group', $request->input('group'));
         }
 
         if ($request->filled('sector')) {
-            $query->where('sector', $request->input('sector'));
+            $query->whereIn('sector', $request->input('sector'));
         }
 
         if ($request->filled('parent_mail')) {
@@ -58,7 +59,7 @@ class StudentService
         }
 
         if ($request->filled('currency')) {
-            $query->where('currency', $request->input('currency'));
+            $query->whereIn('currency', $request->input('currency'));
         }
 
         if ($request->filled('parent_account')) {
@@ -76,7 +77,17 @@ class StudentService
         if ($request->filled('custom_discount')) {
             $query->where('custom_discount', $request->input('custom_discount'));
         }
+        $totalQuery = clone $query;
+        $totalStudents = $totalQuery->count();
+
+        // Paginate the query
         $perPage = $request->get('per_page', 10);
-        return $query->paginate($perPage);
+        $students = $query->paginate($perPage);
+
+        // Return the students and total count
+        $data['students'] = $students;
+        $data['total_students'] = $totalStudents;
+
+        return $data;
     }
 }

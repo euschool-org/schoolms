@@ -5,7 +5,7 @@
             @foreach($selectedColumns as $column)
                 <th class="border border-gray-300 px-6 py-1 text-center text-xs font-medium text-gray-700 uppercase tracking-wider">{{__(ucwords(str_replace('_',' ',$column)))}}</th>
             @endforeach
-            <th class="border border-gray-300 px-6 py-1 text-center text-xs font-medium text-gray-700 uppercase tracking-wider">@lang('Actions')</th>
+            <th class="border border-gray-300 px-6 py-1 text-center text-xs font-medium text-gray-700 uppercase tracking-wider"></th>
         </tr>
     </thead>
     <tbody class="bg-white">
@@ -33,9 +33,9 @@
                     @endif
                 </td>
             @endforeach
-            <td class="py-1 px-4 border-b">
+            <td class="px-3 py-1 text-center border border-gray-300">
                 <!-- Edit Button -->
-                <a href="{{ route('student.edit', $student->id) }}" class="text-blue-500 hover:text-blue-700">
+                <a href="{{ route('student.edit', $student->id) }}" class="text-blue-500 hover:text-blue-700 mr-2">
                     <i class="fas fa-edit"></i>
                 </a>
 
@@ -45,22 +45,22 @@
                 </button>
 
                 <div id="modal-delete-student-{{ $student->id }}" class="fixed z-10 inset-0 overflow-y-auto hidden">
-                    <!-- Modal content -->
-                    <div class="flex items-center justify-center min-h-screen">
-                        <div class="bg-white p-6 rounded shadow-lg max-w-md mx-auto">
-                            <h2 class="text-xl font-semibold mb-4">@lang('Are you sure you want to delete this student?')</h2>
-                            <p class="text-gray-600">@lang('This action cannot be undone')</p>
-                            <div class="mt-6 flex justify-end space-x-4">
-                                <button onclick="hideModal('delete', 'student', {{ $student->id }})" class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600">@lang('Cancel')</button>
-                                <form action="{{ route('student.destroy', $student->id) }}" method="POST" class="inline-block">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">@lang('Delete')</button>
-                                </form>
+                        <!-- Modal content -->
+                        <div class="flex items-center justify-center min-h-screen">
+                            <div class="bg-white p-6 rounded shadow-lg max-w-md mx-auto">
+                                <h2 class="text-xl font-semibold mb-4">@lang('Are you sure you want to delete this student?')</h2>
+                                <p class="text-gray-600">@lang('This action cannot be undone')</p>
+                                <div class="mt-6 flex justify-end space-x-4">
+                                    <button onclick="hideModal('delete', 'student', {{ $student->id }})" class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600">@lang('Cancel')</button>
+                                    <form action="{{ route('student.destroy', $student->id) }}" method="POST" class="inline-block">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">@lang('Delete')</button>
+                                    </form>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
             </td>
         </tr>
     @endforeach
