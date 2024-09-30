@@ -69,3 +69,34 @@ export function alignTableRows() {
         }
     });
 }
+export function synchronizeHoverEffect() {
+    const leftTableRows = document.querySelectorAll('#leftTable tbody tr');
+    const rightTableRows = document.querySelectorAll('#rightTable tbody tr');
+
+    if (leftTableRows.length === rightTableRows.length) {
+        for (let i = 0; i < leftTableRows.length; i++) {
+            const leftRow = leftTableRows[i];
+            const rightRow = rightTableRows[i];
+
+            // When hovering over the left table row
+            leftRow.addEventListener('mouseenter', () => {
+                leftRow.classList.add('bg-gray-100');
+                rightRow.classList.add('bg-gray-100');
+            });
+            leftRow.addEventListener('mouseleave', () => {
+                leftRow.classList.remove('bg-gray-100');
+                rightRow.classList.remove('bg-gray-100');
+            });
+
+            // When hovering over the right table row
+            rightRow.addEventListener('mouseenter', () => {
+                leftRow.classList.add('bg-gray-100');
+                rightRow.classList.add('bg-gray-100');
+            });
+            rightRow.addEventListener('mouseleave', () => {
+                leftRow.classList.remove('bg-gray-100');
+                rightRow.classList.remove('bg-gray-100');
+            });
+        }
+    }
+}

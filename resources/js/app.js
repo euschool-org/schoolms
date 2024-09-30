@@ -6,7 +6,7 @@ window.Alpine = Alpine;
 
 Alpine.start();
 
-import { initModalHandlers, initPaymentFormHandler, alignTableRows } from './custom';
+import { initModalHandlers, initPaymentFormHandler, alignTableRows, synchronizeHoverEffect } from './custom';
 
 // Modal handlers
 initModalHandlers();
@@ -15,3 +15,5 @@ initModalHandlers();
 initPaymentFormHandler();
 
 alignTableRows();
+
+synchronizeHoverEffect();
