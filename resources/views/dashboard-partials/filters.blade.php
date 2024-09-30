@@ -61,7 +61,7 @@
 
         <!-- 7. Status (Select for active (1), past (-1), future (0)) -->
         <div>
-            <select id="student_status" name="student_status"
+            <select id="pupil_status" name="pupil_status"
                     class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm">
                 <option value="1">@lang('Active')</option>
                 <option value="-1">@lang('Past')</option>
