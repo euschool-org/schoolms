@@ -14,9 +14,7 @@
             </div>
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-4 text-gray-900">
-                    <div class="overflow-x-auto">
                         @include('dashboard-partials.students-table')
-                    </div>
                 </div>
                 <div class="flex justify-between items-center mt-4">
                     <div>

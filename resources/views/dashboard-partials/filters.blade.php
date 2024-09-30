@@ -131,7 +131,7 @@
     </div>
 
     <div class="flex justify-between items-center mt-8">
-        <button class="text-blue-500 hover:text-blue-700 ml-2" onclick="showModal('select','column',0)">
+        <button type="button" class="text-blue-500 hover:text-blue-700 ml-2" onclick="showModal('select','column',0)">
             <i class="fas fa-cog"></i> @lang('Select Columns')
         </button>
 
