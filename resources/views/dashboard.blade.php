@@ -20,7 +20,7 @@
                     <!-- Pagination Control Section -->
                     <div class="flex items-center justify-center space-x-2 px-4 py-2 ml-4" style="background-color: inherit;">
                         <!-- Label -->
-                        <span class="text-sm font-medium">@lang('ერთი გვერდზე')</span>
+                        <span class="text-sm font-medium">@lang('Show')</span>
                         <!-- Form with Select Dropdown -->
                         <form action="{{ route('dashboard') }}" method="GET" class="inline-flex items-center">
                             <div class="relative">
@@ -32,7 +32,7 @@
                                 </select>
                             </div>
                             <!-- Label after Dropdown -->
-                            <span class="ml-2 text-sm">@lang('შედეგი')</span>
+                            <span class="ml-2 text-sm">@lang('Entries')</span>
                         </form>
                     </div>
                     <!-- Pagination Links -->

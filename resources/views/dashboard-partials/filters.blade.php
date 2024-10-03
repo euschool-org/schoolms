@@ -55,17 +55,17 @@
                    class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm">
         </div>
 
-        <x-select-dropdown :options="[1,2,3,4,5,6,7,8,9,10,11,12]" label="აირჩიეთ კლასი" name="grade"/>
-        <x-select-dropdown :options="['ა', 'ბ', 'გ', 'დ', 'ე', 'A', 'B', 'C', 'D', 'E']" label="აირჩიეთ ჯგუფი" name="group" />
-        <x-select-dropdown :options="['a', 'b', 'c', 'd', 'e']" label="აირჩიეთ სექტორი" name="sector" />
+        <x-select-dropdown :options="[1,2,3,4,5,6,7,8,9,10,11,12,'ქართული','ინგლისური']" label="აირჩიეთ კლასი" name="grade"/>
+        <x-select-dropdown :options="['ა', 'ბ', 'გ', 'დ', 'ე', 'ვ', 'ზ', 'თ', 'ი', 'კ', 'A', 'B', 'C', 'D', 'E','F','G','H','I','J']" label="აირჩიეთ ჯგუფი" name="group" />
+        <x-select-dropdown :options="['ქართული', 'IB', 'ASAS', 'ბაღი']" label="აირჩიეთ სექტორი" name="sector" />
 
         <!-- 7. Status (Select for active (1), past (-1), future (0)) -->
         <div>
             <select id="pupil_status" name="pupil_status"
                     class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm">
-                <option value="1">@lang('Active')</option>
-                <option value="-1">@lang('Past')</option>
-                <option value="0">@lang('Future')</option>
+                <option value="1" @selected('pupil_status' == 1)>@lang('Active')</option>
+                <option value="-1" @selected(request('pupil_status') == -1)>@lang('Past')</option>
+                <option value="0" @selected(request('pupil_status') == 0)>@lang('Future')</option>
             </select>
         </div>
     </div>
@@ -77,11 +77,11 @@
     </div>
     <div class="grid grid-cols-7 gap-4 mb-4">
         <div>
-            <input id="parent_email" name="parent_email" type="email" placeholder="@lang('Parent Email')"
+            <input id="parent_email" name="parent_email" type="email" placeholder="@lang('Parent Email')"  value="{{ request('parent_email') }}"
                    class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm">
         </div>
         <div>
-            <input id="parent_number" name="parent_number" type="text" placeholder="@lang('Parent Number')"
+            <input id="parent_number" name="parent_number" type="text" placeholder="@lang('Parent Number')"  value="{{ request('parent_number') }}"
                    class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm">
         </div>
     </div>
@@ -93,16 +93,20 @@
     </div>
     <div class="grid grid-cols-7 gap-4 mb-4">
         <div>
-            <input id="yearly_payment" name="yearly_payment" type="text" placeholder="@lang('Yearly Payment')"
+            <input id="yearly_payment_from" name="yearly_payment_from" type="text" placeholder="@lang('Yearly Payment From')" value="{{ request('yearly_payment_from') }}"
+                   class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm">
+        </div>
+        <div>
+            <input id="yearly_payment_to" name="yearly_payment_to" type="text" placeholder="@lang('Yearly Payment To')" value="{{ request('yearly_payment_to') }}"
                    class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm">
         </div>
         <x-select-dropdown :options="['EUR','GEL','USD']" label="აირჩიეთ ვალუტა" name="currency" />
         <div>
-            <input id="payment_quantity" name="payment_quantity" type="number" placeholder="@lang('Payment Quantity')"
+            <input id="payment_quantity" name="payment_quantity" type="number" placeholder="@lang('Payment Quantity')" value="{{ request('payment_quantity') }}"
                    class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm">
         </div>
         <div>
-            <input id="custom_discount" name="custom_discount" type="number" placeholder="@lang('Custom Discount')"
+            <input id="custom_discount" name="custom_discount" type="number" placeholder="@lang('Custom Discount')" value="{{ request('custom_discount') }}"
                    class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm">
         </div>
     </div>
@@ -113,19 +117,20 @@
             </span>
     </div>    <div class="grid grid-cols-7 gap-4 mb-4">
         <div>
-            <input id="payment_due" name="payment_due" type="date" placeholder="@lang('Contract End Date')"
+            <input id="payment_due" name="payment_due" type="text" placeholder="@lang('Contract End Date')" value="{{ request('payment_due') }}"
+                   class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+                   onfocus="(this.type='date')" onblur="if(this.value===''){this.type='text'}">
+        </div>
+        <div>
+            <input id="parent_account" name="parent_account" type="text" placeholder="@lang('Parent Account')" value="{{ request('parent_account') }}"
                    class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm">
         </div>
         <div>
-            <input id="parent_account" name="parent_account" type="text" placeholder="@lang('Parent Account')"
-                   class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm">
-        </div>
-        <div>
-            <input id="income_account" name="income_account" type="text" placeholder="@lang('Income Account')"
+            <input id="income_account" name="income_account" type="text" placeholder="@lang('Income Account')" value="{{ request('income_account') }}"
                    class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm">
         </div>
         <div class="col-span-4">
-            <input id="additional_information" name="additional_information" type="text" placeholder="@lang('Additional Information')"
+            <input id="additional_information" name="additional_information" type="text" placeholder="@lang('Additional Information')" value="{{ request('additional_information') }}"
                    class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm">
         </div>
     </div>

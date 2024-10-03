@@ -24,11 +24,12 @@ class StudentFactory extends Factory
             'firstname' => $this->faker->firstName,  // Random first name
             'lastname' => $this->faker->lastName,    // Random last name
             'private_number' => $this->faker->unique()->numerify('###########'),  // 11-digit unique number
-            'grade' => $this->faker->numberBetween(0, 12),  // Grade between 0 and 12
-            'group' => $this->faker->randomElement(['ა', 'ბ', 'გ', 'დ', 'A', 'B', 'C', 'D']),  // Random group
-            'sector' => $this->faker->numberBetween(1, 5),  // Random sector
+            'grade' => $this->faker->randomElement([1,2,3,4,5,6,7,8,9,10,11,12,'ქართული','ინგლისური']),
+            'group' => $this->faker->randomElement(['ა', 'ბ', 'გ', 'დ', 'ე', 'ვ', 'ზ', 'თ', 'ი', 'კ', 'A', 'B', 'C', 'D', 'E','F','G','H','I','J']),  // Random group
+            'sector' => $this->faker->randomElement(['ქართული', 'IB', 'ASAS', 'ბაღი']),  // Random sector
             'pupil_status' => $this->faker->randomElement([-1, 0, 1]),  // Status: -1, 0, or 1
             'additional_information' => $this->faker->optional()->sentence,  // Nullable string
+            'yearly_payment' => $this->faker->numberBetween(1000,100000),  // Nullable string
         ];
     }
 }

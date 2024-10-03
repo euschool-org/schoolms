@@ -54,8 +54,12 @@ class StudentService
             $query->where('contract_end_date', $request->input('contract_end_date'));
         }
 
-        if ($request->filled('yearly_payment')) {
-            $query->where('yearly_payment', $request->input('yearly_payment'));
+        if ($request->filled('yearly_payment_from')) {
+            $query->where('yearly_payment', '>=', $request->input('yearly_payment_from'));
+        }
+
+        if ($request->filled('yearly_payment_to')) {
+            $query->where('yearly_payment', '<=', $request->input('yearly_payment_to'));
         }
 
         if ($request->filled('currency')) {

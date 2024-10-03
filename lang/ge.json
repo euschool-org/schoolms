@@ -1,4 +1,6 @@
 {
+    "Yearly Payment From" : "წლიური გადასახადი -დან",
+    "Yearly Payment To" : "წლიური გადასახადი -მდე",
     "Selected Columns" : "არჩეული ველები",
     "Available Columns" : "ყველა ველი",
     "Pupil" : "მოსწავლე",
@@ -22,7 +24,7 @@
     "Past" : "წარსული",
     "Future" : "მომავალი",
     "Group" : "ჯგუფი",
-    "Contract End Date" : "ხელშეკრულების დასრულების თარიღი",
+    "Contract End Date" : "ხელშეკ. დასრ. თარიღი",
     "Yearly Payment" : "წლიური გადასახადი",
     "Monthly Payment" : "თვიური გადასახადი",
     "Currency" : "ვალუტა",
@@ -50,5 +52,7 @@
     "Add New File" : "დოკუმენტის დამატება",
     "Are you sure you want to delete this student?" : "დარწმუნებული ხართ რომ გსურთ მოსწავლის წაშლა?",
     "This action cannot be undone" : "წაშლილი მონაცემის აღდგენა არ არის შესაძლებელი",
-    "Delete" : "წაშლა"
+    "Delete" : "წაშლა",
+    "Show" : "ერთ გვერდზე",
+    "Entries" : "ჩანაწერი"
 }
