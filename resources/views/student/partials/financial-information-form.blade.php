@@ -9,7 +9,7 @@
         @method('PUT')
 
         <div class="col-span-1">
-            <input type="text" id="yearly_payment" name="yearly_payment" placeholder="@lang('Yearly Payment')" value="{{ old('yearly_payment', $student->yearly_payment ?? '') }}" disabled class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+            <input type="text" id="yearly_payment" name="yearly_payment" placeholder="@lang('Yearly Payment')" value="{{ old('yearly_payment', $student->yearly_payment ?? '') }}" class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
             @error('monthly_payment')
             <span class="text-red-500 text-sm">{{ $message }}</span>
             @enderror

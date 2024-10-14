@@ -16,6 +16,8 @@ class StudentController extends Controller
         'grade',
         'group',
         'sector',
+        'parent_firstname',
+        'parent_lastname',
         'parent_mail',
         'parent_number',
         'additional_information',

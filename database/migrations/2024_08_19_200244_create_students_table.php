@@ -20,8 +20,12 @@ return new class extends Migration
             $table->string('group',1)->nullable();
             $table->string('sector',45)->nullable();
             $table->integer('pupil_status')->nullable();
+            $table->string('parent_firstname',191)->nullable();
+            $table->string('parent_lastname',191)->nullable();
             $table->string('parent_mail',191)->nullable();
             $table->string('parent_number', 45)->nullable();
+            $table->boolean('email_notifications')->nullable();
+            $table->boolean('mobile_notifications')->nullable();
             $table->text('additional_information')->nullable();
             $table->integer('contract_end_date')->nullable();
             $table->float('monthly_payment')->nullable();

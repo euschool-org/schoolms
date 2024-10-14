@@ -16,17 +16,22 @@ class Student extends Model
         'grade',
         'group',
         'sector',
+        'parent_firstname',
+        'parent_lastname',
         'parent_mail',
         'parent_number',
         'pupil_status',
         'additional_information',
         'contract_end_date',
+        'yearly_payment',
         'monthly_payment',
         'currency',
         'parent_account',
         'income_account',
         'payment_quantity',
         'custom_discount',
+        'email_notifications',
+        'mobile_notifications'
     ];
 
     public function payments()

@@ -41,7 +41,7 @@
             <div class="flex items-center">
                 <label for="email_notifications" class="text-sm font-medium text-gray-700">@lang('Email Notification')</label>
                 <div class="ml-3 relative">
-                    <input type="checkbox" id="email_notifications" name="email_notifications" class="sr-only peer" />
+                    <input type="checkbox" id="email_notifications" name="email_notifications" value="1" @checked($student->email_notifications) class="sr-only peer" />
                     <div class="w-11 h-6 bg-gray-200 rounded-full peer-checked:bg-blue-600 transition-colors"></div>
                     <div class="absolute left-0.5 top-0.5 w-5 h-5 bg-white border border-gray-300 rounded-full transition-transform peer-checked:translate-x-full"></div>
                 </div>
@@ -53,9 +53,9 @@
 
         <div class="col-span-1">
             <div class="flex items-center">
-                <label for="sms_notifications" class="text-sm font-medium text-gray-700">@lang('SMS Notification')</label>
+                <label for="mobile_notifications" class="text-sm font-medium text-gray-700">@lang('SMS Notification')</label>
                 <div class="ml-3 relative">
-                    <input type="checkbox" id="sms_notifications" name="sms_notifications" class="sr-only peer" />
+                    <input type="checkbox" id="mobile_notifications" name="mobile_notifications" value="1" @checked($student->mobile_notifications) class="sr-only peer" />
                     <div class="w-11 h-6 bg-gray-200 rounded-full peer-checked:bg-blue-600 transition-colors"></div>
                     <div class="absolute left-0.5 top-0.5 w-5 h-5 bg-white border border-gray-300 rounded-full transition-transform peer-checked:translate-x-full"></div>
                 </div>
