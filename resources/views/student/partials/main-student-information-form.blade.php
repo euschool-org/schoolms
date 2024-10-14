@@ -1,89 +1,115 @@
-<form action="{{ isset($student) ? route('student.update', $student->id) : route('student.store') }}" method="POST" class="grid grid-cols-1 md:grid-cols-2 gap-6">
-    @csrf
-    @if(isset($student))
-        @method('PUT')
-    @endif
-
-    <div class="col-span-1">
-        <label for="firstname" class="block text-sm font-medium text-gray-700">@lang('Firstname')</label>
-        <input type="text" id="firstname" name="firstname" value="{{ old('firstname', $student->firstname ?? '') }}" required class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
-        @error('firstname')
-        <span class="text-red-500 text-sm">{{ $message }}</span>
-        @enderror
+<div class="flex justify-between items-center mb-2">
+    <!-- Header Title -->
+    <div class="text-lg font-semibold">
+        @if($update)
+            {{$student->firstname . ' ' . $student->lastname}}
+        @else
+            @lang('Add New Student')
+        @endif
     </div>
+</div>
 
-    <div class="col-span-1">
-        <label for="lastname" class="block text-sm font-medium text-gray-700">@lang('Lastname')</label>
-        <input type="text" id="lastname" name="lastname" value="{{ old('lastname', $student->lastname ?? '') }}" required class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
-        @error('lastname')
-        <span class="text-red-500 text-sm">{{ $message }}</span>
-        @enderror
+<!-- Blue underline for active section -->
+<div class="border-b-2 border-gray-200">
+    <div class="border-b-2 border-blue-500 w-20"></div> <!-- Blue indicator, you can adjust the width -->
+</div>
+<div class="bg-white sm:rounded-lg mt-4">
+    <div>
+        <span class="text-sm font-bold text-gray-600 mb-2">
+            @lang("Pupil")
+        </span>
     </div>
+    <form action="{{ $update ? route('student.update', $student->id) : route('student.store') }}" method="POST" class="grid grid-cols-5 gap-6">
+        @csrf
+        @if($update)
+            @method('PUT')
+        @endif
+        <!-- First Line: Firstname, Lastname, Private Number (3 columns, 2 empty) -->
+        <div class="col-span-1">
+            <input type="text" id="firstname" name="firstname" placeholder="@lang('Firstname')" value="{{ old('firstname', $student->firstname ?? '') }}" required class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+            @error('firstname')
+            <span class="text-red-500 text-sm">{{ $message }}</span>
+            @enderror
+        </div>
+        <div class="col-span-1">
+            <input type="text" id="lastname" name="lastname" placeholder="@lang('Lastname')" value="{{ old('lastname', $student->lastname ?? '') }}" required class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+            @error('lastname')
+            <span class="text-red-500 text-sm">{{ $message }}</span>
+            @enderror
+        </div>
+        <div class="col-span-1">
+            <input type="text" id="private_number" name="private_number" placeholder="@lang('Private Number')" value="{{ old('private_number', $student->private_number ?? '') }}" required minlength="11" maxlength="11" class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+            @error('private_number')
+            <span class="text-red-500 text-sm">{{ $message }}</span>
+            @enderror
+        </div>
+        <!-- Leave 2 columns empty -->
+        <div class="col-span-2"></div>
 
-    <div class="col-span-1">
-        <label for="private_number" class="block text-sm font-medium text-gray-700">@lang('Private Number')</label>
-        <input type="text" id="private_number" name="private_number" value="{{ old('private_number', $student->private_number ?? '') }}" required minlength="11" maxlength="11" class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
-        @error('private_number')
-        <span class="text-red-500 text-sm">{{ $message }}</span>
-        @enderror
-    </div>
+        <!-- Second Line: Grade, Group, Sector, Pupil Status (4 columns, 1 empty) -->
+        <div class="col-span-1">
+            <x-select-dropdown :options="[1,2,3,4,5,6,7,8,9,10,11,12,'ქართული','ინგლისური']" label="Grade" name="grade" value="{{$student->grade}}"/>
+            @error('grade')
+            <span class="text-red-500 text-sm">{{ $message }}</span>
+            @enderror
+        </div>
+        <div class="col-span-1">
+            <x-select-dropdown :options="['ა', 'ბ', 'გ', 'დ', 'ე', 'ვ', 'ზ', 'თ', 'ი', 'კ', 'A', 'B', 'C', 'D', 'E','F','G','H','I','J']" label="Group" name="group" value="{{$student->group}}" />
+            @error('group')
+            <span class="text-red-500 text-sm">{{ $message }}</span>
+            @enderror
+        </div>
+        <div class="col-span-1">
+            <x-select-dropdown :options="['ქართული', 'IB', 'ASAS', 'ბაღი']" label="Sector" name="sector" value="{{$student->sector}}" />
+            @error('sector')
+            <span class="text-red-500 text-sm">{{ $message }}</span>
+            @enderror
+        </div>
+        <div class="col-span-1">
+            <div class="relative">
+                <label for="grade-select" class="absolute text-gray-500 left-3 top-1/2 transform -translate-y-1/2 text-sm pointer-events-none">
+                    @lang('Status'):
+                </label>
+                <select id="pupil_status" name="pupil_status"
+                        class="block w-full pl-20 pr-10 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                    <option value="" disabled @selected($student->pupil_status === null)>@lang('Status')</option>
+                    <option value="1" @selected($student->pupil_status === 1)>@lang('Active')</option>
+                    <option value="-1" @selected($student->pupil_status === -1)>@lang('Past')</option>
+                    <option value="0" @selected($student->pupil_status === 0)>@lang('Future')</option>
+                </select>
+            </div>
+            @error('pupil_status')
+            <span class="text-red-500 text-sm">{{ $message }}</span>
+            @enderror
+        </div>
+        <!-- Leave 1 column empty -->
+        <div class="col-span-1"></div>
 
-    <div class="col-span-1">
-        <label for="grade" class="block text-sm font-medium text-gray-700">@lang('Grade')</label>
-        <input type="number" id="grade" name="grade" value="{{ old('grade', $student->grade ?? '') }}" required class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
-        @error('grade')
-        <span class="text-red-500 text-sm">{{ $message }}</span>
-        @enderror
-    </div>
+        <!-- Third Line: Additional Information (Full Width) -->
+        <div class="col-span-5">
+            <label for="additional_information" class="block text-sm font-medium text-gray-700">@lang('Additional Information')</label>
+            <textarea id="additional_information" name="additional_information" class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">{{ old('additional_information', $student->additional_information ?? '') }}</textarea>
+            @error('additional_information')
+            <span class="text-red-500 text-sm">{{ $message }}</span>
+            @enderror
+        </div>
 
-    <div class="col-span-1">
-        <label for="group" class="block text-sm font-medium text-gray-700">@lang('Group')</label>
-        <select id="group" name="group" required class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
-            <option value="" disabled {{ old('group', $student->group ?? '') == '' ? 'selected' : '' }}>@lang('Select Group')</option>
-            <option value="ა" {{ old('group', $student->group ?? '') == 'ა' ? 'selected' : '' }}>ა</option>
-            <option value="ბ" {{ old('group', $student->group ?? '') == 'ბ' ? 'selected' : '' }}>ბ</option>
-            <option value="გ" {{ old('group', $student->group ?? '') == 'გ' ? 'selected' : '' }}>გ</option>
-            <option value="დ" {{ old('group', $student->group ?? '') == 'დ' ? 'selected' : '' }}>დ</option>
-            <option value="A" {{ old('group', $student->group ?? '') == 'a' ? 'selected' : '' }}>A</option>
-            <option value="B" {{ old('group', $student->group ?? '') == 'b' ? 'selected' : '' }}>B</option>
-            <option value="C" {{ old('group', $student->group ?? '') == 'c' ? 'selected' : '' }}>C</option>
-            <option value="D" {{ old('group', $student->group ?? '') == 'd' ? 'selected' : '' }}>D</option>
-        </select>
-        @error('group')
-        <span class="text-red-500 text-sm">{{ $message }}</span>
-        @enderror
-    </div>
+        <!-- Submit Button (aligned right, spans 4 columns) -->
+        <div class="flex justify-end mt-4 col-span-5">
+            <!-- Cancel/Reset button with X icon -->
+            <button type="reset" class="px-4 py-2 bg-gray-300 text-gray-700 text-sm font-medium rounded-md hover:bg-gray-400 mr-2">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 mr-2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+            </button>
 
-    <div class="col-span-1">
-        <label for="sector" class="block text-sm font-medium text-gray-700">@lang('Sector')</label>
-        <input type="number" id="sector" name="sector" value="{{ old('sector', $student->sector ?? '') }}" required class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
-        @error('sector')
-        <span class="text-red-500 text-sm">{{ $message }}</span>
-        @enderror
-    </div>
+            <!-- Submit button with V icon -->
+            <button type="submit" class="px-4 py-2 bg-blue-500 text-white text-sm font-medium rounded-md hover:bg-blue-600">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 mr-2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" />
+                </svg>
+            </button>
+        </div>
+    </form>
+</div>
 
-    <div class="col-span-1">
-        <label for="pupil_status" class="block text-sm font-medium text-gray-700">@lang('Pupil Status')</label>
-        <select id="pupil_status" name="pupil_status" required class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
-            <option value="" disabled {{ old('pupil_status', $student->pupil_status ?? '') == '' ? 'selected' : '' }}>@lang('Select Status')</option>
-            <option value="1" {{ old('pupil_status', $student->pupil_status ?? '') == '1' ? 'selected' : '' }}>@lang('Active')</option>
-            <option value="0" {{ old('pupil_status', $student->pupil_status ?? '') == '0' ? 'selected' : '' }}>@lang('Future')</option>
-            <option value="-1" {{ old('pupil_status', $student->pupil_status ?? '') == '-1' ? 'selected' : '' }}>@lang('Past')</option>
-        </select>
-        @error('pupil_status')
-        <span class="text-red-500 text-sm">{{ $message }}</span>
-        @enderror
-    </div>
-
-    <div class="col-span-2">
-        <label for="additional_information" class="block text-sm font-medium text-gray-700">@lang('Additional Information')</label>
-        <textarea id="additional_information" name="additional_information" class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">{{ old('additional_information', $student->additional_information ?? '') }}</textarea>
-        @error('additional_information')
-        <span class="text-red-500 text-sm">{{ $message }}</span>
-        @enderror
-    </div>
-
-    <div class="col-span-2 flex justify-end">
-        <button type="submit" class="px-4 py-2 bg-blue-500 text-white text-sm font-medium rounded-md hover:bg-blue-600">{{ isset($student) ? 'Update' : 'Submit' }}</button>
-    </div>
-</form>

@@ -51,9 +51,23 @@ class StudentController extends Controller
     {
         if ($student) {
             $student->load(['payments', 'attachments.user']);
+            $update = true;
+        } else {
+            $student = new Student([
+                'firstname' => '',
+                'lastname' => '',
+                'private_number' => '',
+                'grade' => null,
+                'group' => '',
+                'sector' => '',
+                'pupil_status' => null,
+                'additional_information' => ''
+            ]);
+            $update = false;
         }
         return view('student.form',[
             'student' => $student,
+            'update' => $update,
         ]);
     }
 

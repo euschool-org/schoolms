@@ -24,11 +24,11 @@ class StoreStudentRequest extends FormRequest
         return [
             'firstname' => 'required|string|max:45',
             'lastname' => 'required|string|max:45',
-            'private_number' => 'required|numeric|digits:11',
-            'grade' => 'required|integer|min:0|max:12',
-            'group' => 'required|in:ა,ბ,გ,დ,A,B,C,D',
-            'sector' => 'required|integer',
-            'pupil_status' => 'required|integer|in:-1,0,1',
+            'private_number' => 'nullable|numeric',
+            'grade' => 'nullable|in:1,2,3,4,5,6,7,8,9,10,11,12,ქართული,ინგლისური',
+            'group' => 'nullable|in:ა,ბ,გ,დ,ე,ვ,ზ,თ,ი,კ,A,B,C,D,E,F,G,H,I,J',
+            'sector' => 'nullable|in:ქართული,IB,ASAS,ბაღი',
+            'pupil_status' => 'nullable|integer|in:-1,0,1',
             'additional_information' => 'nullable|string',
         ];
     }

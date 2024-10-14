@@ -68,26 +68,32 @@
 
 <!-- Payment Form (Initially Hidden) -->
 <div id="attachmentForm" class="mt-4 hidden">
-    <form action="{{ route('attachment.store',$student->id) }}" method="POST" enctype="multipart/form-data">
+    <form action="{{ route('attachment.store',$student->id) }}" method="POST" enctype="multipart/form-data" class="flex flex-wrap items-center">
         @csrf
-        <div class="mb-4">
-            <label for="filename" class="block text-gray-700">@lang('File Name'):</label>
-            <input type="text" name="filename" id="filename" class="border border-gray-300 rounded px-4 py-2 w-full" required>
+        <div class="mb-4 mr-4 flex items-center">
+            <input type="text" name="filename" id="filename" placeholder="@lang('File Name')" required
+                   class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+            >
             @error('filename')
             <span class="text-red-500 text-sm">{{ $message }}</span>
             @enderror
         </div>
 
-        <div class="mb-4">
-            <label for="attachment" class="block text-gray-700">@lang('Attachment')</label>
-            <input type="file" name="attachment" id="attachment" class="border border-gray-300 rounded px-4 py-2 w-full" required>
+        <div class="mb-4 mr-4 flex items-center">
+            <input type="file" name="attachment" id="attachment" placeholder="@lang('Attachment')" required
+                   class="border border-gray-300 rounded px-4 py-2 w-full"
+            >
             @error('attachment')
             <span class="text-red-500 text-sm">{{ $message }}</span>
             @enderror
         </div>
 
-        <button type="submit" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
-            @lang('Upload Attachment')
-        </button>
+        <div class="mb-4 mr-4 flex items-center">
+            <button type="submit" class="px-4 py-1.5 bg-blue-500 text-white text-sm font-medium rounded-md hover:bg-blue-600">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 mr-2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" />
+                </svg>
+            </button>
+        </div>
     </form>
 </div>

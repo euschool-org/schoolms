@@ -22,13 +22,13 @@ class UpdateStudentRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'firstname' => 'nullable|string|max:255',
-            'lastname' => 'nullable|string|max:255',
-            'private_number' => 'nullable|string|max:255',
-            'grade' => 'nullable|integer',
-            'group' => 'nullable|in:ა,ბ,გ,დ,A,B,C,D',
-            'sector' => 'nullable|integer',
-            'pupil_status' => 'nullable|string|max:255',
+            'firstname' => 'nullable|string|max:45',
+            'lastname' => 'nullable|string|max:45',
+            'private_number' => 'nullable|numeric',
+            'grade' => 'nullable|in:1,2,3,4,5,6,7,8,9,10,11,12,ქართული,ინგლისური',
+            'group' => 'nullable|in:ა,ბ,გ,დ,ე,ვ,ზ,თ,ი,კ,A,B,C,D,E,F,G,H,I,J',
+            'sector' => 'nullable|in:ქართული,IB,ASAS,ბაღი',
+            'pupil_status' => 'nullable|integer|in:-1,0,1',
             'additional_information' => 'nullable|string',
             'contract_end_date' => 'nullable|integer',
             'monthly_payment' => 'nullable|numeric',
