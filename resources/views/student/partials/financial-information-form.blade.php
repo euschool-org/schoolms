@@ -17,7 +17,7 @@
         </div>
 
         <div class="col-span-1 mt-1">
-            <x-select-dropdown :options="['EUR', 'GEL', 'USD']" label="Currency" name="currency" value="{{$student->currency}}" />
+            <x-select-dropdown :options="['EUR', 'GEL', 'USD']" label="Currency" name="currency" padding="20" value="{{$student->currency}}" />
             @error('currency')
             <span class="text-red-500 text-sm">{{ $message }}</span>
             @enderror
