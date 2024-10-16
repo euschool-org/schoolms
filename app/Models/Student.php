@@ -46,15 +46,23 @@ class Student extends Model
 
     public function getPupilStatusLabelAttribute()
     {
-        switch ($this->pupil_status) {
-            case -1:
-                return 'Past';
-            case 0:
-                return 'Future';
-            case 1:
-                return 'Active';
-            default:
-                return 'Unknown';
+        $now = Carbon::now();
+
+        if (is_null($this->contract_start_date) && is_null($this->contract_end_date)) {
+            return 'Unknown';
+        }
+
+        if ($this->contract_start_date <= $now &&
+            (is_null($this->contract_end_date) || $this->contract_end_date >= $now)) {
+            return 'Active';
+        }
+
+        if ($this->contract_start_date > $now) {
+            return 'Future';
+        }
+
+        if ($this->contract_end_date < $now) {
+            return 'Past';
         }
     }
 

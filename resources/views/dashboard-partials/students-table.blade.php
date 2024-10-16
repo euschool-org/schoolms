@@ -12,11 +12,11 @@
             <tbody>
             @foreach($students as $student)
                 @php
-                    $statusColor = match($student->pupil_status) {
-                        1 => 'bg-green-200 text-green-800',
-                        -1 => 'bg-red-200 text-red-800',
-                        0 => 'bg-yellow-200 text-yellow-800',
-                        default => 'bg-gray-200 text-gray-800',
+                    $statusColor = match($student->pupil_status_label) {
+                        'Active' => 'bg-green-200 text-green-800',
+                        'Past' => 'bg-red-200 text-red-800',
+                        'Future' => 'bg-yellow-200 text-yellow-800',
+                        'Unknown' => 'bg-gray-200 text-gray-800',
                     };
                 @endphp
                 <tr class="hover:bg-gray-100" data-row-id="{{ $loop->index }}">

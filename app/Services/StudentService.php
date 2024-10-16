@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\Student;
+use Carbon\Carbon;
 
 class StudentService
 {
@@ -43,7 +44,36 @@ class StudentService
         }
 
         if ($request->filled('pupil_status')) {
-            $query->where('pupil_status', $request->input('pupil_status'));
+            $pupilStatus = $request->input('pupil_status');
+
+            $query->where(function ($query) use ($pupilStatus) {
+                $now = Carbon::now();
+
+                if (in_array('active', $pupilStatus)) {
+                    // Add condition for 'active', including cases where contract_end_date is null
+                    $query->orWhere(function ($query) use ($now) {
+                        $query->whereDate('contract_start_date', '<=', $now)
+                            ->where(function ($query) use ($now) {
+                                $query->whereDate('contract_end_date', '>=', $now)
+                                    ->orWhereNull('contract_end_date');
+                            });
+                    });
+                }
+
+                if (in_array('past', $pupilStatus)) {
+                    // Add condition for 'past'
+                    $query->orWhere(function ($query) use ($now) {
+                        $query->whereDate('contract_end_date', '<', $now);
+                    });
+                }
+
+                if (in_array('future', $pupilStatus)) {
+                    // Add condition for 'future'
+                    $query->orWhere(function ($query) use ($now) {
+                        $query->whereDate('contract_start_date', '>', $now);
+                    });
+                }
+            });
         }
 
         if ($request->filled('additional_information')) {

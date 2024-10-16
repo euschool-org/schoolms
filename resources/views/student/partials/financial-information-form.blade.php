@@ -46,15 +46,6 @@
             <x-text-input-label name="balance" label="Balance" value="{{ $student->balance }}" />
         </div>
 
-        <div class="col-span-1">
-            <x-text-input-label name="contract_start_date" label="Contract Start Date" value="{{ $student->contract_start_date }}" type="date" />
-        </div>
-
-        <div class="col-span-1">
-            <x-text-input-label name="contract_end_date" label="Contract End Date" value="{{ $student->contract_end_date }}" type="date" />
-        </div>
-
-
         <div class="flex justify-end mt-4 col-span-5">
             <!-- Cancel/Reset button with X icon -->
             <button type="reset" class="px-4 py-2 bg-gray-300 text-gray-700 text-sm font-medium rounded-md hover:bg-gray-400 mr-2">

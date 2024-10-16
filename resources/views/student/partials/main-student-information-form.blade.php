@@ -54,25 +54,14 @@
             <span class="text-red-500 text-sm">{{ $message }}</span>
             @enderror
         </div>
-        <div class="col-span-1">
-            <div class="relative">
-                <label for="grade-select" class="absolute text-gray-500 left-3 top-1/2 transform -translate-y-1/2 text-sm pointer-events-none">
-                    @lang('Status'):
-                </label>
-                <select id="pupil_status" name="pupil_status"
-                        class="block w-full pl-20 pr-10 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
-                    <option value="" disabled @selected($student->pupil_status === null)>@lang('Status')</option>
-                    <option value="1" @selected($student->pupil_status === 1)>@lang('Active')</option>
-                    <option value="-1" @selected($student->pupil_status === -1)>@lang('Past')</option>
-                    <option value="0" @selected($student->pupil_status === 0)>@lang('Future')</option>
-                </select>
-            </div>
-            @error('pupil_status')
-            <span class="text-red-500 text-sm">{{ $message }}</span>
-            @enderror
-        </div>
         <!-- Leave 1 column empty -->
-        <div class="col-span-1"></div>
+        <div class="col-span-1">
+            <x-text-input-label name="contract_start_date" label="Contract Start Date" value="{{ $student->contract_start_date }}" type="date" />
+        </div>
+
+        <div class="col-span-1">
+            <x-text-input-label name="contract_end_date" label="Contract End Date" value="{{ $student->contract_end_date }}" type="date" />
+        </div>
 
         <!-- Third Line: Additional Information (Full Width) -->
         <div class="col-span-5">

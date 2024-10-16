@@ -56,14 +56,10 @@
         <x-select-dropdown :options="['ქართული', 'IB', 'ASAS', 'ბაღი']" label="აირჩიეთ სექტორი" name="sector" />
 
         <!-- 7. Status (Select for active (1), past (-1), future (0)) -->
+        <x-select-dropdown :options="[1,2,3,4,5,6,7,8,9,10,11,12,'ქართული','ინგლისური']" label="აირჩიეთ კლასი" name="grade"/>
+
         <div>
-            <select id="pupil_status" name="pupil_status"
-                    class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm">
-                <option value="" selected >@lang('Pupil Status')</option>
-                <option value="1" @selected(request('pupil_status') == "1")>@lang('Active')</option>
-                <option value="-1" @selected(request('pupil_status') == "-1")>@lang('Past')</option>
-                <option value="0" @selected(request('pupil_status') == "0")>@lang('Future')</option>
-            </select>
+            <x-select-dropdown :options="['active', 'past', 'future']" label="Pupil Status" name="pupil_status" />
         </div>
     </div>
 
