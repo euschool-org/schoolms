@@ -30,6 +30,10 @@ class StudentService
             $query->whereIn('sector', $request->input('sector'));
         }
 
+        if ($request->filled('parent_name')) {
+            $query->where('parent_name', 'like', '%' . $request->input('parent_name') . '%');
+        }
+
         if ($request->filled('parent_mail')) {
             $query->where('parent_mail', 'like', '%' . $request->input('parent_mail') . '%');
         }

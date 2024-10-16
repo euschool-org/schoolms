@@ -73,6 +73,10 @@
     </div>
     <div class="grid grid-cols-7 gap-4 mb-4">
         <div>
+            <input id="parent_name" name="parent_name" type="text" placeholder="@lang('Parent Name')" value="{{ request('parent_name') }}"
+                   class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm">
+        </div>
+        <div>
             <input id="parent_email" name="parent_email" type="email" placeholder="@lang('Parent Mail')"  value="{{ request('parent_email') }}"
                    class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm">
         </div>
