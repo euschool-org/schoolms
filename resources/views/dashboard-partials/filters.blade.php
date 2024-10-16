@@ -59,9 +59,10 @@
         <div>
             <select id="pupil_status" name="pupil_status"
                     class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm">
-                <option value="1" @selected(request('pupil_status') == 1)>@lang('Active')</option>
-                <option value="-1" @selected(request('pupil_status') == -1)>@lang('Past')</option>
-                <option value="0" @selected(request('pupil_status') == 0)>@lang('Future')</option>
+                <option value="" selected >@lang('Pupil Status')</option>
+                <option value="1" @selected(request('pupil_status') == "1")>@lang('Active')</option>
+                <option value="-1" @selected(request('pupil_status') == "-1")>@lang('Past')</option>
+                <option value="0" @selected(request('pupil_status') == "0")>@lang('Future')</option>
             </select>
         </div>
     </div>
