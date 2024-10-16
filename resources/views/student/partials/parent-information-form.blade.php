@@ -1,6 +1,6 @@
 <div class="bg-white sm:rounded-lg mt-4">
-    <div>
-        <span class="text-sm font-bold text-gray-600 mb-2">
+    <div class="text-sm font-bold text-gray-600 mb-3">
+        <span>
             @lang("Parent")
         </span>
     </div>
@@ -8,31 +8,19 @@
         @csrf
         @method('PUT')
         <div class="col-span-1">
-            <input type="text" id="parent_firstname" placeholder="@lang('Firstname')" name="parent_firstname" value="{{ old('parent_firstname', $student->parent_firstname ?? '') }}" class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
-            @error('parent_firstname')
-            <span class="text-red-500 text-sm">{{ $message }}</span>
-            @enderror
+            <x-text-input-label name="parent_firstname" label="Firstname" value="{{ $student->parent_firstname }}" />
         </div>
 
         <div class="col-span-1">
-            <input type="text" id="parent_lastname" placeholder="@lang('Lastname')" name="parent_lastname" value="{{ old('parent_lastname', $student->parent_lastname ?? '') }}" class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
-            @error('parent_lastname')
-            <span class="text-red-500 text-sm">{{ $message }}</span>
-            @enderror
+            <x-text-input-label name="parent_lastname" label="Lastname" value="{{ $student->parent_lastname }}" />
         </div>
 
         <div class="col-span-1">
-            <input type="email" id="parent_mail" placeholder="@lang('Email')" name="parent_mail" value="{{ old('parent_mail', $student->parent_mail ?? '') }}" class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
-            @error('parent_mail')
-            <span class="text-red-500 text-sm">{{ $message }}</span>
-            @enderror
+            <x-text-input-label name="parent_mail" label="Email" value="{{ $student->parent_mail }}" />
         </div>
 
         <div class="col-span-1">
-            <input type="text" id="parent_number" name="parent_number" placeholder="@lang('Phone Number')" value="{{ old('parent_number', $student->parent_number ?? '') }}" class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
-            @error('parent_number')
-            <span class="text-red-500 text-sm">{{ $message }}</span>
-            @enderror
+            <x-text-input-label name="parent_number" label="Phone Number" value="{{ $student->parent_number }}" />
         </div>
 
         <div class="col-span-1"></div>

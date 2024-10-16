@@ -24,7 +24,7 @@ class StudentFactory extends Factory
             'firstname' => $this->faker->firstName,  // Random first name
             'lastname' => $this->faker->lastName,    // Random last name
             'private_number' => $this->faker->unique()->numerify('###########'),  // 11-digit unique number
-            'grade' => $this->faker->randomElement([1,2,3,4,5,6,7,8,9,10,11,12,'ქართული','ინგლისური']),
+            'grade' => $this->faker->numberBetween(1,12),
             'group' => $this->faker->randomElement(['ა', 'ბ', 'გ', 'დ', 'ე', 'ვ', 'ზ', 'თ', 'ი', 'კ', 'A', 'B', 'C', 'D', 'E','F','G','H','I','J']),  // Random group
             'sector' => $this->faker->randomElement(['ქართული', 'IB', 'ASAS', 'ბაღი']),  // Random sector
             'pupil_status' => $this->faker->randomElement([-1, 0, 1]),  // Status: -1, 0, or 1

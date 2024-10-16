@@ -13,7 +13,7 @@ use Illuminate\Http\Request;
 class StudentController extends Controller
 {
     public const VALID_COLUMNS = [
-        'grade',
+        'grade_label',
         'group',
         'sector',
         'parent_firstname',

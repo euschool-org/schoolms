@@ -14,8 +14,8 @@
     <div class="border-b-2 border-blue-500 w-20"></div> <!-- Blue indicator, you can adjust the width -->
 </div>
 <div class="bg-white sm:rounded-lg mt-4">
-    <div>
-        <span class="text-sm font-bold text-gray-600 mb-2">
+    <div class="text-sm font-bold text-gray-600 mb-3">
+        <span>
             @lang("Pupil")
         </span>
     </div>
@@ -26,35 +26,26 @@
         @endif
         <!-- First Line: Firstname, Lastname, Private Number (3 columns, 2 empty) -->
         <div class="col-span-1">
-            <input type="text" id="firstname" name="firstname" placeholder="@lang('Firstname')" value="{{ old('firstname', $student->firstname ?? '') }}" required class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
-            @error('firstname')
-            <span class="text-red-500 text-sm">{{ $message }}</span>
-            @enderror
+            <x-text-input-label name="firstname" label="Firstname" value="{{ $student->firstname }}" />
         </div>
         <div class="col-span-1">
-            <input type="text" id="lastname" name="lastname" placeholder="@lang('Lastname')" value="{{ old('lastname', $student->lastname ?? '') }}" required class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
-            @error('lastname')
-            <span class="text-red-500 text-sm">{{ $message }}</span>
-            @enderror
+            <x-text-input-label name="lastname" label="Lastname" value="{{ $student->lastname }}" />
         </div>
         <div class="col-span-1">
-            <input type="text" id="private_number" name="private_number" placeholder="@lang('Private Number')" value="{{ old('private_number', $student->private_number ?? '') }}" required minlength="11" maxlength="11" class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
-            @error('private_number')
-            <span class="text-red-500 text-sm">{{ $message }}</span>
-            @enderror
+            <x-text-input-label name="private_number" label="Private Number" value="{{ $student->private_number }}" />
         </div>
         <!-- Leave 2 columns empty -->
         <div class="col-span-2"></div>
 
         <!-- Second Line: Grade, Group, Sector, Pupil Status (4 columns, 1 empty) -->
         <div class="col-span-1">
-            <x-select-dropdown :options="[1,2,3,4,5,6,7,8,9,10,11,12,'ქართული','ინგლისური']" label="Grade" name="grade" value="{{$student->grade}}"/>
+            <x-select-dropdown :options="[1,2,3,4,5,6,7,8,9,10,11,12]" label="Grade" name="grade" value="{{$student->grade}}"/>
             @error('grade')
             <span class="text-red-500 text-sm">{{ $message }}</span>
             @enderror
         </div>
         <div class="col-span-1">
-            <x-select-dropdown :options="['ა', 'ბ', 'გ', 'დ', 'ე', 'ვ', 'ზ', 'თ', 'ი', 'კ', 'A', 'B', 'C', 'D', 'E','F','G','H','I','J']" label="Group" name="group" value="{{$student->group}}" />
+            <x-select-dropdown :options="['ა', 'ბ', 'გ', 'დ', 'ე', 'ვ', 'ზ', 'თ', 'ი', 'კ', 'A', 'B', 'C', 'D', 'E','F','G','H','I','J','ქართული','ინგლისური']" label="Group" name="group" value="{{$student->group}}" />
             @error('group')
             <span class="text-red-500 text-sm">{{ $message }}</span>
             @enderror

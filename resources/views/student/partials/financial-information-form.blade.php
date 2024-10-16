@@ -1,6 +1,6 @@
 <div class="bg-white sm:rounded-lg mt-4">
-    <div>
-        <span class="text-sm font-bold text-gray-600 mb-2">
+    <div class="text-sm font-bold text-gray-600 mb-2">
+        <span >
             @lang("Financial Information")
         </span>
     </div>
@@ -9,17 +9,11 @@
         @method('PUT')
 
         <div class="col-span-1">
-            <input type="text" id="yearly_payment" name="yearly_payment" placeholder="@lang('Yearly Payment')" value="{{ old('yearly_payment', $student->yearly_payment ?? '') }}" class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
-            @error('monthly_payment')
-            <span class="text-red-500 text-sm">{{ $message }}</span>
-            @enderror
+            <x-text-input-label name="yearly_payment" label="Yearly Payment" value="{{ $student->yearly_payment }}" />
         </div>
 
         <div class="col-span-1">
-            <input type="text" id="monthly_payment" name="monthly_payment" placeholder="@lang('Monthly Payment')" value="{{ old('monthly_payment', $student->monthly_payment ?? '') }}"  class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
-            @error('monthly_payment')
-            <span class="text-red-500 text-sm">{{ $message }}</span>
-            @enderror
+            <x-text-input-label name="monthly_payment" label="Monthly Payment" value="{{ $student->monthly_payment }}" />
         </div>
 
         <div class="col-span-1 mt-1">
@@ -30,17 +24,11 @@
         </div>
 
         <div class="col-span-1">
-            <input type="text" id="parent_account" name="parent_account" placeholder="@lang('Parent Account')" value="{{ old('parent_account', $student->parent_account ?? '') }}" class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
-            @error('parent_account')
-            <span class="text-red-500 text-sm">{{ $message }}</span>
-            @enderror
+            <x-text-input-label name="parent_account" label="Parent Account" value="{{ $student->parent_account }}" />
         </div>
 
         <div class="col-span-1">
-            <input type="text" id="income_account" name="income_account" placeholder="@lang('Income Account')" value="{{ old('income_account', $student->income_account ?? '') }}" class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
-            @error('income_account')
-            <span class="text-red-500 text-sm">{{ $message }}</span>
-            @enderror
+            <x-text-input-label name="income_account" label="Income Account" value="{{ $student->income_account }}" />
         </div>
 
         <div class="col-span-1 mt-1">
@@ -51,17 +39,19 @@
         </div>
 
         <div class="col-span-1">
-            <input type="text" id="custom_discount" name="custom_discount" placeholder="@lang('Custom Discount')" value="{{ old('custom_discount', $student->custom_discount ?? '') }}" class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
-            @error('custom_discount')
-            <span class="text-red-500 text-sm">{{ $message }}</span>
-            @enderror
+            <x-text-input-label name="custom_discount" label="Custom Discount" value="{{ $student->custom_discount }}" />
         </div>
 
         <div class="col-span-1">
-            <input type="text" id="balance" name="balance" placeholder="@lang('Balance')" value="{{ old('balance', $student->balance ?? '') }}" class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
-            @error('balance')
-            <span class="text-red-500 text-sm">{{ $message }}</span>
-            @enderror
+            <x-text-input-label name="balance" label="Balance" value="{{ $student->balance }}" />
+        </div>
+
+        <div class="col-span-1">
+            <x-text-input-label name="contract_start_date" label="Contract Start Date" value="{{ $student->contract_start_date }}" type="date" />
+        </div>
+
+        <div class="col-span-1">
+            <x-text-input-label name="contract_end_date" label="Contract End Date" value="{{ $student->contract_end_date }}" type="date" />
         </div>
 
 

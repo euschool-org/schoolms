@@ -16,8 +16,8 @@ return new class extends Migration
             $table->string('firstname',45);
             $table->string('lastname',45);
             $table->string('private_number',45)->nullable();
-            $table->string('grade')->nullable();
-            $table->string('group',1)->nullable();
+            $table->integer('grade')->nullable();
+            $table->string('group',45)->nullable();
             $table->string('sector',45)->nullable();
             $table->integer('pupil_status')->nullable();
             $table->string('parent_firstname',191)->nullable();
@@ -27,7 +27,8 @@ return new class extends Migration
             $table->boolean('email_notifications')->nullable();
             $table->boolean('mobile_notifications')->nullable();
             $table->text('additional_information')->nullable();
-            $table->integer('contract_end_date')->nullable();
+            $table->date('contract_start_date')->nullable();
+            $table->date('contract_end_date')->nullable();
             $table->float('monthly_payment')->nullable();
             $table->float('yearly_payment')->nullable();
             $table->string('currency', 3)->default('EUR');
