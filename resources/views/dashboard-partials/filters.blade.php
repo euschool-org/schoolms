@@ -43,15 +43,11 @@
     </div>
     <div class="grid grid-cols-7 gap-4 mb-4 ">
         <div>
-            <input id="firstname" name="firstname" type="text" placeholder="@lang('Firstname')" value="{{ request('firstname') }}"
+            <input id="name" name="name" type="text" placeholder="@lang('Name')" value="{{ request('name') }}"
                    class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm">
         </div>
         <div>
-            <input id="lastname" name="lastname" type="text" placeholder="@lang('Lastname')" value="{{ request('lastname') }}"
-                   class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm">
-        </div>
-        <div>
-            <input id="private_number" name="private_number" type="text" placeholder="@lang('Private number')" value="{{ request('private_number') }}"
+            <input id="private_number" name="private_number" type="text" placeholder="@lang('Private Number')" value="{{ request('private_number') }}"
                    class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm">
         </div>
 
@@ -77,7 +73,7 @@
     </div>
     <div class="grid grid-cols-7 gap-4 mb-4">
         <div>
-            <input id="parent_email" name="parent_email" type="email" placeholder="@lang('Parent Email')"  value="{{ request('parent_email') }}"
+            <input id="parent_email" name="parent_email" type="email" placeholder="@lang('Parent Mail')"  value="{{ request('parent_email') }}"
                    class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm">
         </div>
         <div>

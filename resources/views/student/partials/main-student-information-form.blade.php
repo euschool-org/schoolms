@@ -2,7 +2,7 @@
     <!-- Header Title -->
     <div class="text-lg font-semibold">
         @if($update)
-            {{$student->firstname . ' ' . $student->lastname}}
+            {{$student->name}}
         @else
             @lang('Add New Student')
         @endif
@@ -26,16 +26,14 @@
         @endif
         <!-- First Line: Firstname, Lastname, Private Number (3 columns, 2 empty) -->
         <div class="col-span-1">
-            <x-text-input-label name="firstname" label="Firstname" value="{{ $student->firstname }}" />
+            <x-text-input-label name="name" label="Name" value="{{ $student->name }}" />
         </div>
-        <div class="col-span-1">
-            <x-text-input-label name="lastname" label="Lastname" value="{{ $student->lastname }}" />
-        </div>
+
         <div class="col-span-1">
             <x-text-input-label name="private_number" label="Private Number" value="{{ $student->private_number }}" />
         </div>
         <!-- Leave 2 columns empty -->
-        <div class="col-span-2"></div>
+        <div class="col-span-3"></div>
 
         <!-- Second Line: Grade, Group, Sector, Pupil Status (4 columns, 1 empty) -->
         <div class="col-span-1">

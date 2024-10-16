@@ -16,8 +16,7 @@ class StudentController extends Controller
         'grade_label',
         'group',
         'sector',
-        'parent_firstname',
-        'parent_lastname',
+        'parent_name',
         'parent_mail',
         'parent_number',
         'additional_information',
@@ -56,8 +55,7 @@ class StudentController extends Controller
             $update = true;
         } else {
             $student = new Student([
-                'firstname' => '',
-                'lastname' => '',
+                'name' => '',
                 'private_number' => '',
                 'grade' => null,
                 'group' => '',

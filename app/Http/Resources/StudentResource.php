@@ -20,8 +20,7 @@ class StudentResource extends JsonResource
             '-1' => 'Past',
         };
         return [
-            'firstname' => $this->firstname,
-            'lastname' => $this->lastname,
+            'name' => $this->name,
             'private_number' => $this->private_number,
             'grade' => $this->grade,
             'group' => $this->group,

@@ -22,8 +22,7 @@ class StoreStudentRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'firstname' => 'required|string|max:45',
-            'lastname' => 'required|string|max:45',
+            'name' => 'required|string|max:191',
             'private_number' => 'nullable|numeric',
             'grade' => 'nullable|integer|max:12',
             'group' => 'nullable|in:ა,ბ,გ,დ,ე,ვ,ზ,თ,ი,კ,A,B,C,D,E,F,G,H,I,J,ქართული,ინგლისური',

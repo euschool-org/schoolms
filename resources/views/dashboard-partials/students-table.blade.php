@@ -5,8 +5,7 @@
             <tr>
                 <th class="py-1 px-4 border-b text-center">#</th>
                 <th class="min-h-5 border border-gray-300 px-6 py-1 text-center text-xs font-medium text-gray-700 uppercase tracking-wider">@lang('Pupil Status')</th>
-                <th class="min-h-5 border border-gray-300 px-6 py-1 text-center text-xs font-medium text-gray-700 uppercase tracking-wider">@lang('Firstname')</th>
-                <th class="min-h-5 border border-gray-300 px-6 py-1 text-center text-xs font-medium text-gray-700 uppercase tracking-wider">@lang('Lastname')</th>
+                <th class="min-h-5 border border-gray-300 px-6 py-1 text-center text-xs font-medium text-gray-700 uppercase tracking-wider">@lang('Name')</th>
                 <th class="min-h-5 border border-gray-300 px-6 py-1 text-center text-xs font-medium text-gray-700 uppercase tracking-wider">@lang('Private Number')</th>
             </tr>
             </thead>
@@ -29,12 +28,7 @@
                     </td>
                     <td class="border border-gray-300 px-6 py-1 text-center truncate">
                         <a href="{{ route('student.edit', $student->id) }}">
-                            {{ $student->firstname }}
-                        </a>
-                    </td>
-                    <td class="border border-gray-300 px-6 py-1 text-center truncate">
-                        <a href="{{ route('student.edit', $student->id) }}">
-                            {{ $student->lastname }}
+                            {{ $student->name }}
                         </a>
                     </td>
                     <td class="border border-gray-300 px-6 py-1 text-center truncate">

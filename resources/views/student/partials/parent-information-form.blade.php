@@ -8,11 +8,7 @@
         @csrf
         @method('PUT')
         <div class="col-span-1">
-            <x-text-input-label name="parent_firstname" label="Firstname" value="{{ $student->parent_firstname }}" />
-        </div>
-
-        <div class="col-span-1">
-            <x-text-input-label name="parent_lastname" label="Lastname" value="{{ $student->parent_lastname }}" />
+            <x-text-input-label name="parent_name" label="Name" value="{{ $student->parent_name }}" />
         </div>
 
         <div class="col-span-1">
@@ -23,7 +19,7 @@
             <x-text-input-label name="parent_number" label="Phone Number" value="{{ $student->parent_number }}" />
         </div>
 
-        <div class="col-span-1"></div>
+        <div class="col-span-2"></div>
 
         <div class="col-span-1">
             <div class="flex items-center">

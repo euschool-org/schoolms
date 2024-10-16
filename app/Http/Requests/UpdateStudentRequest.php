@@ -22,8 +22,7 @@ class UpdateStudentRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'firstname' => 'nullable|string|max:45',
-            'lastname' => 'nullable|string|max:45',
+            'name' => 'nullable|string|max:191',
             'private_number' => 'nullable|numeric',
             'grade' => 'nullable|integer|max:12',
             'group' => 'nullable|in:ა,ბ,გ,დ,ე,ვ,ზ,თ,ი,კ,A,B,C,D,E,F,G,H,I,J,ქართული,ინგლისური',
@@ -39,8 +38,7 @@ class UpdateStudentRequest extends FormRequest
             'income_account' => 'nullable|string|max:10',
             'payment_quantity' => 'nullable|integer|max:10',
             'custom_discount' => 'nullable|numeric|max:100',
-            'parent_firstname' => 'nullable|string|max:191',
-            'parent_lastname' => 'nullable|string|max:191',
+            'parent_name' => 'nullable|string|max:191',
             'parent_mail' => 'nullable|email|max:255',
             'parent_number' => 'nullable|numeric|max:45',
             'email_notifications' => 'nullable|boolean',

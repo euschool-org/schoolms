@@ -10,12 +10,8 @@ class StudentService
     {
         $data= [];
         $query = Student::query();
-        if ($request->filled('firstname')) {
-            $query->where('firstname', 'like', '%' . $request->input('firstname') . '%');
-        }
-
-        if ($request->filled('lastname')) {
-            $query->where('lastname', 'like', '%' . $request->input('lastname') . '%');
+        if ($request->filled('name')) {
+            $query->where('name', 'like', '%' . $request->input('name') . '%');
         }
 
         if ($request->filled('private_number')) {
