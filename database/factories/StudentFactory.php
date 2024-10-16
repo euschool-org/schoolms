@@ -20,8 +20,10 @@ class StudentFactory extends Factory
 
     public function definition(): array
     {
-        $contractStartDate = $this->faker->dateTimeBetween('-5 years', '+5 years');
-        $contractEndDate = $this->faker->dateTimeBetween($contractStartDate, '+5 years');
+        $grade = $this->faker->numberBetween(1,12);
+        $end = now()->year - $grade;
+        $contractStartDate = $this->faker->dateTimeBetween("-$grade years", "+5 years");
+        $contractEndDate = $this->faker->dateTimeBetween($contractStartDate, "+$end years");
         return [
             'name' => $this->faker->firstName . ' ' . $this->faker->lastName, // Random first name
             'private_number' => $this->faker->unique()->numerify('###########'),  // 11-digit unique number

@@ -79,8 +79,15 @@ class Student extends Model
         $adjustedNowYear = $now->month >= 8 ? $now->year + 1 : $now->year;
         $adjustedStartYear = $start->month >= 8 ? $start->year + 1 : $start->year;
 
-        // Calculate the grade label
-        return ($adjustedNowYear - $adjustedStartYear) + $this->grade;
+        $calculatedGrade = ($adjustedNowYear - $adjustedStartYear) + $this->grade;
+        if ($start > $now) {
+            $calculatedGrade = $this->grade;
+        }
+
+        if ($calculatedGrade > 12) {
+            $calculatedGrade = null;
+        }
+        return $calculatedGrade;
     }
 
 }
