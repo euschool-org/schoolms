@@ -39,13 +39,13 @@
 
         <!-- Second Line: Grade, Group, Sector, Pupil Status (4 columns, 1 empty) -->
         <div class="col-span-1">
-            <x-select-dropdown :options="[1,2,3,4,5,6,7,8,9,10,11,12]" label="Grade" name="grade" padding="28" value="{{$student->grade}}" />
+            <x-select-dropdown :options="[1,2,3,4,5,6,7,8,9,10,11,12]" label="Grade" name="grade" padding="32" value="{{$student->grade}}" />
             @error('grade')
             <span class="text-red-500 text-sm">{{ $message }}</span>
             @enderror
         </div>
         <div class="col-span-1">
-            <x-select-dropdown :options="['ა', 'ბ', 'გ', 'დ', 'ე', 'ვ', 'ზ', 'თ', 'ი', 'კ', 'A', 'B', 'C', 'D', 'E','F','G','H','I','J','ქართული','ინგლისური']" label="Group" name="group" padding="16" value="{{$student->group}}" />
+            <x-select-dropdown :options="['ა', 'ბ', 'გ', 'დ', 'ე', 'ვ', 'ზ', 'თ', 'ი', 'კ', 'A', 'B', 'C', 'D', 'E','F','G','H','I','J','ქართული','ინგლისური']" label="Group" name="group" value="{{$student->group}}" />
             @error('group')
             <span class="text-red-500 text-sm">{{ $message }}</span>
             @enderror
