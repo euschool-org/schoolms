@@ -3,10 +3,10 @@
         <table id="leftTable" class="table-fixed bg-white border border-gray-300 text-sm">
             <thead class="bg-gray-100">
             <tr>
-                <th class="py-1 px-4 border-b text-center">#</th>
-                <th class="min-h-5 border border-gray-300 px-6 py-1 text-center text-xs font-medium text-gray-700 uppercase tracking-wider">@lang('Pupil Status')</th>
-                <th class="min-h-5 border border-gray-300 px-6 py-1 text-center text-xs font-medium text-gray-700 uppercase tracking-wider">@lang('Name')</th>
-                <th class="min-h-5 border border-gray-300 px-6 py-1 text-center text-xs font-medium text-gray-700 uppercase tracking-wider">@lang('Private Number')</th>
+                <th class="px-2 py-1 border-b text-center">#</th>
+                <th class="min-h-5 border border-gray-300 px-3 py-1 text-center text-xs font-medium text-gray-700 uppercase tracking-wider max-w-4">@lang('Pupil Status')</th>
+                <th class="min-h-5 border border-gray-300 px-3 py-1 text-center text-xs font-medium text-gray-700 uppercase tracking-wider max-w-4">@lang('Name')</th>
+                <th class="min-h-5 border border-gray-300 px-3 py-1 text-center text-xs font-medium text-gray-700 uppercase tracking-wider max-w-4">@lang('Private Number')</th>
             </tr>
             </thead>
             <tbody>
@@ -20,7 +20,7 @@
                     };
                 @endphp
                 <tr class="hover:bg-gray-100" data-row-id="{{ $loop->index }}">
-                    <td class="min-h-5 border border-gray-300 px-6 py-1 text-center">{{ $loop->iteration }}</td>
+                    <td class="min-h-5 border border-gray-300 py-2 text-center">{{ $loop->iteration }}</td>
                     <td class="border border-gray-300 px-6 py-1 text-center truncate">
                         <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full {{ $statusColor }}">
                             {{ $student->pupil_status_label }}

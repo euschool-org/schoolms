@@ -16,17 +16,18 @@ class StudentController extends Controller
         'grade_label',
         'group',
         'sector',
+        'contract_start_date',
+        'contract_end_date',
         'parent_name',
         'parent_mail',
         'parent_number',
-        'additional_information',
-        'contract_end_date',
         'yearly_payment',
         'currency',
         'parent_account',
         'income_account',
         'payment_quantity',
         'custom_discount',
+        'additional_information',
     ];
     public $attachmentService;
 
