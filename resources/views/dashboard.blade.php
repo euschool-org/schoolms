@@ -37,7 +37,7 @@
                     </div>
                     <!-- Pagination Links -->
                     <div>
-                        {{ $students->appends(['per_page' => request('per_page')])->onEachSide(1)->links() }}
+                        {{ $students->appends(request()->except('page'))->appends(['per_page' => request('per_page')])->onEachSide(1)->links() }}
                     </div>
                 </div>
             </div>

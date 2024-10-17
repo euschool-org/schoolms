@@ -36,6 +36,7 @@
 <!-- Private info row: მოსწავლე -->
 
 <form method="GET" action="{{ route('dashboard') }}" id="filterForm" class="hidden">
+    <input type="hidden" name="per_page" value="{{ request('per_page', 10) }}">
     <div>
         <span class="text-sm font-bold text-gray-600 mb-2">
             @lang("Pupil")
@@ -140,7 +141,7 @@
         <!-- Right buttons -->
         <div class="flex space-x-4 items-center">
             <!-- Reset Button -->
-            <a href="{{ route('dashboard') }}" class="flex items-center bg-gray-100 text-gray-500 font-semibold py-2 px-4 rounded-md hover:bg-gray-200 transition">
+            <a href="{{ route('dashboard', ['per_page' => request('per_page')]) }}" class="flex items-center bg-gray-100 text-gray-500 font-semibold py-2 px-4 rounded-md hover:bg-gray-200 transition">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 mr-2">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
                 </svg>

@@ -4,9 +4,9 @@
             <thead class="bg-gray-100">
             <tr>
                 <th class="px-2 py-1 border-b text-center">#</th>
-                <th class="min-h-5 border border-gray-300 px-3 py-1 text-center text-xs font-medium text-gray-700 uppercase tracking-wider max-w-4">@lang('Pupil Status')</th>
-                <th class="min-h-5 border border-gray-300 px-3 py-1 text-center text-xs font-medium text-gray-700 uppercase tracking-wider max-w-4">@lang('Name')</th>
-                <th class="min-h-5 border border-gray-300 px-3 py-1 text-center text-xs font-medium text-gray-700 uppercase tracking-wider max-w-4">@lang('Private Number')</th>
+                <th class="min-h-5 border border-gray-300 px-4 py-1 text-center text-xs font-medium text-gray-700 uppercase tracking-wider max-w-[100px] whitespace-normal">@lang('Pupil Status')</th>
+                <th class="min-h-5 border border-gray-300 px-4 py-1 text-center text-xs font-medium text-gray-700 uppercase tracking-wider max-w-[100px] whitespace-normal">@lang('Name')</th>
+                <th class="min-h-5 border border-gray-300 px-4 py-1 text-center text-xs font-medium text-gray-700 uppercase tracking-wider max-w-[100px] whitespace-normal">@lang('Private Number')</th>
             </tr>
             </thead>
             <tbody>
