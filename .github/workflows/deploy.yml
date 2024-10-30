@@ -40,6 +40,7 @@ jobs:
           script: |
             cd /var/www/schoolms
             git pull origin main
+            composer update
             npm run build
             sudo chown -R www-data:www-data storage bootstrap/cache
             php artisan migrate --force
