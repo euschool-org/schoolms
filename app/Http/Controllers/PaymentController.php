@@ -20,7 +20,7 @@ class PaymentController extends Controller
             return redirect()->route('student.edit', $student->id)->with('error', 'Something went wrong');
         }
     }
-
+    //test
     public function destroy(Payment $payment)
     {
         if ($payment->delete()) {
