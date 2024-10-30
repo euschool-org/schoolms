@@ -23,7 +23,9 @@ jobs:
           extensions: mbstring, bcmath, pdo, curl, xml
 
       - name: Install Composer Dependencies
-        run: composer install --no-dev --no-interaction --prefer-dist --optimize-autoloader
+        run: |
+          composer install --no-dev --no-interaction --prefer-dist --optimize-autoloader
+          composer dump-autoload
 
       - name: Install Node.js and Alpine.js Dependencies
         uses: actions/setup-node@v3
@@ -40,7 +42,6 @@ jobs:
           script: |
             cd /var/www/schoolms
             git pull origin main
-            composer install
             npm run build
             sudo chown -R www-data:www-data storage bootstrap/cache
             php artisan migrate --force
