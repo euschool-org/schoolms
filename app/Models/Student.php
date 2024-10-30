@@ -19,7 +19,6 @@ class Student extends Model
         'parent_name',
         'parent_mail',
         'parent_number',
-        'pupil_status',
         'additional_information',
         'contract_start_date',
         'contract_end_date',

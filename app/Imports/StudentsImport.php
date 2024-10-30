@@ -1,28 +1,38 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Imports;
 
-use Illuminate\Foundation\Http\FormRequest;
+use App\Models\Student;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
+use Maatwebsite\Excel\Concerns\ToCollection;
+use Maatwebsite\Excel\Concerns\WithHeadingRow;
 
-class UpdateStudentRequest extends FormRequest
+class StudentsImport implements ToCollection, WithHeadingRow
 {
     /**
-     * Determine if the user is authorized to make this request.
-     */
-    public function authorize(): bool
+    * @param Collection $collection
+    */
+    public function collection(Collection $collection)
     {
-        return true;
+        DB::beginTransaction();
+        try {
+            foreach ($collection as $row) {
+                $validatedData = $this->validateRow($row->toArray());
+                Student::create($validatedData);
+            }
+            DB::commit();
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            throw $th;
+        }
     }
 
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
-     */
-    public function rules(): array
+    private function validateRow(array $row)
     {
-        return [
-            'name' => 'nullable|string|max:191',
+        return Validator::make($row, [
+            'name' => 'required|string|max:191',
             'private_number' => 'nullable|numeric',
             'grade' => 'nullable|integer|max:12',
             'group' => 'nullable|in:ა,ბ,გ,დ,ე,ვ,ზ,თ,ი,კ,A,B,C,D,E,F,G,H,I,J,ქართული,ინგლისური',
@@ -42,6 +52,6 @@ class UpdateStudentRequest extends FormRequest
             'parent_number' => 'nullable|numeric|max:45',
             'email_notifications' => 'nullable|boolean',
             'mobile_notifications' => 'nullable|boolean',
-        ];
+        ])->validate();
     }
 }

@@ -6,12 +6,16 @@
             მოსწავლეების ცხრილი
         </div>
 
-        <!-- Button on the right -->
-        <a href="{{ route('student.create') }}" class="flex items-center space-x-1 text-blue-500 border border-blue-500 rounded px-4 py-2 hover:bg-blue-50">
-            <span>👤</span> <!-- You can replace this with an actual icon -->
-            <span>დამატე მოსწავლე</span>
-        </a>
+        <!-- Buttons on the right side -->
+        <div class="flex space-x-4">
+            <!-- Add Student Button -->
+            <a href="{{ route('student.create') }}" class="flex items-center space-x-1 text-white bg-blue-500 border border-blue-500 rounded-xl px-4 py-2 hover:bg-blue-600">
+                <span>👤</span> <!-- Replace with an actual icon if available -->
+                <span>დამატე მოსწავლე</span>
+            </a>
+        </div>
     </div>
+
 
     <!-- Blue underline for active section -->
     <div class="border-b-2 border-gray-200">

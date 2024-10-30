@@ -14,11 +14,6 @@ class StudentResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        $status = match ($this->pupil_status){
-            '0' => 'Future',
-            '1' => 'Active',
-            '-1' => 'Past',
-        };
         return [
             'name' => $this->name,
             'private_number' => $this->private_number,
@@ -27,7 +22,6 @@ class StudentResource extends JsonResource
             'sector' => $this->sector,
             'parent_mail' => $this->parent_mail,
             'parent_number' => $this->parent_number,
-            'pupil_status' => $status,
             'additional_information' => $this->additional_information,
             'contract_end_date' => $this->contract_end_date,
             'yearly_payment' => $this->yearly_payment,

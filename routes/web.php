@@ -26,9 +26,11 @@ Route::middleware(['auth', 'verified'])->controller(StudentController::class)->g
     Route::get('/dashboard', 'dashboard')->name('dashboard');
     Route::get('/students/form', 'form')->name('student.create');
     Route::get('/students/form/{student}', 'form')->name('student.edit');
-    Route::post('/students', [StudentController::class, 'store'])->name('student.store');
-    Route::put('/students/{student}', [StudentController::class, 'update'])->name('student.update');
+    Route::post('/students', 'store')->name('student.store');
+    Route::put('/students/{student}', 'update')->name('student.update');
     Route::delete('/students/{student}', 'destroy')->name('student.destroy');
+    Route::post('/students/import','import')->name('student.import');
+    Route::get('/students/export','export')->name('student.export');
 });
 
 Route::middleware(['auth', 'verified'])->controller(PaymentController::class)->group(function () {

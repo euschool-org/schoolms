@@ -2,9 +2,7 @@
     <div class="max-w-[100rem] mx-auto py-10 sm:px-6 lg:px-8">
         <!-- Success Message -->
         @if (session('success'))
-            <div class="mb-4 text-green-600">
-                {{ session('success') }}
-            </div>
+            @include('dashboard-partials.success_modal')
         @endif
         <div class="flex flex-wrap">
             <div class="w-full p-6 bg-white shadow sm:rounded-lg mt-4">
