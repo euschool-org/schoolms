@@ -134,5 +134,4 @@ class StudentController extends Controller
         return response()->json(['message' => 'Invoice sent successfully.']);
     }
 
-    //test comment
 }
