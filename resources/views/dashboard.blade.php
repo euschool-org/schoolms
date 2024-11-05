@@ -19,7 +19,7 @@
                     <!-- Excel Download Button -->
                     <div class="flex space-x-2">
                         <!-- Download Excel Button -->
-                        <a href="{{ route('student.export') }}" class="flex items-center space-x-1 text-gray-600 bg-gray-100 border rounded-lg px-3 py-1 ml-2 hover:bg-gray-200 text-sm">
+                        <a href="{{ route('student.export') . (request()->all() ? '?' . http_build_query(request()->all()) : '') }}" class="flex items-center space-x-1 text-gray-600 bg-gray-100 border rounded-lg px-3 py-1 ml-2 hover:bg-gray-200 text-sm">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 16v-8m0 8l-3-3m3 3l3-3M9 3h6v4h-6V3z" />
                             </svg>

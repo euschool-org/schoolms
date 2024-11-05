@@ -117,10 +117,33 @@ class StudentController extends Controller
         return back()->with('success', 'Excel file imported successfully.');
     }
 
-    public function export()
+    public function export(Request $request)
     {
-        return Excel::download(new StudentExport, 'students.xlsx');
+        $filters = $request->only([
+            'name',
+            'private_number',
+            'grade',
+            'group',
+            'sector',
+            'parent_name',
+            'parent_mail',
+            'parent_number',
+            'pupil_status',
+            'additional_information',
+            'contract_start_date',
+            'contract_end_date',
+            'yearly_payment_from',
+            'yearly_payment_to',
+            'currency',
+            'parent_account',
+            'income_account',
+            'payment_quantity',
+            'custom_discount',
+        ]);
+
+        return Excel::download(new StudentExport($filters), 'students.xlsx');
     }
+
 
     public function testMail()
     {
