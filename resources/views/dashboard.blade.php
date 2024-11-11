@@ -5,6 +5,7 @@
         @endif
         @include('dashboard-partials.column-selector')
         @include('dashboard-partials.import_modal')
+        @include('dashboard-partials.export_modal')
         <div class="max-w-10xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-5 mb-4">
                 <div>
@@ -18,16 +19,16 @@
                 <div class="flex justify-between items-center mt-4">
                     <!-- Excel Download Button -->
                     <div class="flex space-x-2">
-                        <!-- Download Excel Button -->
-                        <a href="{{ route('student.export') . (request()->all() ? '?' . http_build_query(request()->all()) : '') }}" class="flex items-center space-x-1 text-gray-600 bg-gray-100 border rounded-lg px-3 py-1 ml-2 hover:bg-gray-200 text-sm">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+
+                        <button type="button" class="flex items-center space-x-1 text-gray-600 bg-gray-100 border rounded-lg px-3 py-1 hover:bg-gray-200 text-sm" onclick="showModal('export','file',0)">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 16v-8m0 8l-3-3m3 3l3-3M9 3h6v4h-6V3z" />
                             </svg>
                             <span>ჩამოტვირთე Excel</span>
-                        </a>
+                        </button>
                         <!-- Upload Excel Button -->
                         <button type="button" class="flex items-center space-x-1 text-gray-600 bg-gray-100 border rounded-lg px-3 py-1 hover:bg-gray-200 text-sm" onclick="showModal('import','file',0)">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v8m0-8l3 3m-3-3l-3 3M9 3h6v4H9V3z" />
                             </svg>
                             <span>ატვირთე Excel</span>

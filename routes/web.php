@@ -35,6 +35,7 @@ Route::middleware(['auth', 'verified'])->controller(StudentController::class)->g
 
 Route::middleware(['auth', 'verified'])->controller(PaymentController::class)->group(function () {
     Route::post('/payment/{student}', 'store')->name('payment.store');
+    Route::get('/payment/export','export')->name('payment.export');
 });
 
 Route::middleware(['auth', 'verified'])->controller(AttachmentController::class)->group(function () {

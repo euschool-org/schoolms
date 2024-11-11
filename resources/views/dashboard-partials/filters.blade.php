@@ -115,6 +115,46 @@
 
     <div class="mt-3">
             <span class="text-sm font-bold text-gray-600 mb-2">
+                @lang("Dates")
+            </span>
+    </div>
+    <div class="grid grid-cols-7 gap-4 mb-4">
+        <div x-data x-init="flatpickr($refs.rangeInput, { mode: 'range', dateFormat: 'Y-m-d'})">
+            <input id="rangeInput" x-ref="rangeInput" type="text"
+                   name="contract_start_date"
+                   class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+                   value="{{ request('contract_start_date') }}"
+                   placeholder="@lang('Contract Start Date')"/>
+        </div>
+
+        <div x-data x-init="flatpickr($refs.rangeInput, { mode: 'range', dateFormat: 'Y-m-d', rangeSeparator: ' to ' })">
+            <input id="rangeInput" x-ref="rangeInput" type="text"
+                   name="contract_end_date"
+                   class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+                   value="{{ request('contract_end_date') }}"
+                   placeholder="@lang('Contract End Date')" />
+        </div>
+
+        <div x-data x-init="flatpickr($refs.rangeInput, { mode: 'range', dateFormat: 'Y-m-d', rangeSeparator: ' to ' })">
+            <input id="rangeInput" x-ref="rangeInput" type="text"
+                   name="payment_schedule"
+                   class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+                   value="{{ request('payment_schedule') }}"
+                   placeholder="@lang('Payment Schedule')" />
+        </div>
+
+        <div x-data x-init="flatpickr($refs.rangeInput, { mode: 'range', dateFormat: 'Y-m-d', rangeSeparator: ' to ' })">
+            <input id="rangeInput" x-ref="rangeInput" type="text"
+                   name="transaction_date"
+                   class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+                   value="{{ request('transaction_date') }}"
+                   placeholder="@lang('Transaction Date')" />
+        </div>
+
+    </div>
+
+    <div class="mt-3">
+            <span class="text-sm font-bold text-gray-600 mb-2">
                 @lang("Other Details")
             </span>
     </div>    <div class="grid grid-cols-7 gap-4 mb-4">

@@ -132,6 +132,7 @@ class StudentController extends Controller
             'additional_information',
             'contract_start_date',
             'contract_end_date',
+            'payment_schedule',
             'yearly_payment_from',
             'yearly_payment_to',
             'currency',

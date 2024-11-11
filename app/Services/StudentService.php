@@ -80,8 +80,34 @@ class StudentService
             $query->where('additional_information', 'like', '%' . $request->input('additional_information') . '%');
         }
 
+        if ($request->filled('contract_start_date')) {
+            $contractStartDates = explode(' to ', $request->input('contract_start_date'));
+            if (isset($contractStartDates[0])) {
+                $query->where('contract_start_date', '>=',$contractStartDates[0]);
+            }
+            if (isset($contractStartDates[1])) {
+                $query->where('contract_start_date', '<=',$contractStartDates[1]);
+            }
+        }
+
         if ($request->filled('contract_end_date')) {
-            $query->where('contract_end_date', $request->input('contract_end_date'));
+            $contractEndDates = explode(' to ', $request->input('contract_end_date'));
+            if (isset($contractEndDates[0])) {
+                $query->where('contract_end_date', '>=',$contractEndDates[0]);
+            }
+            if (isset($contractEndDates[1])) {
+                $query->where('contract_end_date', '<=',$contractEndDates[1]);
+            }
+        }
+
+        if ($request->filled('payment_schedule')) {
+            $paymentSchedule = explode(' to ', $request->input('payment_schedule'));
+            if (isset($paymentSchedule[0])) {
+                $query->where('payment_schedule', '>=',$paymentSchedule[0]);
+            }
+            if (isset($paymentSchedule[1])) {
+                $query->where('payment_schedule', '<=',$paymentSchedule[1]);
+            }
         }
 
         if ($request->filled('yearly_payment_from')) {
