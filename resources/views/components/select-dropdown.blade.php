@@ -22,7 +22,7 @@
         @foreach ($options as $option)
             <label class="block p-2">
                 <input type="checkbox" value="{{ $option }}" name="{{ $name }}[]" x-model="{{ $name }}" class="mr-2">
-                {{ $option }}
+                {{ __(ucwords($option)) }}
             </label>
         @endforeach
     </div>

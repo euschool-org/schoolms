@@ -64,7 +64,7 @@
         <x-select-dropdown :options="[1,2,3,4,5,6,7,8,9,10,11,12,'ქართული','ინგლისური']" label="აირჩიეთ კლასი" name="grade"/>
 
         <div>
-            <x-select-dropdown :options="['active', 'past', 'future']" label="Pupil Status" name="pupil_status" />
+            <x-select-dropdown :options="['active', 'past', 'future']" label="მოსწავლის სტატუსი" name="pupil_status" />
         </div>
     </div>
 

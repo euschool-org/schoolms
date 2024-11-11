@@ -22,7 +22,7 @@
                 <div class="grid grid-cols-2 gap-6 mt-4">
                     <!-- Checked Columns (Left) -->
                     <div>
-                        <h3 class="text-lg font-semibold mb-2">@lang('ყველა ინორმაცია')</h3>
+                        <h3 class="text-lg font-semibold mb-2">@lang('Table Columns')</h3>
                         @foreach($allColumns as $column)
                             @if(in_array($column, $selectedColumns))
                                 <label class="block">
@@ -35,7 +35,7 @@
 
                     <!-- Unchecked Columns (Right) -->
                     <div>
-                        <h3 class="text-lg font-semibold mb-2">@lang('ინფორმაცია ცხრილში')</h3>
+                        <h3 class="text-lg font-semibold mb-2">@lang('All Columns')</h3>
                         @foreach($allColumns as $column)
                             @if(!in_array($column, $selectedColumns))
                                 <label class="block">

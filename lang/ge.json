@@ -1,4 +1,13 @@
 {
+    "Uploader Name" : "ამტვირთავი",
+    "Upload Date" : "ატვირთვის თარიღი",
+    "File Name" : "ფაილის დასახელება",
+    "Payment Amount" : "თანხა",
+    "Payer Name" : "გადამხდელი",
+    "Payment Date" : "ტრანზაქციის თარიღი",
+    "Table Columns" : "ცხრილის ველები",
+    "All Columns" : "ყველა ველი",
+    "Dates" : "თარიღები",
     "Payment Schedule": "გადახდის გრაფიკი",
     "Transaction Date": "ტრანზაქციის თარიღი",
     "Grade Label" : "კლასი",
