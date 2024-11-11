@@ -115,7 +115,7 @@
 
     <div class="mt-3">
             <span class="text-sm font-bold text-gray-600 mb-2">
-                @lang("Dates")
+                @lang("Dates2")
             </span>
     </div>
     <div class="grid grid-cols-7 gap-4 mb-4">
