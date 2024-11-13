@@ -33,6 +33,7 @@ return new class extends Migration
             $table->string('income_account',45)->nullable();
             $table->integer('payment_quantity')->nullable();
             $table->float('custom_discount')->nullable();
+            $table->float('balance')->nullable();
             $table->timestamps();
         });
     }

@@ -30,7 +30,8 @@ class Student extends Model
         'payment_quantity',
         'custom_discount',
         'email_notifications',
-        'mobile_notifications'
+        'mobile_notifications',
+        'balance'
     ];
 
     public function payments()
