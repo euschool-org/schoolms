@@ -28,13 +28,15 @@ return new class extends Migration
             $table->date('contract_end_date')->nullable();
             $table->float('monthly_payment')->nullable();
             $table->float('yearly_payment')->nullable();
-            $table->string('currency', 3)->default('EUR');
+            $table->unsignedBigInteger('currency_id')->default(1);
             $table->string('parent_account',45)->nullable();
             $table->string('income_account',45)->nullable();
             $table->integer('payment_quantity')->nullable();
             $table->float('custom_discount')->nullable();
             $table->float('balance')->nullable();
             $table->timestamps();
+
+            $table->foreign('currency_id')->references('id')->on('currencies');
         });
     }
 
