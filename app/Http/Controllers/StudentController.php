@@ -8,6 +8,7 @@ use App\Http\Requests\StoreStudentRequest;
 use App\Http\Requests\UpdateStudentRequest;
 use App\Imports\StudentsImport;
 use App\Mail\SendPdfMail;
+use App\Models\Currency;
 use App\Models\Student;
 use App\Services\AttachmentService;
 use App\Services\StudentService;
@@ -28,7 +29,7 @@ class StudentController extends Controller
         'parent_mail',
         'parent_number',
         'yearly_payment',
-        'currency',
+        'currency_label',
         'parent_account',
         'income_account',
         'payment_quantity',
@@ -58,7 +59,7 @@ class StudentController extends Controller
     public function form(Student $student = null)
     {
         if ($student) {
-            $student->load(['payments', 'attachments.user']);
+            $student->load(['payments', 'attachments.user', 'currency']);
             $update = true;
         } else {
             $student = new Student([
@@ -90,7 +91,9 @@ class StudentController extends Controller
 
     public function update(Student $student, UpdateStudentRequest $request)
     {
-        if ($student->update($request->validated())){
+        $data = $request->validated();
+        $data['currency_id'] = isset($data['currency']) ? Currency::where('code',$data['currency'])->first()->id : 1;
+        if ($student->update($data)){
             return redirect()->route('student.edit',$student->id)->with('success','Student updated successfully');
         } else {
             return redirect()->route('student.edit',$student->id)->with('error','Student update failed');

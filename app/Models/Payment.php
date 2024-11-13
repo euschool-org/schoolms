@@ -13,7 +13,10 @@ class Payment extends Model
         'student_id',
         'payment_date',
         'payment_amount',
-        'payer_name'
+        'payer_name',
+        'currency_rate',
+        'nominal_amount',
+        'discount'
     ];
 
     public function student()

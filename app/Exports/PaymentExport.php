@@ -20,8 +20,8 @@ class PaymentExport implements FromArray, WithHeadings, ShouldAutoSize
      */
     public function array(): array
     {
-        $query = Payment::select('id', 'student_id', 'payment_date', 'payment_amount') // Select specific columns from Payment
-        ->with(['student:id,private_number,name,parent_account,currency']); // Select specific columns from the Student relation
+        $query = Payment::select('id', 'student_id', 'payment_date', 'payment_amount','nominal_amount') // Select specific columns from Payment
+        ->with(['student.currency']); // Select specific columns from the Student relation
 
 
         if (!empty($this->filters['transaction_from'])) {
@@ -41,10 +41,9 @@ class PaymentExport implements FromArray, WithHeadings, ShouldAutoSize
                     $payment->student->private_number,
                     $payment->student->name,
                     $payment->student->parent_account,
-//                    $payment->payment_amount / $payment->currency_rate,
-                    'nominal',
+                    $payment->nominal_amount,
                     $payment->payment_amount,
-                    $payment->student->currency,
+                    $payment->student->currency->code
                 ];
         }
         return $data;

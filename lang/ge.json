@@ -1,8 +1,11 @@
 {
+    "Currency Label" : "ვალუტა",
+    "Currency Rate" : "ვალუტის კურსი",
     "Uploader Name" : "ამტვირთავი",
     "Upload Date" : "ატვირთვის თარიღი",
     "File Name" : "ფაილის დასახელება",
     "Payment Amount" : "თანხა",
+    "Nominal Amount" : "ნომინალი თანხა",
     "Payer Name" : "გადამხდელი",
     "Payment Date" : "ტრანზაქციის თარიღი",
     "Table Columns" : "ცხრილის ველები",

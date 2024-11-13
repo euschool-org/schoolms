@@ -15,7 +15,9 @@ class PaymentController extends Controller
     {
         $data = $request->validated();
         $data['student_id'] = $student->id;
-
+        $data['currency_rate'] = $student->currency->rate_to_gel;
+        $data['nominal_amount'] = $data['payment_amount']/$data['currency_rate'];
+        $data['discount'] = $this->discountCheck();
         if (Payment::create($data)) {
             return redirect()->route('student.edit', $student->id)->with('success', 'Payment created successfully');
         } else {
@@ -42,5 +44,10 @@ class PaymentController extends Controller
         ];
 
         return Excel::download(new PaymentExport($filters), 'payments.xlsx');
+    }
+
+    public function discountCheck()
+    {
+        return 0;
     }
 }

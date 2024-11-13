@@ -24,7 +24,7 @@ class Student extends Model
         'contract_end_date',
         'yearly_payment',
         'monthly_payment',
-        'currency',
+        'currency_id',
         'parent_account',
         'income_account',
         'payment_quantity',
@@ -44,6 +44,15 @@ class Student extends Model
         return $this->hasMany(Attachment::class);
     }
 
+    public function currency()
+    {
+        return $this->belongsTo(Currency::class);
+    }
+
+    public function getCurrencyLabelAttribute()
+    {
+        return $this->currency->code;
+    }
     public function getPupilStatusLabelAttribute()
     {
         $now = Carbon::now();

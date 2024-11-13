@@ -119,7 +119,9 @@ class StudentService
         }
 
         if ($request->filled('currency')) {
-            $query->whereIn('currency', $request->input('currency'));
+            $query->whereHas('currency', function ($q) use ($request) {
+                $q->whereIn('code', $request->input('currency'));
+            });
         }
 
         if ($request->filled('parent_account')) {

@@ -32,7 +32,7 @@ class UpdateStudentRequest extends FormRequest
             'contract_end_date' => 'nullable|date',
             'yearly_payment' => 'nullable|numeric',
             'monthly_payment' => 'nullable|numeric',
-            'currency' => 'nullable|string|in:EUR,USD,GEL',
+            'currency' => 'nullable|string|exists:currencies,code',
             'parent_account' => 'nullable|string|max:12',
             'income_account' => 'nullable|string|max:10',
             'payment_quantity' => 'nullable|integer|max:10',

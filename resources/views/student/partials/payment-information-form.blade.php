@@ -8,6 +8,9 @@
             <th class="border px-4 py-2 text-left">@lang('Payment Date')</th>
             <th class="border px-4 py-2 text-left">@lang('Payer Name')</th>
             <th class="border px-4 py-2 text-left">@lang('Payment Amount')</th>
+            <th class="border px-4 py-2 text-left">@lang('Currency Rate')</th>
+            <th class="border px-4 py-2 text-left">@lang('Nominal Amount')</th>
+            <th class="border px-4 py-2 text-left">@lang('Discount')</th>
         </tr>
         </thead>
         <tbody>
@@ -17,6 +20,9 @@
                 <td class="border px-4 py-2">{{ $payment->payment_date }}</td>
                 <td class="border px-4 py-2">{{ $payment->payer_name }}</td>
                 <td class="border px-4 py-2">{{ $payment->payment_amount }}</td>
+                <td class="border px-4 py-2">{{ $payment->currency_rate }}</td>
+                <td class="border px-4 py-2">{{ $payment->nominal_amount }}</td>
+                <td class="border px-4 py-2">{{ $payment->discount }}</td>
             </tr>
         @endforeach
         </tbody>

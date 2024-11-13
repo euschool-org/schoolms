@@ -16,7 +16,7 @@ return new class extends Migration
             $table->unsignedBigInteger('student_id');
             $table->dateTime('payment_date');
             $table->float('payment_amount');
-            $table->float('payment_amount_gel');
+            $table->float('nominal_amount');
             $table->float('discount');
             $table->float('currency_rate');
             $table->string('payer_name', 191)->nullable();
