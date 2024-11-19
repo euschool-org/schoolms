@@ -1,4 +1,3 @@
-<div class="bg-white sm:rounded-lg mt-4">
     <div class="text-sm font-bold text-gray-600 mb-3">
         <span>
             @lang("Parent")
@@ -65,4 +64,4 @@
             </button>
         </div>
     </form>
-</div>
+

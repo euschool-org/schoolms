@@ -5,19 +5,15 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Payment extends Model
+class AnnualFee extends Model
 {
     use HasFactory;
 
     protected $fillable = [
         'student_id',
-        'payment_id',
-        'payment_date',
-        'payment_amount',
-        'payer_name',
-        'currency_rate',
-        'nominal_amount',
-        'discount'
+        'display_year',
+        'year',
+        'fee',
     ];
 
     public function student()

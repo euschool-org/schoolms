@@ -1,4 +1,3 @@
-<div class="bg-white sm:rounded-lg mt-4">
     <div class="text-sm font-bold text-gray-600 mb-2">
         <span >
             @lang("Financial Information")
@@ -39,12 +38,16 @@
         </div>
 
         <div class="col-span-1">
-            <x-text-input-label name="custom_discount" label="Custom Discount" value="{{ $student->custom_discount }}" />
+            <div class="flex items-center">
+                <label for="custom_discount" class="text-sm font-medium text-gray-700">@lang('Custom Discount')</label>
+                <div class="ml-3 relative">
+                    <input type="checkbox" id="custom_discount" name="custom_discount" value="1" @checked($student->custom_discount) class="sr-only peer" />
+                    <div class="w-11 h-6 bg-gray-200 rounded-full peer-checked:bg-blue-600 transition-colors"></div>
+                    <div class="absolute left-0.5 top-0.5 w-5 h-5 bg-white border border-gray-300 rounded-full transition-transform peer-checked:translate-x-full"></div>
+                </div>
+            </div>
         </div>
 
-        <div class="col-span-1">
-            <x-text-input-label name="balance" label="Balance" value="{{ $student->balance }}" />
-        </div>
 
         <div class="flex justify-end mt-4 col-span-5">
             <!-- Cancel/Reset button with X icon -->
@@ -62,4 +65,4 @@
             </button>
         </div>
     </form>
-</div>
+

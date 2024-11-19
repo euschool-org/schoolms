@@ -14,11 +14,12 @@ return new class extends Migration
         Schema::create('payments', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('student_id');
+            $table->string('payment_id')->nullable();
             $table->dateTime('payment_date');
-            $table->float('payment_amount');
-            $table->float('nominal_amount');
-            $table->float('discount');
-            $table->float('currency_rate');
+            $table->decimal('payment_amount');
+            $table->decimal('nominal_amount');
+            $table->decimal('discount', 5, 2);
+            $table->decimal('currency_rate', 8, 4);
             $table->string('payer_name', 191)->nullable();
             $table->timestamps();
 

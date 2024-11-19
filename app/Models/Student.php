@@ -31,7 +31,8 @@ class Student extends Model
         'custom_discount',
         'email_notifications',
         'mobile_notifications',
-        'balance'
+        'last_year_balance',
+        'balance_change_year'
     ];
 
     public function payments()
@@ -42,6 +43,11 @@ class Student extends Model
     public function attachments()
     {
         return $this->hasMany(Attachment::class);
+    }
+
+    public function annual_fees()
+    {
+        return $this->hasMany(AnnualFee::class);
     }
 
     public function currency()

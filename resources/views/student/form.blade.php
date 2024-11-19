@@ -17,6 +17,9 @@
                     @include('student.partials.financial-information-form')
                 </div>
                 <div class="w-full p-6 bg-white shadow sm:rounded-lg mt-4">
+                    @include('student.partials.annual-fee-form')
+                </div>
+                <div class="w-full p-6 bg-white shadow sm:rounded-lg mt-4">
                     @include('student.partials.payment-information-form')
                 </div>
                 <!-- Attachment Information -->

@@ -5,16 +5,16 @@ namespace App\Http\Controllers;
 use App\Exports\StudentExport;
 use App\Http\Requests\ImportRequest;
 use App\Http\Requests\StoreStudentRequest;
+use App\Http\Requests\UpdateFeesRequest;
 use App\Http\Requests\UpdateStudentRequest;
 use App\Imports\StudentsImport;
-use App\Mail\SendPdfMail;
+use App\Models\AnnualFee;
 use App\Models\Currency;
 use App\Models\Student;
 use App\Services\AttachmentService;
 use App\Services\StudentService;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Mail;
 use Maatwebsite\Excel\Facades\Excel;
 
 class StudentController extends Controller
@@ -33,8 +33,11 @@ class StudentController extends Controller
         'parent_account',
         'income_account',
         'payment_quantity',
-        'custom_discount',
+        'last_year_balance',
         'additional_information',
+        'last_year_balance',
+        'debt',
+        'yearly_payments_sum'
     ];
     public $attachmentService;
 
@@ -59,7 +62,14 @@ class StudentController extends Controller
     public function form(Student $student = null)
     {
         if ($student) {
-            $student->load(['payments', 'attachments.user', 'currency']);
+            $student->load([
+                'payments',
+                'attachments.user',
+                'currency',
+                'annual_fees' => function ($query) {
+                    $query->orderBy('year', 'asc');
+                },
+            ]);
             $update = true;
         } else {
             $student = new Student([
@@ -83,6 +93,9 @@ class StudentController extends Controller
     {
         $student = Student::create($request->all());
         if ($student){
+            if ($request->has('contract_start_date') || $request->has('contract_end_date')) {
+                $this->studentService->syncStudentFees($student);
+            }
             return redirect()->route('student.edit',$student->id)->with('success','Student created successfully');
         } else {
             return redirect()->route('student.create')->with('error','Something went wrong');
@@ -94,6 +107,9 @@ class StudentController extends Controller
         $data = $request->validated();
         $data['currency_id'] = isset($data['currency']) ? Currency::where('code',$data['currency'])->first()->id : 1;
         if ($student->update($data)){
+            if ($request->has('contract_start_date') || $request->has('contract_end_date')) {
+                $this->syncStudentFees($student);
+            }
             return redirect()->route('student.edit',$student->id)->with('success','Student updated successfully');
         } else {
             return redirect()->route('student.edit',$student->id)->with('error','Student update failed');
@@ -148,17 +164,14 @@ class StudentController extends Controller
         return Excel::download(new StudentExport($filters), 'students.xlsx');
     }
 
-
-    public function testMail()
+    public function updateFees(UpdateFeesRequest $request)
     {
-        $data = [
-            'name' => 'John Doe',
-            'amount' => '100.00'
-        ];
+        foreach ($request->validated()['fees'] as $feeData) {
+            // Update the fee record
+            AnnualFee::where('id', $feeData['id'])
+                ->update(['fee' => $feeData['fee']]);
+        }
 
-        Mail::to('datigabashvili@gmail.com')->send(new SendPdfMail($data));
-
-        return response()->json(['message' => 'Invoice sent successfully.']);
+        return redirect()->back()->with('success', __('Fees updated successfully.'));
     }
-
 }

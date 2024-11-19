@@ -11,10 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('currencies', function (Blueprint $table) {
+        Schema::create('annual_fees', function (Blueprint $table) {
             $table->id();
-            $table->string('code');
-            $table->decimal('rate_to_gel', 8, 4);
+            $table->unsignedBigInteger('student_id');
+            $table->string('display_year');
+            $table->year('year');
+            $table->decimal('fee')->default(0);
             $table->timestamps();
         });
     }
@@ -24,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('currencies');
+        Schema::dropIfExists('annual_fees');
     }
 };

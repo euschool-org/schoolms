@@ -42,7 +42,7 @@ class UpdateStudentRequest extends FormRequest
             'parent_number' => 'nullable|numeric|max:45',
             'email_notifications' => 'nullable|boolean',
             'mobile_notifications' => 'nullable|boolean',
-            'balance' => 'nullable|numeric',
+            'original_balance' => 'nullable|numeric',
         ];
     }
 }

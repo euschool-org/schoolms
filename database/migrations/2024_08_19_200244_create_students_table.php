@@ -32,8 +32,9 @@ return new class extends Migration
             $table->string('parent_account',45)->nullable();
             $table->string('income_account',45)->nullable();
             $table->integer('payment_quantity')->nullable();
-            $table->float('custom_discount')->nullable();
-            $table->float('balance')->nullable();
+            $table->boolean('custom_discount')->nullable();
+            $table->decimal('last_year_balance')->nullable();
+            $table->integer('balance_change_year')->nullable();
             $table->timestamps();
 
             $table->foreign('currency_id')->references('id')->on('currencies');
