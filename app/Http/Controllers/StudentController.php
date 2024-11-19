@@ -108,7 +108,7 @@ class StudentController extends Controller
         $data['currency_id'] = isset($data['currency']) ? Currency::where('code',$data['currency'])->first()->id : 1;
         if ($student->update($data)){
             if ($request->has('contract_start_date') || $request->has('contract_end_date')) {
-                $this->syncStudentFees($student);
+                $this->studentService->syncStudentFees($student);
             }
             return redirect()->route('student.edit',$student->id)->with('success','Student updated successfully');
         } else {
