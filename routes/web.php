@@ -28,7 +28,7 @@ Route::middleware(['auth', 'verified'])->controller(StudentController::class)->g
     Route::get('/students/form/{student}', 'form')->name('student.edit');
     Route::post('/students', 'store')->name('student.store');
     Route::put('/students/{student}', 'update')->name('student.update');
-    Route::put('/fees}', 'updateFees')->name('fee.update');
+    Route::put('/fees', 'updateFees')->name('fee.update');
     Route::delete('/students/{student}', 'destroy')->name('student.destroy');
     Route::post('/students/import','import')->name('student.import');
     Route::get('/students/export','export')->name('student.export');

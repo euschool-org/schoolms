@@ -5,14 +5,18 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class AnnualFee extends Model
+class MonthlyFee extends Model
 {
     use HasFactory;
 
+    protected $casts = [
+        'month' => 'date',
+    ];
+
     protected $fillable = [
         'student_id',
-        'display_year',
-        'year',
+        'month',
+        'school_year',
         'fee',
     ];
 

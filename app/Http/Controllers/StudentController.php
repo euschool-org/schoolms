@@ -8,8 +8,8 @@ use App\Http\Requests\StoreStudentRequest;
 use App\Http\Requests\UpdateFeesRequest;
 use App\Http\Requests\UpdateStudentRequest;
 use App\Imports\StudentsImport;
-use App\Models\AnnualFee;
 use App\Models\Currency;
+use App\Models\MonthlyFee;
 use App\Models\Student;
 use App\Services\AttachmentService;
 use App\Services\StudentService;
@@ -33,10 +33,12 @@ class StudentController extends Controller
         'parent_account',
         'income_account',
         'payment_quantity',
-        'last_year_balance',
         'additional_information',
         'last_year_balance',
+        'yearly_fee',
         'debt',
+        'first_half',
+        'second_half',
         'yearly_payments_sum'
     ];
     public $attachmentService;
@@ -66,8 +68,8 @@ class StudentController extends Controller
                 'payments',
                 'attachments.user',
                 'currency',
-                'annual_fees' => function ($query) {
-                    $query->orderBy('year', 'asc');
+                'monthly_fees' => function ($query) {
+                    $query->orderBy('month', 'asc');
                 },
             ]);
             $update = true;
@@ -168,7 +170,7 @@ class StudentController extends Controller
     {
         foreach ($request->validated()['fees'] as $feeData) {
             // Update the fee record
-            AnnualFee::where('id', $feeData['id'])
+            MonthlyFee::where('id', $feeData['id'])
                 ->update(['fee' => $feeData['fee']]);
         }
 

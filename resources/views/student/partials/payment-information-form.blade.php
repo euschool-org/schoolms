@@ -10,7 +10,7 @@
             <th class="border px-4 py-2 text-left">@lang('Payment Amount')</th>
             <th class="border px-4 py-2 text-left">@lang('Currency Rate')</th>
             <th class="border px-4 py-2 text-left">@lang('Nominal Amount')</th>
-            <th class="border px-4 py-2 text-left">@lang('Discount')</th>
+            <th class="border px-4 py-2 text-left">@lang('Type')</th>
         </tr>
         </thead>
         <tbody>
@@ -22,7 +22,7 @@
                 <td class="border px-4 py-2">{{ $payment->payment_amount }}</td>
                 <td class="border px-4 py-2">{{ $payment->currency_rate }}</td>
                 <td class="border px-4 py-2">{{ $payment->nominal_amount }}</td>
-                <td class="border px-4 py-2">{{ $payment->discount }}</td>
+                <td class="border px-4 py-2">{{ $payment->payment_type ? __('Payment') : __('Discount') }}</td>
             </tr>
         @endforeach
         </tbody>

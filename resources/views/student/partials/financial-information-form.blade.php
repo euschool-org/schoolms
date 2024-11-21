@@ -31,17 +31,21 @@
         </div>
 
         <div class="col-span-1 mt-1">
-            <x-select-dropdown :options="['monthly', 'yearly', 'quarterly']" label="Payment Type" name="payment_type" value="{{$student->currency}}" />
+            <x-select-dropdown :options="['monthly', 'yearly', 'quarterly']" label="Payment Type" name="payment_quantity" value="{{$student->payment_quantity}}" />
             @error('payment_quantity')
             <span class="text-red-500 text-sm">{{ $message }}</span>
             @enderror
         </div>
 
         <div class="col-span-1">
+            <x-text-input-label name="custom_discount" label="Custom Discount" value="{{ $student->custom_discount }}" />
+        </div>
+
+        <div class="col-span-1">
             <div class="flex items-center">
-                <label for="custom_discount" class="text-sm font-medium text-gray-700">@lang('Custom Discount')</label>
+                <label for="new_member_discount" class="text-sm font-medium text-gray-700">@lang('New Member Discount')</label>
                 <div class="ml-3 relative">
-                    <input type="checkbox" id="custom_discount" name="custom_discount" value="1" @checked($student->custom_discount) class="sr-only peer" />
+                    <input type="checkbox" id="new_member_discount" name="new_member_discount" value="1" @checked($student->new_member_discount) class="sr-only peer" />
                     <div class="w-11 h-6 bg-gray-200 rounded-full peer-checked:bg-blue-600 transition-colors"></div>
                     <div class="absolute left-0.5 top-0.5 w-5 h-5 bg-white border border-gray-300 rounded-full transition-transform peer-checked:translate-x-full"></div>
                 </div>

@@ -1,4 +1,10 @@
 {
+    "Month" : "თვე",
+    "Fee" : "გადასახადი",
+    "Total Fee" : "წლიური გადასახადი",
+    "School Year" : "სასწავლო წელი",
+    "Type" : "ტიპი",
+    "Payment" : "გადახდა",
     "Annual Fee Information" : "წლიური გადასახადი",
     "Currency Label" : "ვალუტა",
     "Currency Rate" : "ვალუტის კურსი",

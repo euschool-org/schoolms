@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\AnnualFee;
+use App\Models\MonthlyFee;
 use App\Models\Student;
 use Carbon\Carbon;
 
@@ -11,17 +12,42 @@ class StudentService
     public function getStudents($request)
     {
         $data = [];
-        $query = Student::withSum(['payments as yearly_payments_sum' => function ($query) {
-            if (now()->month >= 8) {  // August or later
-                $startDate = now()->startOfYear()->addMonths(7);
-                $endDate = now()->startOfYear()->addYear()->addMonths(6)->endOfMonth();
-            } else {
-                $startDate = now()->subYear()->startOfYear()->addMonths(7);
-                $endDate = now()->startOfYear()->addMonths(6)->endOfMonth();
-            }
+        $query = Student::withSum([
+            'payments as yearly_payments_sum' => function ($query) {
+                if (now()->month >= 8) {  // August or later
+                    $startDate = now()->startOfYear()->addMonths(7);
+                    $endDate = now()->startOfYear()->addYear()->addMonths(6)->endOfMonth();
+                } else {
+                    $startDate = now()->subYear()->startOfYear()->addMonths(7);
+                    $endDate = now()->startOfYear()->addMonths(6)->endOfMonth();
+                }
 
-            $query->whereBetween('payment_date', [$startDate, $endDate]);
-        }], 'nominal_amount');
+                $query->whereBetween('payment_date', [$startDate, $endDate]);
+            }], 'nominal_amount')->withSum([
+            'monthly_fees as first_half_fee' => function ($query){
+                if (now()->month >= 8) {
+                    $startDate = now()->startOfYear()->addMonths(8);
+                    $endDate = now()->startOfYear()->addYear()->endOfMonth();
+                } else {
+                    $startDate = now()->subYear()->startOfYear()->addMonths(8);
+                    $endDate = now()->startOfYear()->endOfMonth();
+                }
+
+                $query->whereBetween('month', [$startDate, $endDate]);
+            }], 'fee')->withSum(
+            [
+                'monthly_fees as second_half_fee' => function ($query){
+                    if (now()->month >= 8) {
+                        $startDate = now()->startOfYear()->addYear()->endOfMonth();
+                        $endDate = now()->startOfYear()->addYear()->addMonths(7);
+                    } else {
+                        $startDate = now()->startOfYear()->endOfMonth();
+                        $endDate = now()->startOfYear()->addMonths(7);
+                    }
+
+                    $query->whereBetween('month', [$startDate, $endDate]);
+                },
+            ],'fee')->with('monthly_fees');
         if ($request->filled('name')) {
             $query->where('name', 'like', '%' . $request->input('name') . '%');
         }
@@ -158,10 +184,16 @@ class StudentService
         $students = $query->paginate($perPage);
 
         $students->each(function ($student) {
-            $student->debt = min($student->last_year_balance + $student->yearly_payments_sum, 0);
+            $student->yearly_fee = $student->first_half_fee + $student->second_half_fee;;
+            $yearly_payment_sum = $student->yearly_payments_sum ?? 0;
 
-            $student->first_half = min($student->monthly_payment*5 + $student->yearly_payments_sum, 0);
-            $student->second_half = min($student->monthly_payment*5 + $student->yearly_payments_sum, 0);
+            $student->debt = max($student->last_year_balance - $yearly_payment_sum, 0);
+
+            $yearly_payment_sum -= $student->last_year_balance;
+            $student->first_half = max($student->first_half_fee - $yearly_payment_sum, 0);
+
+            $yearly_payment_sum = max($yearly_payment_sum - $student->first_half_fee,0);
+            $student->second_half = $student->second_half_fee - $yearly_payment_sum;
         });
         // Return the students and total count
         $data['students'] = $students;
@@ -172,39 +204,29 @@ class StudentService
 
     public function syncStudentFees($student)
     {
-        $startYear = Carbon::parse($student->contract_start_date)->year;
-        $startMonth = Carbon::parse($student->contract_start_date)->month;
-        $endYear = Carbon::parse($student->contract_end_date)->year;
-        $endMonth = Carbon::parse($student->contract_end_date)->month;
-
-        if ($startMonth < 6) {
-            $startYear--;
+        if (!$student->contract_start_date || !$student->contract_end_date) {
+            return ;
         }
-        if ($endMonth < 9) {
-            $endYear--;
+        $startDate = Carbon::parse($student->contract_start_date);
+        $endDate = Carbon::parse($student->contract_end_date);
+
+        while ($startDate <= $endDate) {
+            if ($startDate->month == 7 || $startDate->month == 8) {
+                $startDate->addMonth();
+                continue;
+            }
+            $currentYear = $startDate->year;
+            $nextYear = $startDate->month >= 9 ? $currentYear + 1 : $currentYear;
+            $schoolYear = $startDate->month >= 9 ? "$currentYear-$nextYear" : ($currentYear - 1) . "-$currentYear";
+
+            MonthlyFee::updateOrCreate(
+                [
+                    'student_id' => $student->id,
+                    'month' => $startDate->startOfMonth(),
+                    'school_year' => $schoolYear,
+                ],
+            );
+            $startDate->addMonth();
         }
-
-        $validYears = range($startYear, $endYear);
-
-        $existingYears = AnnualFee::where('student_id', $student->id)
-            ->pluck('year')
-            ->toArray();
-
-        $yearsToAdd = array_diff($validYears, $existingYears);
-
-        $yearsToRemove = array_diff($existingYears, $validYears);
-
-        foreach ($yearsToAdd as $year) {
-            AnnualFee::create([
-                'student_id' => $student->id,
-                'display_year' => $year.'-'.($year+1),
-                'year' => $year,
-                'fee' => 0
-            ]);
-        }
-
-        AnnualFee::where('student_id', $student->id)
-            ->whereIn('year', $yearsToRemove)
-            ->delete();
     }
 }

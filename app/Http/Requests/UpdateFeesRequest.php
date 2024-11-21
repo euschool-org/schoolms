@@ -22,7 +22,7 @@ class UpdateFeesRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'fees.*.id' => 'required|exists:annual_fees,id',
+            'fees.*.id' => 'required|exists:monthly_fees,id',
             'fees.*.fee' => 'required|numeric|min:0',
         ];
     }

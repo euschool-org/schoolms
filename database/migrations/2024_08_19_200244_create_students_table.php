@@ -26,13 +26,12 @@ return new class extends Migration
             $table->text('additional_information')->nullable();
             $table->date('contract_start_date')->nullable();
             $table->date('contract_end_date')->nullable();
-            $table->float('monthly_payment')->nullable();
-            $table->float('yearly_payment')->nullable();
             $table->unsignedBigInteger('currency_id')->default(1);
             $table->string('parent_account',45)->nullable();
             $table->string('income_account',45)->nullable();
             $table->integer('payment_quantity')->nullable();
-            $table->boolean('custom_discount')->nullable();
+            $table->boolean('new_student_discount')->nullable();
+            $table->decimal('custom_discount')->nullable();
             $table->decimal('last_year_balance')->nullable();
             $table->integer('balance_change_year')->nullable();
             $table->timestamps();

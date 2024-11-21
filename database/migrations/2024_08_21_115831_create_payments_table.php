@@ -18,9 +18,9 @@ return new class extends Migration
             $table->dateTime('payment_date');
             $table->decimal('payment_amount');
             $table->decimal('nominal_amount');
-            $table->decimal('discount', 5, 2);
             $table->decimal('currency_rate', 8, 4);
             $table->string('payer_name', 191)->nullable();
+            $table->integer('payment_type')->default(1);
             $table->timestamps();
 
             $table->foreign('student_id')->references('id')->on('students')->cascadeOnDelete();

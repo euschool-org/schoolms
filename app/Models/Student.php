@@ -45,9 +45,9 @@ class Student extends Model
         return $this->hasMany(Attachment::class);
     }
 
-    public function annual_fees()
+    public function monthly_fees()
     {
-        return $this->hasMany(AnnualFee::class);
+        return $this->hasMany(MonthlyFee::class);
     }
 
     public function currency()
