@@ -33,16 +33,15 @@ class NewMemberDiscount extends Command
                     ->where('payment_type', '>', 0);
             })
             ->withSum(['monthly_fees as year_fee' => function ($query) {
-                $query->where('school_year', now()->year . '-' . (now()->year+1));
+                $query->where('school_year', now()->year . '-' . (now()->year + 1));
             }], 'fee')
-            ->withSum(['payments as apr_may_calc',function ($query) {
+            ->withSum(['payments as apr_may_calc' => function ($query) {
                 $query->whereBetween('payment_date', [
-                    now()->startOfYear()->setMonth(3)->startOfMonth(), // apr 1st, current year
-                    now()->startOfYear()->setMonth(4)->endOfMonth()   // may 31st, current year
+                    now()->startOfYear()->setMonth(4)->startOfMonth(),
+                    now()->startOfYear()->setMonth(5)->endOfMonth()
                 ]);
             }], 'nominal_amount')
             ->get();
-        dd($students);
         foreach ($students as $student) {
             if ($student->apr_may_calc >= $student->year_fee * 0.9) {
                 Payment::create([
@@ -50,6 +49,7 @@ class NewMemberDiscount extends Command
                     'payment_date' => now()->toDateTimeString(),
                     'payment_amount' => $student->year_fee * 0.1 * $student->currency->rate_to_gel,
                     'nominal_amount' => $student->year_fee * 0.1,
+                    'percentage' => 10,
                     'currency_rate' => $student->currency->rate_to_gel,
                     'payment_type' => 2,
                 ]);
