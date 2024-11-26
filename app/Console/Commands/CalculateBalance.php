@@ -26,12 +26,14 @@ class CalculateBalance extends Command
      */
     public function handle()
     {
-        if (now()->month != 8){
-            return;
+        $now = now()->startOfYear()->addMonths(6);
+        if ($now->month != 7 || $now->day != 1){
+            $this->info('Balance Task skipped: Outside the allowed time range.');
+            return Command::SUCCESS;
         }
         $students = Student::withSum(['payments as total_payments' => function ($query) {
-            $startDate = now()->subYear()->startOfYear()->addMonths(7);
-            $endDate = now()->startOfYear()->addMonths(6)->endOfMonth();
+            $startDate = now()->subYear()->startOfYear()->addMonths(6);
+            $endDate = now()->startOfYear()->addMonths(5)->endOfMonth();
             $query->whereBetween('payment_date', [$startDate, $endDate]);
         }], 'nominal_amount')->get();
 
@@ -39,6 +41,7 @@ class CalculateBalance extends Command
             if ($student->balance_change_year != now()->year) {
                 $student->last_year_balance  = $student->last_year_balance + $student->total_payments - $student->yearly_payment;
                 $student->balance_change_year = now()->year;
+                $student->current_grade = $student->grade_label;
                 $student->save();
             }
         }

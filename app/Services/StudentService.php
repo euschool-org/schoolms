@@ -22,7 +22,40 @@ class StudentService
                     $endDate = now()->startOfYear()->addMonths(6)->endOfMonth();
                 }
 
-                $query->whereBetween('payment_date', [$startDate, $endDate]);
+                $query->whereBetween('payment_date', [$startDate, $endDate])->where('payment_type', 0);
+            }], 'nominal_amount')->withSum([
+            'payments as yearly_5p_discounts_sum' => function ($query) {
+                if (now()->month >= 8) {  // August or later
+                    $startDate = now()->startOfYear()->addMonths(7);
+                    $endDate = now()->startOfYear()->addYear()->addMonths(6)->endOfMonth();
+                } else {
+                    $startDate = now()->subYear()->startOfYear()->addMonths(7);
+                    $endDate = now()->startOfYear()->addMonths(6)->endOfMonth();
+                }
+
+                $query->whereBetween('payment_date', [$startDate, $endDate])->where('payment_type', 1);
+            }], 'nominal_amount')->withSum([
+            'payments as yearly_10p_discounts_sum' => function ($query) {
+                if (now()->month >= 8) {  // August or later
+                    $startDate = now()->startOfYear()->addMonths(7);
+                    $endDate = now()->startOfYear()->addYear()->addMonths(6)->endOfMonth();
+                } else {
+                    $startDate = now()->subYear()->startOfYear()->addMonths(7);
+                    $endDate = now()->startOfYear()->addMonths(6)->endOfMonth();
+                }
+
+                $query->whereBetween('payment_date', [$startDate, $endDate])->where('payment_type', 2);
+            }], 'nominal_amount')->withSum([
+            'payments as yearly_individual_discounts_sum' => function ($query) {
+                if (now()->month >= 8) {  // August or later
+                    $startDate = now()->startOfYear()->addMonths(7);
+                    $endDate = now()->startOfYear()->addYear()->addMonths(6)->endOfMonth();
+                } else {
+                    $startDate = now()->subYear()->startOfYear()->addMonths(7);
+                    $endDate = now()->startOfYear()->addMonths(6)->endOfMonth();
+                }
+
+                $query->whereBetween('payment_date', [$startDate, $endDate])->where('payment_type', 3);
             }], 'nominal_amount')->withSum([
             'monthly_fees as first_half_fee' => function ($query){
                 if (now()->month >= 8) {
@@ -184,8 +217,9 @@ class StudentService
         $students = $query->paginate($perPage);
 
         $students->each(function ($student) {
-            $student->yearly_fee = $student->first_half_fee + $student->second_half_fee;;
-            $yearly_payment_sum = $student->yearly_payments_sum ?? 0;
+            $student->yearly_fee = $student->first_half_fee + $student->second_half_fee;
+            $total_discounts = $student->yearly_5p_discounts_sum + $student->yearly_10p_discounts_sum + $student->yearly_individual_discounts_sum;
+            $yearly_payment_sum = $student->yearly_payments_sum + $total_discounts ?? 0;
 
             $student->debt = max($student->last_year_balance - $yearly_payment_sum, 0);
 
@@ -205,28 +239,37 @@ class StudentService
     public function syncStudentFees($student)
     {
         if (!$student->contract_start_date || !$student->contract_end_date) {
-            return ;
+            return;
         }
+
         $startDate = Carbon::parse($student->contract_start_date);
         $endDate = Carbon::parse($student->contract_end_date);
+
+        $data = [];
 
         while ($startDate <= $endDate) {
             if ($startDate->month == 7 || $startDate->month == 8) {
                 $startDate->addMonth();
                 continue;
             }
+
             $currentYear = $startDate->year;
             $nextYear = $startDate->month >= 9 ? $currentYear + 1 : $currentYear;
             $schoolYear = $startDate->month >= 9 ? "$currentYear-$nextYear" : ($currentYear - 1) . "-$currentYear";
 
-            MonthlyFee::updateOrCreate(
-                [
-                    'student_id' => $student->id,
-                    'month' => $startDate->startOfMonth(),
-                    'school_year' => $schoolYear,
-                ],
-            );
+            $data[] = [
+                'student_id' => $student->id,
+                'month' => $startDate->copy()->startOfMonth()->toDateString(),
+                'school_year' => $schoolYear,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ];
+
             $startDate->addMonth();
+        }
+
+        if (!empty($data)) {
+            MonthlyFee::upsert($data, ['student_id', 'month'], ['school_year', 'updated_at']);
         }
     }
 }

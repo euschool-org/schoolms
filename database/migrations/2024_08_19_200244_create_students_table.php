@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('name',191);
             $table->string('private_number',45)->nullable();
             $table->integer('grade')->nullable();
+            $table->integer('current_grade')->nullable();
             $table->string('group',45)->nullable();
             $table->string('sector',45)->nullable();
             $table->string('parent_name',191)->nullable();

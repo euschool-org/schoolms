@@ -7,14 +7,6 @@
         @csrf
         @method('PUT')
 
-        <div class="col-span-1">
-            <x-text-input-label name="yearly_payment" label="Yearly Payment" value="{{ $student->yearly_payment }}" />
-        </div>
-
-        <div class="col-span-1">
-            <x-text-input-label name="monthly_payment" label="Monthly Payment" value="{{ $student->monthly_payment }}" />
-        </div>
-
         <div class="col-span-1 mt-1">
             <x-select-dropdown :options="['EUR', 'USD', 'GEL']" label="Currency" name="currency" value="{{$student->currency->code}}" />
             @error('currency')
@@ -43,9 +35,9 @@
 
         <div class="col-span-1">
             <div class="flex items-center">
-                <label for="new_member_discount" class="text-sm font-medium text-gray-700">@lang('New Member Discount')</label>
+                <label for="new_student_discount" class="text-sm font-medium text-gray-700">@lang('New Student Discount')</label>
                 <div class="ml-3 relative">
-                    <input type="checkbox" id="new_member_discount" name="new_member_discount" value="1" @checked($student->new_member_discount) class="sr-only peer" />
+                    <input type="checkbox" id="new_student_discount" name="new_student_discount" value="1" @checked($student->new_student_discount) class="sr-only peer" />
                     <div class="w-11 h-6 bg-gray-200 rounded-full peer-checked:bg-blue-600 transition-colors"></div>
                     <div class="absolute left-0.5 top-0.5 w-5 h-5 bg-white border border-gray-300 rounded-full transition-transform peer-checked:translate-x-full"></div>
                 </div>

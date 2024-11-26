@@ -25,6 +25,8 @@ class StorePaymentRequest extends FormRequest
             'payment_date' => 'required|date',
             'payment_amount' => 'required|numeric',
             'payer_name' => 'nullable|string|max:191',
+            'payment_type' => 'nullable|in:0,1,2,3',
+            'description' => 'nullable|string|max:191',
         ];
     }
 }

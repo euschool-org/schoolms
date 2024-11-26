@@ -13,6 +13,26 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule): void
     {
          $schedule->command('app:retrieve-rates')->everyFifteenMinutes();
+         $schedule->command('app:register-discounts')
+            ->everyMinute()
+            ->when(function () {
+                $now = now();
+                return $now->month === 9 && $now->day === 1 && $now->hour === 0;
+            });
+
+        $schedule->command('app:new-member-discount')
+            ->everyMinute()
+            ->when(function () {
+                $now = now();
+                return $now->month === 6 && $now->day === 1 && $now->hour === 0;
+            });
+
+        $schedule->command('app:calculate-balance')
+            ->everyMinute()
+            ->when(function () {
+                $now = now();
+                return $now->month === 7 && $now->day === 1 && $now->hour === 0;
+            });
     }
 
     /**

@@ -37,6 +37,7 @@ class UpdateStudentRequest extends FormRequest
             'income_account' => 'nullable|string|max:10',
             'payment_quantity' => 'nullable|integer|max:10',
             'custom_discount' => 'nullable|numeric|max:100',
+            'new_student_discount' => 'nullable|boolean',
             'parent_name' => 'nullable|string|max:191',
             'parent_mail' => 'nullable|email|max:255',
             'parent_number' => 'nullable|numeric|max:45',

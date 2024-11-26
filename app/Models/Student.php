@@ -14,6 +14,7 @@ class Student extends Model
         'name',
         'private_number',
         'grade',
+        'current_grade',
         'group',
         'sector',
         'parent_name',
@@ -29,6 +30,7 @@ class Student extends Model
         'income_account',
         'payment_quantity',
         'custom_discount',
+        'new_student_discount',
         'email_notifications',
         'mobile_notifications',
         'last_year_balance',
@@ -81,6 +83,22 @@ class Student extends Model
         }
     }
 
+    public function yearlyFee()
+    {
+        $schoolYear = now()->month > 6
+            ? now()->year . '-' . (now()->year + 1)
+            : (now()->year - 1) . '-' . now()->year;
+
+        // Dynamically load the sum of the fees for the specified school year
+        $this->loadSum([
+            'monthly_fees as year_fee' => function ($query) use ($schoolYear) {
+                $query->where('school_year', $schoolYear);
+            }
+        ], 'fee');
+
+        return $this->year_fee;
+    }
+
     public function getGradeLabelAttribute()
     {
         if (!$this->grade || !$this->contract_start_date) {
@@ -91,8 +109,8 @@ class Student extends Model
         $now = Carbon::now();
 
         // Adjust the year if the month is after August (i.e., the school year system)
-        $adjustedNowYear = $now->month >= 8 ? $now->year + 1 : $now->year;
-        $adjustedStartYear = $start->month >= 8 ? $start->year + 1 : $start->year;
+        $adjustedNowYear = $now->month >= 7 ? $now->year + 1 : $now->year;
+        $adjustedStartYear = $start->month >= 7 ? $start->year + 1 : $start->year;
 
         $calculatedGrade = ($adjustedNowYear - $adjustedStartYear) + $this->grade;
         if ($start > $now) {

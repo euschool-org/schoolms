@@ -17,11 +17,24 @@ class Payment extends Model
         'payer_name',
         'currency_rate',
         'nominal_amount',
-        'discount'
+        'percentage',
+        'payment_type',
+        'description',
     ];
 
     public function student()
     {
         return $this->belongsTo(Student::class);
     }
+
+    public function getPaymentTypeLabelAttribute()
+    {
+        return match ($this->payment_type) {
+            0 => 'გადახდა',
+            1 => '5% ფასდაკლება',
+            2 => '10% ფასდაკლება',
+            3 => 'ინდივიდუალური ფასდაკლება',
+        };
+    }
+
 }

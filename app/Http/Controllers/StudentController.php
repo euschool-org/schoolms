@@ -15,6 +15,7 @@ use App\Services\AttachmentService;
 use App\Services\StudentService;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
 
 class StudentController extends Controller
@@ -39,7 +40,10 @@ class StudentController extends Controller
         'debt',
         'first_half',
         'second_half',
-        'yearly_payments_sum'
+        'yearly_payments_sum',
+        'yearly_5p_discounts_sum',
+        'yearly_10p_discounts_sum',
+        'yearly_individual_discounts_sum',
     ];
     public $attachmentService;
 
@@ -168,11 +172,15 @@ class StudentController extends Controller
 
     public function updateFees(UpdateFeesRequest $request)
     {
-        foreach ($request->validated()['fees'] as $feeData) {
-            // Update the fee record
-            MonthlyFee::where('id', $feeData['id'])
-                ->update(['fee' => $feeData['fee']]);
-        }
+        $fees = collect($request->validated()['fees'])
+            ->mapWithKeys(fn($feeData) => [$feeData['id'] => $feeData['fee']]);
+
+        MonthlyFee::whereIn('id', $fees->keys())
+            ->get()
+            ->each(function ($fee) use ($fees) {
+                $fee->fee = $fees[$fee->id];
+                $fee->save();
+            });
 
         return redirect()->back()->with('success', __('Fees updated successfully.'));
     }
