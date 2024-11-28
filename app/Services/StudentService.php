@@ -12,71 +12,31 @@ class StudentService
     public function getStudents($request)
     {
         $data = [];
+        $startDatePayments = now()->setMonth(7)->startOfMonth()->subYears(now()->month <= 6 ? 1 : 0);
+        $endDatePayments = now()->setMonth(6)->endOfMonth()->addYears(now()->month > 6 ? 1 : 0);
         $query = Student::withSum([
-            'payments as yearly_payments_sum' => function ($query) {
-                if (now()->month >= 8) {  // August or later
-                    $startDate = now()->startOfYear()->addMonths(7);
-                    $endDate = now()->startOfYear()->addYear()->addMonths(6)->endOfMonth();
-                } else {
-                    $startDate = now()->subYear()->startOfYear()->addMonths(7);
-                    $endDate = now()->startOfYear()->addMonths(6)->endOfMonth();
-                }
-
-                $query->whereBetween('payment_date', [$startDate, $endDate])->where('payment_type', 0);
+            'payments as yearly_payments_sum' => function ($query) use ($startDatePayments, $endDatePayments) {
+                $query->whereBetween('payment_date', [$startDatePayments, $endDatePayments])->where('payment_type', 0);
             }], 'nominal_amount')->withSum([
-            'payments as yearly_5p_discounts_sum' => function ($query) {
-                if (now()->month >= 8) {  // August or later
-                    $startDate = now()->startOfYear()->addMonths(7);
-                    $endDate = now()->startOfYear()->addYear()->addMonths(6)->endOfMonth();
-                } else {
-                    $startDate = now()->subYear()->startOfYear()->addMonths(7);
-                    $endDate = now()->startOfYear()->addMonths(6)->endOfMonth();
-                }
-
-                $query->whereBetween('payment_date', [$startDate, $endDate])->where('payment_type', 1);
+            'payments as yearly_5p_discounts_sum' => function ($query) use ($startDatePayments, $endDatePayments) {
+                $query->whereBetween('payment_date', [$startDatePayments, $endDatePayments])->where('payment_type', 1);
             }], 'nominal_amount')->withSum([
-            'payments as yearly_10p_discounts_sum' => function ($query) {
-                if (now()->month >= 8) {  // August or later
-                    $startDate = now()->startOfYear()->addMonths(7);
-                    $endDate = now()->startOfYear()->addYear()->addMonths(6)->endOfMonth();
-                } else {
-                    $startDate = now()->subYear()->startOfYear()->addMonths(7);
-                    $endDate = now()->startOfYear()->addMonths(6)->endOfMonth();
-                }
-
-                $query->whereBetween('payment_date', [$startDate, $endDate])->where('payment_type', 2);
+            'payments as yearly_10p_discounts_sum' => function ($query) use ($startDatePayments, $endDatePayments) {
+                $query->whereBetween('payment_date', [$startDatePayments, $endDatePayments])->where('payment_type', 2);
             }], 'nominal_amount')->withSum([
-            'payments as yearly_individual_discounts_sum' => function ($query) {
-                if (now()->month >= 8) {  // August or later
-                    $startDate = now()->startOfYear()->addMonths(7);
-                    $endDate = now()->startOfYear()->addYear()->addMonths(6)->endOfMonth();
-                } else {
-                    $startDate = now()->subYear()->startOfYear()->addMonths(7);
-                    $endDate = now()->startOfYear()->addMonths(6)->endOfMonth();
-                }
-
-                $query->whereBetween('payment_date', [$startDate, $endDate])->where('payment_type', 3);
+            'payments as yearly_individual_discounts_sum' => function ($query) use($startDatePayments, $endDatePayments) {
+                $query->whereBetween('payment_date', [$startDatePayments, $endDatePayments])->where('payment_type', 3);
             }], 'nominal_amount')->withSum([
             'monthly_fees as first_half_fee' => function ($query){
-                if (now()->month >= 8) {
-                    $startDate = now()->startOfYear()->addMonths(8);
-                    $endDate = now()->startOfYear()->addYear()->endOfMonth();
-                } else {
-                    $startDate = now()->subYear()->startOfYear()->addMonths(8);
-                    $endDate = now()->startOfYear()->endOfMonth();
-                }
+                $startDate = now()->subYears(now()->month <= 6 ? 1 : 0)->startOfYear()->setMonth(9)->startOfMonth();
+                $endDate = now()->addYears(now()->month > 6 ? 1 : 0)->startOfYear()->endOfMonth();
 
                 $query->whereBetween('month', [$startDate, $endDate]);
             }], 'fee')->withSum(
             [
                 'monthly_fees as second_half_fee' => function ($query){
-                    if (now()->month >= 8) {
-                        $startDate = now()->startOfYear()->addYear()->endOfMonth();
-                        $endDate = now()->startOfYear()->addYear()->addMonths(7);
-                    } else {
-                        $startDate = now()->startOfYear()->endOfMonth();
-                        $endDate = now()->startOfYear()->addMonths(7);
-                    }
+                    $startDate = now()->startOfYear()->addYears(now()->month > 6 ? 1 : 0)->endOfMonth();
+                    $endDate = now()->startOfYear()->addYears(now()->month > 6 ? 1 : 0)->setMonth(6)->endOfMonth();
 
                     $query->whereBetween('month', [$startDate, $endDate]);
                 },
@@ -223,8 +183,8 @@ class StudentService
 
             $student->debt = max($student->last_year_balance - $yearly_payment_sum, 0);
 
-            $yearly_payment_sum -= $student->last_year_balance;
-            $student->first_half = max($student->first_half_fee - $yearly_payment_sum, 0);
+            $yearly_payment_sum = max($yearly_payment_sum - $student->last_year_balance,0);
+            $student->first_half =max($student->first_half_fee - $yearly_payment_sum, 0);
 
             $yearly_payment_sum = max($yearly_payment_sum - $student->first_half_fee,0);
             $student->second_half = $student->second_half_fee - $yearly_payment_sum;

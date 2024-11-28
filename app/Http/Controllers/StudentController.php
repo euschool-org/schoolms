@@ -69,7 +69,9 @@ class StudentController extends Controller
     {
         if ($student) {
             $student->load([
-                'payments',
+                'payments' => function ($query) {
+                    $query->orderBy('payment_date', 'desc');
+                },
                 'attachments.user',
                 'currency',
                 'monthly_fees' => function ($query) {

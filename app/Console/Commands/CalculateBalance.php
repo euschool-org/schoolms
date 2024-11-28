@@ -32,14 +32,14 @@ class CalculateBalance extends Command
             return Command::SUCCESS;
         }
         $students = Student::withSum(['payments as total_payments' => function ($query) {
-            $startDate = now()->subYear()->startOfYear()->addMonths(6);
-            $endDate = now()->startOfYear()->addMonths(5)->endOfMonth();
+            $startDate = now()->subYear()->startOfYear()->setMonth(7)->startOfMonth();
+            $endDate = now()->startOfYear()->setMonth(6)->endOfMonth();
             $query->whereBetween('payment_date', [$startDate, $endDate]);
         }], 'nominal_amount')->get();
 
         foreach ($students as $student) {
             if ($student->balance_change_year != now()->year) {
-                $student->last_year_balance  = $student->last_year_balance + $student->total_payments - $student->yearly_payment;
+                $student->last_year_balance  = $student->yearlyFee() + $student->last_year_balance - $student->total_payments;
                 $student->balance_change_year = now()->year;
                 $student->current_grade = $student->grade_label;
                 $student->save();
