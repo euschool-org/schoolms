@@ -229,7 +229,17 @@ class StudentService
         }
 
         if (!empty($data)) {
+            // Delete existing fees outside the start and end date range
+            MonthlyFee::where('student_id', $student->id)
+                ->whereNotBetween('month', [
+                    Carbon::parse($student->contract_start_date)->startOfMonth()->toDateString(),
+                    Carbon::parse($student->contract_end_date)->endOfMonth()->toDateString()
+                ])
+                ->delete();
+
+            // Upsert the data
             MonthlyFee::upsert($data, ['student_id', 'month'], ['school_year', 'updated_at']);
         }
+
     }
 }

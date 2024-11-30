@@ -46,7 +46,7 @@ class NewMemberDiscount extends Command
             if ($student->apr_may_calc >= $student->year_fee * 0.9) {
                 Payment::create([
                     'student_id' => $student->id,
-                    'payment_date' => now()->toDateTimeString(),
+                    'payment_date' => now()->setMonth(9)->startOfMonth(),
                     'payment_amount' => $student->year_fee * 0.1 * $student->currency->rate_to_gel,
                     'nominal_amount' => $student->year_fee * 0.1,
                     'percentage' => 10,
