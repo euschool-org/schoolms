@@ -1,4 +1,6 @@
 <button
+    type="button"
+    name="{{$item}}"
     @click="selected.includes('{{$item}}') ? selected = selected.filter(item => item !== '{{$item}}') : selected.push('{{$item}}')"
     :class="selected.includes('{{$item}}') ? 'bg-blue-600 text-white' : 'bg-white text-gray-500'"
     class="relative w-full py-3 px-4 border rounded-lg text-center transition flex justify-between items-center">

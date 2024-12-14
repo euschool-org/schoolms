@@ -56,5 +56,6 @@ Route::middleware('auth')->group(function () {
 
 Route::middleware(['auth', 'verified'])->controller(NotificationController::class)->group(function () {
     Route::get('/notifications', 'index')->name('notifications.index');
+    Route::post('/notifications', 'send')->name('notifications.send');
 });
 require __DIR__.'/auth.php';

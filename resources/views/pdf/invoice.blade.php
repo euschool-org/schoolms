@@ -4,7 +4,7 @@
     <title>Invoice PDF</title>
 </head>
 <body>
-<h1>Invoice for {{ $data['name'] }}</h1>
-<p>Amount Due: ${{ $data['amount'] }}</p>
+<h1>Invoice for დავითი</h1>
+<p>Amount Due: 100$</p>
 </body>
 </html>

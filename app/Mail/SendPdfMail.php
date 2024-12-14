@@ -30,7 +30,7 @@ class SendPdfMail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Invoice',
+            subject: $this->data['subject'],
         );
     }
 
@@ -40,7 +40,7 @@ class SendPdfMail extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'emails.invoice',
+            view: 'emails.email-template',
         );
     }
 
@@ -51,6 +51,9 @@ class SendPdfMail extends Mailable
      */
     public function attachments(): array
     {
+        if (!(isset($this->data['attach_invoice']) && $this->data['attach_invoice'])){
+            return [];
+        }
         $pdf = Pdf::loadView('pdf.invoice', ['data' => $this->data]);
 
         return [
