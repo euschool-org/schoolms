@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AttachmentController;
 use App\Http\Controllers\LanguageController;
+use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\StudentController;
@@ -53,4 +54,7 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile/column-preference', [ProfileController::class, 'saveColumnPreferences'])->name('profile.column-preference');
 });
 
+Route::middleware(['auth', 'verified'])->controller(NotificationController::class)->group(function () {
+    Route::get('/notifications', 'index')->name('notifications.index');
+});
 require __DIR__.'/auth.php';

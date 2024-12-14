@@ -1,4 +1,11 @@
 {
+    "Attach Invoice": "ინვოისის მიბმა",
+    "Previous Year Debt": "წინა წლის დავალიანება",
+    "First Semester Debt": "I სემესტრის დავალიანება",
+    "Second Semester Debt": "II სემესტრის დავალიანება",
+    "Monthly Reminder": "ყოველთვიური შეხსენება",
+    "Custom Schedule": "მორგებული გრაფიკი",
+    "Subject": "სათაური",
     "Month" : "თვე",
     "Fee" : "გადასახადი",
     "Total Fee" : "წლიური გადასახადი",

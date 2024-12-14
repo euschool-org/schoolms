@@ -15,12 +15,32 @@
                     </a>
                 </div>
             </div>
-
             <!-- Spacer (Ensures Profile button stays on the right end) -->
-            <div class="flex-grow"></div>
+            <div class="flex items-center">
+                <div>
+                    <a href="{{ route('dashboard') }}" class="{{ request()->routeIs('dashboard') ? 'text-black font-bold' : 'text-gray-600 font-medium text-base' }}">
+                        <span>მთავარი</span>
+                    </a>
+                    @if (request()->routeIs('dashboard'))
+                    <div class="border-b-[3px] border-blue-500 w-18 mt-0.5"></div> <!-- Blue indicator, you can adjust the width -->
+                    @else
+                    <div class="border-b-[3px] border-white w-18 mt-0.5" ></div>
+                    @endif
+                </div>
+                <div class="ml-8">
+                    <a href="{{ route('notifications.index') }}" class="{{ request()->routeIs('notifications.index') ? 'text-black font-bold' : 'text-gray-600 font-medium text-base' }}">
+                        <span>შეტყობინების გაგზავნა</span>
+                    </a>
+                    @if (request()->routeIs('notifications.index'))
+                        <div class="border-b-[3px] border-blue-500 w-18 mt-0.5"></div> <!-- Blue indicator, you can adjust the width -->
+                    @else
+                        <div class="border-b-[3px] border-white w-18 mt-0.5"></div>
+                    @endif
+                </div>
+            </div>
 
             <!-- User Name and Dropdown (Right End) -->
-            <div class="flex items-center">
+            <div class="flex items-center min-w-56 justify-end">
                 <div class="hidden sm:flex sm:items-center">
                     <x-dropdown align="right" width="48">
                         <x-slot name="trigger">
