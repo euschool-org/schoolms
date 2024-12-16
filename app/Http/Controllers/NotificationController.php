@@ -3,10 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\SendNotificationRequest;
+use App\Jobs\SendNotificationJob;
 use App\Mail\SendPdfMail;
 use App\Models\Student;
 use App\Services\NotificationService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Queue;
 
@@ -26,30 +28,35 @@ class NotificationController extends Controller
     {
         $data = $request->validated();
 
+        $selectedItems = json_decode($request->input('selected_items'), true);
+        if (json_last_error() !== JSON_ERROR_NONE) {
+            throw new \InvalidArgumentException('Invalid JSON in selected_items');
+        }
+
         $students = $this->notificationService->getStudentsToNotify(
-            json_decode($request->input('selected_items'), true),
+            $selectedItems,
             $request->input('email_notification'),
             $request->input('sms_notification')
         );
-        // Chunk the students into groups of 250
-        $chunks = collect($students)->chunk(250);
 
+        // Extract only primitive data or simple objects that can be serialized
+        $notificationData = [
+            'subject' => $data['subject'] ?? null,
+            'body' => $data['body'] ?? null,
+            'attach_invoice' => $data['attach_invoice'] ?? null,
+            // Add other serializable data you need
+        ];
+
+        $emailEnabled = $request->input('email_notification');
+        $smsEnabled = $request->input('sms_notification');
+        $chunks = collect($students)->chunk(250);
         foreach ($chunks as $day => $chunk) {
-            // Schedule each chunk with a delay of $day days
             Queue::later(
                 now()->addDays($day),
-                function () use ($chunk, $data, $request) {
-                    foreach ($chunk as $student) {
-                        if ($request->input('email_notification') && $student['parent_mail']) {
-                            Mail::to($student['parent_mail'])->send(new SendPdfMail($data));
-                        }
-                        if ($request->input('sms_notification') && $student['parent_number']) {
-                            // Send SMS to number
-                        }
-                    }
-                }
+                new SendNotificationJob($chunk, $notificationData, $emailEnabled, $smsEnabled)
             );
         }
+        return redirect()->back()->with('success', 'All notifications have been sent.');
     }
 
 }
