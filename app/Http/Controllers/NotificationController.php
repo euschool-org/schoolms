@@ -8,6 +8,7 @@ use App\Models\Student;
 use App\Services\NotificationService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Queue;
 
 class NotificationController extends Controller
 {
@@ -26,21 +27,29 @@ class NotificationController extends Controller
         $data = $request->validated();
 
         $students = $this->notificationService->getStudentsToNotify(
-            json_decode($request->input('selected_items'),true),
+            json_decode($request->input('selected_items'), true),
             $request->input('email_notification'),
             $request->input('sms_notification')
         );
-        dd($students);
-        foreach ($students as $student) {
-            if ($request->input('email_notification') && $student->parent_mail) {
-                Mail::to($student->parent_mail)->send(new SendPdfMail($data));
-            }
-            if ($request->input('sms_notification') && $student->parent_number) {
-                //send sms to number
-            }
-        }
+        // Chunk the students into groups of 250
+        $chunks = collect($students)->chunk(250);
 
-        return redirect()->back()->with('success', 'Notification sent');
+        foreach ($chunks as $day => $chunk) {
+            // Schedule each chunk with a delay of $day days
+            Queue::later(
+                now()->addDays($day),
+                function () use ($chunk, $data, $request) {
+                    foreach ($chunk as $student) {
+                        if ($request->input('email_notification') && $student['parent_mail']) {
+                            Mail::to($student['parent_mail'])->send(new SendPdfMail($data));
+                        }
+                        if ($request->input('sms_notification') && $student['parent_number']) {
+                            // Send SMS to number
+                        }
+                    }
+                }
+            );
+        }
     }
 
 }

@@ -10,62 +10,55 @@ class NotificationService
 {
     public function getStudentsToNotify($selectedGroups, $sendEmail = false, $sendSms = false)
     {
-        // Start the query
-        $query = Student::where('email_notifications', 1);
+        // Define date ranges for payments and fees
         $startDatePayments = now()->setMonth(7)->startOfMonth()->subYears(now()->month <= 6 ? 1 : 0);
         $endDatePayments = now()->setMonth(6)->endOfMonth()->addYears(now()->month > 6 ? 1 : 0);
 
+        $firstHalfFeeStart = now()->subYears(now()->month <= 6 ? 1 : 0)->startOfYear()->setMonth(9)->startOfMonth();
+        $firstHalfFeeEnd = now()->addYears(now()->month > 6 ? 1 : 0)->startOfYear()->endOfMonth();
 
-        if ($selectedGroups) {
-            $query->withSum([
-                'payments as yearly_payments_sum' => function ($query) use ($startDatePayments, $endDatePayments) {
-                    $query->whereBetween('payment_date', [$startDatePayments, $endDatePayments]);
-                }], 'nominal_amount')
-                ->withSum(['monthly_fees as first_half_fee' => function ($query){
-                        $startDate = now()->subYears(now()->month <= 6 ? 1 : 0)->startOfYear()->setMonth(9)->startOfMonth();
-                        $endDate = now()->addYears(now()->month > 6 ? 1 : 0)->startOfYear()->endOfMonth();
+        $secondHalfFeeStart = now()->startOfYear()->addYears(now()->month > 6 ? 1 : 0)->endOfMonth();
+        $secondHalfFeeEnd = now()->startOfYear()->addYears(now()->month > 6 ? 1 : 0)->setMonth(6)->endOfMonth();
 
-                        $query->whereBetween('month', [$startDate, $endDate]);
-                    }], 'fee')
-                ->withSum(['monthly_fees as second_half_fee' => function ($query){
-                    $startDate = now()->startOfYear()->addYears(now()->month > 6 ? 1 : 0)->endOfMonth();
-                    $endDate = now()->startOfYear()->addYears(now()->month > 6 ? 1 : 0)->setMonth(6)->endOfMonth();
-                    $query->whereBetween('month', [$startDate, $endDate]);
-                        },
-                ],'fee');
+        // Start the query with the mandatory filter
+        $query = Student::query();
+
+        // Add sums for payments and fees
+        $query->withSum(['payments as yearly_payments_sum' => function ($query) use ($startDatePayments, $endDatePayments) {
+            $query->whereBetween('payment_date', [$startDatePayments, $endDatePayments]);
+        }], 'nominal_amount')
+            ->withSum(['monthly_fees as first_half_fee' => function ($query) use ($firstHalfFeeStart, $firstHalfFeeEnd) {
+                $query->whereBetween('month', [$firstHalfFeeStart, $firstHalfFeeEnd]);
+            }], 'fee')
+            ->withSum(['monthly_fees as second_half_fee' => function ($query) use ($secondHalfFeeStart, $secondHalfFeeEnd) {
+                $query->whereBetween('month', [$secondHalfFeeStart, $secondHalfFeeEnd]);
+            }], 'fee');
+
+        $query->where('email_notifications', 1)->having(function ($q) use ($selectedGroups) {
             if (in_array('prev_year', $selectedGroups)) {
-                $query->havingRaw('(last_year_balance - yearly_payments_sum) > 0');
+                $q->havingRaw('(last_year_balance - yearly_payments_sum) > 0');
             }
             if (in_array('semester_1', $selectedGroups)) {
-                $query->orHavingRaw('(last_year_balance + first_half_fee - yearly_payments_sum) > 0');
+                $q->orHavingRaw('(last_year_balance + first_half_fee - yearly_payments_sum) > 0');
             }
             if (in_array('semester_2', $selectedGroups)) {
-                $query->orHavingRaw('(last_year_balance + first_half_fee + second_half_fee - yearly_payments_sum) > 0');
+                $q->orHavingRaw('(last_year_balance + first_half_fee + second_half_fee - yearly_payments_sum) > 0');
             }
             if (in_array('monthly_reminder', $selectedGroups)) {
-                $query->orWhere('payment_quantity',10);
+                $q->orHavingRaw('payment_quantity = 10');
             }
-        }
+        });
 
-        // If we need to send email, filter students who have an email
-        if ($sendEmail && !$sendSms) {
-            $query->whereNotNull('parent_mail'); // Only students with email
-        }
+        $query->where(function ($q) use ($sendEmail, $sendSms) {
+            if ($sendEmail) {
+                $q->whereNotNull('parent_mail');
+            }
+            if ($sendSms) {
+                $q->orWhereNotNull('parent_number');
+            }
+        });
 
-        // If we need to send SMS, filter students who have a phone number
-        if (!$sendEmail && $sendSms) {
-            dd(1);
-            $query->whereNotNull('parent_number'); // Only students with a phone number
-        }
-
-        // If we need to send both email and SMS, filter students who have both
-        if ($sendEmail && $sendSms) {
-            dd(1);
-            $query->whereNotNull('email')
-                ->orWhereNotNull('phone_number'); // Students who have both email and phone number
-        }
-
-        // Execute the query and return the result
+        // Execute and return the result
         return $query->get();
     }
 

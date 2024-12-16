@@ -23,7 +23,7 @@
         </div>
 
         <div class="col-span-1">
-            <x-select-dropdown :options="['monthly', 'yearly', 'quarterly']" label="Payment Type" name="payment_quantity" value="{{$student->payment_quantity}}" />
+            <x-select-dropdown :options="[1,2,3,4,5,6,7,8,9,10]" label="Payment Type" name="payment_quantity" value="{{$student->payment_quantity}}" />
             @error('payment_quantity')
             <span class="text-red-500 text-sm">{{ $message }}</span>
             @enderror
@@ -33,7 +33,6 @@
         <div class="col-span-1">
             <x-checkbox-switch name="new_student_discount" label="New Student Discount" value="{{$student->new_student_discount}}"/>
         </div>
-
 
         <div class="flex justify-end mt-4 col-span-5">
             <!-- Cancel/Reset button with X icon -->
