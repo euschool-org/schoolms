@@ -7,7 +7,7 @@
         x-model="inputValue"
         x-on:input="inputValue = $event.target.value"
         value="{{ $value }}"
-        class="peer w-full border border-gray-300 rounded-lg mt-1 px-3 pb-1 pt-3 text-sm focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-transparent transition"
+        class="peer w-full border border-gray-300 rounded-lg px-3 pb-1 pt-3 text-sm focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-transparent transition"
     >
     <label
         for="{{ $name }}"

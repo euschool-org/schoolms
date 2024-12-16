@@ -23,7 +23,6 @@ return new class extends Migration
             $table->string('parent_mail',191)->nullable();
             $table->string('parent_number', 45)->nullable();
             $table->boolean('email_notifications')->nullable();
-            $table->boolean('mobile_notifications')->nullable();
             $table->text('additional_information')->nullable();
             $table->date('contract_start_date')->nullable();
             $table->date('contract_end_date')->nullable();

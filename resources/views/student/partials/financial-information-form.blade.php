@@ -1,4 +1,4 @@
-    <div class="text-sm font-bold text-gray-600 mb-2">
+    <div class="text-sm font-bold text-gray-600 mb-4">
         <span >
             @lang("Financial Information")
         </span>
@@ -7,7 +7,7 @@
         @csrf
         @method('PUT')
 
-        <div class="col-span-1 mt-1">
+        <div class="col-span-1">
             <x-select-dropdown :options="['EUR', 'USD', 'GEL']" label="Currency" name="currency" value="{{$student->currency->code}}" />
             @error('currency')
             <span class="text-red-500 text-sm">{{ $message }}</span>
@@ -22,26 +22,16 @@
             <x-text-input-label name="income_account" label="Income Account" value="{{ $student->income_account }}" />
         </div>
 
-        <div class="col-span-1 mt-1">
+        <div class="col-span-1">
             <x-select-dropdown :options="['monthly', 'yearly', 'quarterly']" label="Payment Type" name="payment_quantity" value="{{$student->payment_quantity}}" />
             @error('payment_quantity')
             <span class="text-red-500 text-sm">{{ $message }}</span>
             @enderror
         </div>
-
         <div class="col-span-1">
-            <x-text-input-label name="custom_discount" label="Custom Discount" value="{{ $student->custom_discount }}" />
         </div>
-
         <div class="col-span-1">
-            <div class="flex items-center">
-                <label for="new_student_discount" class="text-sm font-medium text-gray-700">@lang('New Student Discount')</label>
-                <div class="ml-3 relative">
-                    <input type="checkbox" id="new_student_discount" name="new_student_discount" value="1" @checked($student->new_student_discount) class="sr-only peer" />
-                    <div class="w-11 h-6 bg-gray-200 rounded-full peer-checked:bg-blue-600 transition-colors"></div>
-                    <div class="absolute left-0.5 top-0.5 w-5 h-5 bg-white border border-gray-300 rounded-full transition-transform peer-checked:translate-x-full"></div>
-                </div>
-            </div>
+            <x-checkbox-switch name="new_student_discount" label="New Student Discount" value="{{$student->new_student_discount}}"/>
         </div>
 
 

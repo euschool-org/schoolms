@@ -30,7 +30,7 @@ class NotificationController extends Controller
             $request->input('email_notification'),
             $request->input('sms_notification')
         );
-
+        dd($students);
         foreach ($students as $student) {
             if ($request->input('email_notification') && $student->parent_mail) {
                 Mail::to($student->parent_mail)->send(new SendPdfMail($data));

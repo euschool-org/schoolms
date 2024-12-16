@@ -10,13 +10,15 @@ class CheckboxSwitch extends Component
 {
     public $name;
     public $label;
+    public $value;
     /**
      * Create a new component instance.
      */
-    public function __construct($name, $label)
+    public function __construct($name, $label, $value = null)
     {
         $this->name = $name;
         $this->label = $label;
+        $this->value = $value;
     }
 
     /**

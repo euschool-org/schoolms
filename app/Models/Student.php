@@ -23,8 +23,6 @@ class Student extends Model
         'additional_information',
         'contract_start_date',
         'contract_end_date',
-        'yearly_payment',
-        'monthly_payment',
         'currency_id',
         'parent_account',
         'income_account',
@@ -32,7 +30,6 @@ class Student extends Model
         'custom_discount',
         'new_student_discount',
         'email_notifications',
-        'mobile_notifications',
         'last_year_balance',
         'balance_change_year'
     ];

@@ -11,7 +11,7 @@
                     <h3 class="text-gray-600 font-semibold mb-4">მონიშნე კატეგორია</h3>
 
                     <!-- Buttons with Checkbox Functionality -->
-                    <div x-data="{ selected: [] }" class="grid grid-cols-3 gap-4">
+                    <div x-data="{ selected: [] }" class="grid grid-cols-4 gap-4">
                         <!-- Button 1 -->
                         <x-checkbox-blue-button item="prev_year" label="Previous Year Debt"/>
 
@@ -24,8 +24,6 @@
                         <!-- Button 4 -->
                         <x-checkbox-blue-button item="monthly_reminder" label="Monthly Reminder"/>
 
-                        <!-- Button 5 -->
-                        <x-checkbox-blue-button item="custom_schedule" label="Custom Schedule"/>
                         <input type="hidden" name="selected_items" :value="JSON.stringify(selected)">
                     </div>
                 </div>

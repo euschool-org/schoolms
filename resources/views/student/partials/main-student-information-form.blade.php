@@ -32,8 +32,6 @@
         <div class="col-span-1">
             <x-text-input-label name="private_number" label="Private Number" value="{{ $student->private_number }}" />
         </div>
-        <!-- Leave 2 columns empty -->
-        <div class="col-span-3"></div>
 
         <!-- Second Line: Grade, Group, Sector, Pupil Status (4 columns, 1 empty) -->
         <div class="col-span-1">
@@ -62,6 +60,8 @@
         <div class="col-span-1">
             <x-text-input-label name="contract_end_date" label="Contract End Date" value="{{ $student->contract_end_date }}" type="date" />
         </div>
+        <!-- Leave 2 columns empty -->
+        <div class="col-span-3"></div>
 
         <!-- Third Line: Additional Information (Full Width) -->
         <div class="col-span-5">
