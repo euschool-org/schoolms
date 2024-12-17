@@ -37,4 +37,24 @@ class AttachmentController extends Controller
         }
     }
 
+    public function forceDownload($filename)
+    {
+        $filePath = 'attachments/' . $filename;
+
+        if (Storage::disk('spaces')->exists($filePath)) {
+            // Fetch the file from Spaces
+            $fileStream = Storage::disk('spaces')->readStream($filePath);
+
+            return response()->stream(function () use ($fileStream) {
+                fpassthru($fileStream);
+            }, 200, [
+                'Content-Type' => Storage::disk('spaces')->mimeType($filePath),
+                'Content-Disposition' => 'attachment; filename="' . basename($filePath) . '"',
+            ]);
+        }
+
+        abort(404, 'File not found');
+    }
+
+
 }

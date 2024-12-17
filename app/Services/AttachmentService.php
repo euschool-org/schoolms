@@ -11,9 +11,10 @@ class AttachmentService
     {
         $file = $request->file('attachment');
         $filename = $request->filename . '-' . $studentId . '-' . now()->timestamp . '.' . $file->getClientOriginalExtension();
-        $file->storeAs('attachments', $filename, 'public');
-        return $filename;
 
+        $filePath = 'attachments/' . $filename;
+        Storage::disk('spaces')->put($filePath, file_get_contents($file), 'public');
+        return $filename;
     }
 
     public function store($id, $filename = null)
@@ -34,9 +35,11 @@ class AttachmentService
 
     public function deleteAttachment($filename)
     {
-        $path = 'public/attachments/' . $filename;
-        if (Storage::exists($path)) {
-            Storage::delete($path);
+        $filePath = 'attachments/' . $filename;
+
+        // Check if the file exists and delete it
+        if (Storage::disk('spaces')->exists($filePath)) {
+            Storage::disk('spaces')->delete($filePath);
         }
     }
 }

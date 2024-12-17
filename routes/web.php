@@ -44,6 +44,7 @@ Route::middleware(['auth', 'verified'])->controller(PaymentController::class)->g
 Route::middleware(['auth', 'verified'])->controller(AttachmentController::class)->group(function () {
     Route::post('/attachment/{student}', 'store')->name('attachment.store');
     Route::delete('/attachment/{attachment}', 'destroy')->name('attachment.destroy');
+    Route::get('/attachment/download/{filename}','forceDownload')->name('attachment.download');
 });
 Route::post('/language-switch', [LanguageController::class, 'switchLanguage'])->name('language.switch');
 

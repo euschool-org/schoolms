@@ -22,7 +22,6 @@
                 <div class="w-full p-6 bg-white shadow sm:rounded-lg mt-4">
                     @include('student.partials.payment-information-form')
                 </div>
-                <!-- Attachment Information -->
                 <div class="w-full p-6 bg-white shadow sm:rounded-lg mt-4">
                     @include('student.partials.attachment-information-form')
                 </div>
