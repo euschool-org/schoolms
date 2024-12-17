@@ -8,6 +8,7 @@ use App\Mail\SendPdfMail;
 use App\Models\Student;
 use App\Services\NotificationService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Queue;
@@ -39,24 +40,66 @@ class NotificationController extends Controller
             $request->input('sms_notification')
         );
 
-        // Extract only primitive data or simple objects that can be serialized
         $notificationData = [
             'subject' => $data['subject'] ?? null,
             'body' => $data['body'] ?? null,
             'attach_invoice' => $data['attach_invoice'] ?? null,
-            // Add other serializable data you need
         ];
 
         $emailEnabled = $request->input('email_notification');
         $smsEnabled = $request->input('sms_notification');
-        $chunks = collect($students)->chunk(250);
-        foreach ($chunks as $day => $chunk) {
+
+        $chunkSize = 250; // Daily email limit
+        $chunks = collect($students)->chunk($chunkSize);
+
+        $currentDay = now()->startOfDay();
+
+        foreach ($chunks as $chunk) {
+            $quota = $this->getRemainingQuotaForDay($currentDay);
+
+            if ($quota <= 0) {
+                // Move to the next day if quota is full
+                $currentDay = $currentDay->addDay();
+                $quota = $this->getRemainingQuotaForDay($currentDay);
+            }
+
+            // Slice the chunk if it exceeds the remaining quota
+            $emailsToSend = $chunk->take($quota);
+            $remainingEmails = $chunk->slice($quota);
+
+            // Schedule emails for the current day
             Queue::later(
-                now()->addDays($day),
-                new SendNotificationJob($chunk, $notificationData, $emailEnabled, $smsEnabled)
+                $currentDay,
+                new SendNotificationJob($emailsToSend, $notificationData, $emailEnabled, $smsEnabled)
             );
+
+            // Update the quota table
+            $this->incrementQuotaForDay($currentDay, $emailsToSend->count());
+
+            // Add remaining emails back to the collection for future days
+            if ($remainingEmails->isNotEmpty()) {
+                $chunks->prepend($remainingEmails);
+            }
         }
-        return redirect()->back()->with('success', 'All notifications have been sent.');
+
+        return redirect()->back()->with('success', 'All notifications have been scheduled.');
+    }
+
+    private function getRemainingQuotaForDay($day)
+    {
+        // Get the number of scheduled emails for the given day
+        $quota = \DB::table('daily_email_quota')->where('date', $day->toDateString())->value('emails_scheduled');
+
+        return 250 - ($quota ?? 0); // Return remaining quota
+    }
+
+    private function incrementQuotaForDay($day, $count)
+    {
+        // Increment the scheduled emails for the given day
+        DB::table('daily_email_quota')->updateOrInsert(
+            ['date' => $day->toDateString()],
+            ['emails_scheduled' => \DB::raw("emails_scheduled + $count"), 'updated_at' => now()]
+        );
     }
 
 }
