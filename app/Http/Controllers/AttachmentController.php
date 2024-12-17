@@ -29,7 +29,6 @@ class AttachmentController extends Controller
 
     public function destroy(Attachment $attachment)
     {
-        dd($attachment);
         $this->attachmentService->deleteAttachment($attachment->filename);
         if ($attachment->delete()) {
             return redirect()->back()->with('success', 'Attachment successfully deleted');

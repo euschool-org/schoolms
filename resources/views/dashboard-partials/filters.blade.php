@@ -3,15 +3,21 @@
     <div class="flex justify-between items-center mb-2">
         <!-- Header Title -->
         <div class="text-lg font-semibold">
-            მოსწავლეების ცხრილი
+            @lang('Student Table')
         </div>
 
         <!-- Buttons on the right side -->
         <div class="flex space-x-4">
             <!-- Add Student Button -->
             <a href="{{ route('student.create') }}" class="flex items-center space-x-1 text-white bg-blue-500 border border-blue-500 rounded-xl px-4 py-2 hover:bg-blue-600">
-                <span>👤</span> <!-- Replace with an actual icon if available -->
-                <span>დამატე მოსწავლე</span>
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                     stroke-width="1.5" stroke="currentColor"
+                     class="w-6 h-6 inline-block align-middle">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                          d="M18 7.5v3m0 0v3m0-3h3m-3 0h-3m-2.25-4.125a3.375 3.375 0 1 1-6.75 0 3.375 3.375 0 0 1 6.75 0ZM3 19.235v-.11a6.375 6.375 0 0 1 12.75 0v.109A12.318 12.318 0 0 1 9.374 21c-2.331 0-4.512-.645-6.374-1.766Z" />
+                </svg>
+
+                <span>@lang("Add Student")</span>
             </a>
         </div>
     </div>
@@ -26,8 +32,8 @@
     <div class="mt-2 flex justify-between items-center text-sm text-gray-600">
         <!-- Filter label -->
         <div>
-            <span class="font-semibold">ფილტრი</span>
-            <span class="text-gray-400">({{$total_students}} შედეგი)</span>
+            <span class="font-semibold">@lang("Filter")</span>
+            <span class="text-gray-400">({{$total_students}} @lang("Result")</span>
         </div>
 
         <!-- Optional collapse arrow (just a placeholder for now) -->
@@ -47,25 +53,14 @@
         </span>
     </div>
     <div class="grid grid-cols-7 gap-4 mb-4 ">
-        <div>
-            <input id="name" name="name" type="text" placeholder="@lang('Name')" value="{{ request('name') }}"
-                   class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm">
-        </div>
-        <div>
-            <input id="private_number" name="private_number" type="text" placeholder="@lang('Private Number')" value="{{ request('private_number') }}"
-                   class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm">
-        </div>
-
+        <input id="name" name="name" type="text" placeholder="@lang('Name')" value="{{ request('name') }}"
+               class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm">
+        <input id="private_number" name="private_number" type="text" placeholder="@lang('Private Number')" value="{{ request('private_number') }}"
+               class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm">
         <x-select-dropdown :options="[1,2,3,4,5,6,7,8,9,10,11,12,'ქართული','ინგლისური']" label="აირჩიეთ კლასი" name="grade"/>
         <x-select-dropdown :options="['ა', 'ბ', 'გ', 'დ', 'ე', 'ვ', 'ზ', 'თ', 'ი', 'კ', 'A', 'B', 'C', 'D', 'E','F','G','H','I','J']" label="აირჩიეთ ჯგუფი" name="group" />
         <x-select-dropdown :options="['ქართული', 'IB', 'ASAS', 'ბაღი']" label="აირჩიეთ სექტორი" name="sector" />
-
-        <!-- 7. Status (Select for active (1), past (-1), future (0)) -->
-        <x-select-dropdown :options="[1,2,3,4,5,6,7,8,9,10,11,12,'ქართული','ინგლისური']" label="აირჩიეთ კლასი" name="grade"/>
-
-        <div>
-            <x-select-dropdown :options="['active', 'past', 'future']" label="მოსწავლის სტატუსი" name="pupil_status" />
-        </div>
+        <x-select-dropdown :options="['active', 'past', 'future']" label="მოსწავლის სტატუსი" name="pupil_status" />
     </div>
 
     <div class="mt-3">
@@ -189,7 +184,7 @@
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 mr-2">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
                 </svg>
-                გაასუფთავე
+                @lang("Clear")
             </a>
 
             <!-- Filter Button -->
@@ -197,7 +192,7 @@
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 mr-2">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M3 4a1 1 0 0 1 1-1h16a1 1 0 0 1 1 1v2a1 1 0 0 1-.293.707l-5.414 5.414a1 1 0 0 0-.293.707v4.172a1 1 0 0 1-.293.707l-2 2A1 1 0 0 1 11 21v-8.172a1 1 0 0 0-.293-.707L5.293 6.707A1 1 0 0 1 5 6V4z" />
                 </svg>
-                გაფილტრე
+                @lang("Search")
             </button>
         </div>
     </div>

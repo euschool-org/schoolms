@@ -23,7 +23,7 @@
                     <td class="min-h-5 border border-gray-300 py-2 text-center">{{ $loop->iteration }}</td>
                     <td class="border border-gray-300 px-6 py-1 text-center truncate">
                         <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full {{ $statusColor }}">
-                            {{ $student->pupil_status_label }}
+                            {{ __($student->pupil_status_label) }}
                         </span>
                     </td>
                     <td class="border border-gray-300 px-6 py-1 text-center truncate">
