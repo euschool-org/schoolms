@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Models\Attachment;
 use App\Models\Student;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 
 class NotificationService
@@ -73,16 +74,10 @@ class NotificationService
         ]);
 
         // Return the response or its status
-        if ($response->successful()) {
-            return $response->body();
+        if (!$response->successful()) {
+            Log::error($response);
         }
 
-        // Optionally handle errors
-        return [
-            'error' => true,
-            'status' => $response->status(),
-            'body' => $response->body(),
-        ];
     }
 
 }
