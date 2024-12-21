@@ -72,7 +72,6 @@ class NotificationService
             'destination' => $destination,
             'content' => $content,
         ]);
-
         // Return the response or its status
         if (!$response->successful()) {
             Log::error($response);

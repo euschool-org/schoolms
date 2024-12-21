@@ -12,7 +12,7 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule): void
     {
-         $schedule->command('app:retrieve-rates')->everyFifteenMinutes();
+         $schedule->command('app:retrieve-rates')->everyFourHours();
          $schedule->command('app:register-discounts')
             ->everyMinute()
             ->when(function () {
