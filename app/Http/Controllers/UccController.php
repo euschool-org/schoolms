@@ -35,7 +35,7 @@ class UccController extends Controller
     {
         if ($request->user != env('UCC_USER')){
             $xml->addChild('status',5);
-        } elseif ($request->hash != env('UCC_HASH')){
+        } elseif ($request->hash != $this->hash($request->get('action'), $request->get('abonentCode'))){
             $xml->addChild('status',4);
         } else {
             $student = Student::where('private_number',$request->abonentCode)->first();
@@ -94,7 +94,7 @@ class UccController extends Controller
     private function hash($action, $abonentCode)
     {
         $user = env('UCC_USER');
-        $secretKey = env('UCC_SECRET_KEY');
+        $secretKey = env('UCC_SECRET');
 
         // Concatenate in specified order
         $stringToHash = $action . $abonentCode . $user . $secretKey;
