@@ -3,6 +3,7 @@
 namespace App\Jobs;
 
 use App\Mail\SendPdfMail;
+use App\Services\NotificationService;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -38,9 +39,8 @@ class SendNotificationJob implements ShouldQueue
                         ->send(new SendPdfMail($this->notificationData));
                 }
 
-                if ($this->smsEnabled && isset($student['parent_number']) && !empty($student['parent_number'])) {
-                    // Implement SMS sending logic
-                    // $this->sendSms($student['parent_number'], $this->notificationData);
+                if ($this->smsEnabled && !empty($student['parent_number'])) {
+                    NotificationService::sendSms($student['parent_number'], $this->notificationData['body']);
                 }
             } catch (\Exception $e) {
                 Log::error("Failed to process notification for student ID: {$student['id']}, Error: {$e->getMessage()}");

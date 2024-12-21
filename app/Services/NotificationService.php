@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Models\Attachment;
 use App\Models\Student;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Storage;
 
 class NotificationService
@@ -60,6 +61,28 @@ class NotificationService
 
         // Execute and return the result
         return $query->get();
+    }
+
+    public static function sendSms($destination, $content)
+    {
+        $response = Http::post("https://sender.ge/api/send.php", [
+            'apikey' => env('SENDER_APIKEY'),
+            'smsno' => 2,
+            'destination' => $destination,
+            'content' => $content,
+        ]);
+
+        // Return the response or its status
+        if ($response->successful()) {
+            return $response->body();
+        }
+
+        // Optionally handle errors
+        return [
+            'error' => true,
+            'status' => $response->status(),
+            'body' => $response->body(),
+        ];
     }
 
 }

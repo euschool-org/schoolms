@@ -37,7 +37,7 @@ class UpdateStudentRequest extends FormRequest
             'new_student_discount' => 'nullable|boolean',
             'parent_name' => 'nullable|string|max:191',
             'parent_mail' => 'nullable|email|max:255',
-            'parent_number' => 'nullable|numeric|max:45',
+            'parent_number' => 'nullable|numeric',
             'email_notifications' => 'nullable|boolean',
         ];
     }
