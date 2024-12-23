@@ -33,10 +33,10 @@ class UccController extends Controller
 
     private function debt(Request $request, $xml)
     {
+        dd($this->hash($request->get('action'), $request->get('abonentCode')), $request->get('hash'), $request->get('abonentCode'));
         if ($request->get('user') != env('UCC_USER')){
             $xml->addChild('status',5);
         } elseif ($request->get('hash') != $this->hash($request->get('action'), $request->get('abonentCode'))){
-            dd($this->hash($request->get('action'), $request->get('abonentCode')), $request->get('hash'), $request->get('abonentCode'));
             $xml->addChild('status',4);
         } else {
             $student = Student::where('private_number',$request->abonentCode)->first();
