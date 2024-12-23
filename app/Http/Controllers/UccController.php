@@ -10,7 +10,6 @@ class UccController extends Controller
 {
     public function ucc(Request $request)
     {
-        dd($request->all());
         $xml = new \SimpleXMLElement('<?xml version="1.0" encoding="UTF-8"?><debt-response/>');
         try {
             switch ($request->get('action')) {

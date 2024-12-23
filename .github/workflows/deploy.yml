@@ -40,9 +40,13 @@ jobs:
           username: ${{ secrets.DIGITALOCEAN_USER }}
           key: ${{ secrets.DIGITALOCEAN_SSH_KEY }}
           script: |
-            cd /var/www/schoolms
-            sudo -u www-data git reset --hard
-            sudo -u www-data git pull origin main
+            cd /var/www
+            sudo chown -R root:root schoolms/
+            cd schoolms
+            git pull origin main
+            cd ..
+            sudo chown -R www-data:www-data schoolms/
+            cd schoolms
             npm run build
             sudo chown -R www-data:www-data storage bootstrap/cache
             php artisan migrate --force
