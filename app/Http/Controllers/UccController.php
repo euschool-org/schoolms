@@ -10,6 +10,7 @@ class UccController extends Controller
 {
     public function ucc(Request $request)
     {
+        dd($request->all());
         $xml = new \SimpleXMLElement('<?xml version="1.0" encoding="UTF-8"?><debt-response/>');
         try {
             switch ($request->get('action')) {
@@ -33,7 +34,6 @@ class UccController extends Controller
 
     private function debt(Request $request, $xml)
     {
-        var_dump($request->get('hash'), $this->hash($request->get('action'), $request->get('abonentCode')));
         if ($request->get('user') != env('UCC_USER')){
             $xml->addChild('status',5);
         } elseif ($request->get('hash') != $this->hash($request->get('action'), $request->get('abonentCode'))){
