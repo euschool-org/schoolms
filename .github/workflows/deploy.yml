@@ -41,7 +41,8 @@ jobs:
           key: ${{ secrets.DIGITALOCEAN_SSH_KEY }}
           script: |
             cd /var/www/schoolms
-            git pull origin main
+            sudo -u www-data git reset --hard
+            sudo -u www-data git pull origin main
             npm run build
             sudo chown -R www-data:www-data storage bootstrap/cache
             php artisan migrate --force
