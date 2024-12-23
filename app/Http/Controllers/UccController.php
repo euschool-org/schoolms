@@ -33,7 +33,7 @@ class UccController extends Controller
 
     private function debt(Request $request, $xml)
     {
-        dd($this->hash($request->get('action'), $request->get('abonentCode')), $request->get('hash'), $request->get('abonentCode'));
+        var_dump($request->get('hash'), $this->hash($request->get('action'), $request->get('abonentCode')));
         if ($request->get('user') != env('UCC_USER')){
             $xml->addChild('status',5);
         } elseif ($request->get('hash') != $this->hash($request->get('action'), $request->get('abonentCode'))){
