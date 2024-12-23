@@ -35,7 +35,7 @@ class UccController extends Controller
     {
         if ($request->get('user') != env('UCC_USER')){
             $xml->addChild('status',5);
-        } elseif ($request->hash != $this->hash($request->get('action'), $request->get('abonentCode'))){
+        } elseif ($request->get('hash') != $this->hash($request->get('action'), $request->get('abonentCode'))){
             $xml->addChild('status',4);
         } else {
             $student = Student::where('private_number',$request->abonentCode)->first();
