@@ -53,8 +53,10 @@ class UccController extends Controller
     public function pay(Request $request, $xml)
     {
         if ($request->user != env('UCC_USER')){
-            $xml->addChild('status',5);
+            $xml->addChild('status',6);
         } elseif ($request->hash != $this->hash($request->get('action'), $request->get('abonentCode'))){
+            $xml->addChild('status',5);
+        } elseif(Payment::where('payment_id',$request->get('paymentId'))->exists()){
             $xml->addChild('status',4);
         } else {
             $student = Student::where('private_number',$request->get('abonentCode'))->first();
