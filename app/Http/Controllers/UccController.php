@@ -52,7 +52,6 @@ class UccController extends Controller
 
     public function pay(Request $request, $xml)
     {
-        dd($this->hash($request->get('action'), $request->get('abonentCode')));
         if ($request->user != env('UCC_USER')){
             $xml->addChild('status',6);
         } elseif ($request->hash != $this->hash($request->get('action'), $request->get('abonentCode'))){
