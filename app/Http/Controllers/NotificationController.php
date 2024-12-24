@@ -66,7 +66,7 @@ class NotificationController extends Controller
             // Slice the chunk if it exceeds the remaining quota
             $emailsToSend = $chunk->take($quota);
             $remainingEmails = $chunk->slice($quota);
-
+            Log::info('controller');
             // Schedule emails for the current day
             Queue::later(
                 $currentDay,
