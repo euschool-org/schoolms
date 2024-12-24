@@ -68,7 +68,6 @@ class NotificationController extends Controller
             $remainingEmails = $chunk->slice($quota);
 
             // Schedule emails for the current day
-            Log::info("from controller");
             Queue::later(
                 $currentDay,
                 new SendNotificationJob($emailsToSend, $notificationData, $emailEnabled, $smsEnabled)
