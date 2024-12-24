@@ -31,6 +31,7 @@ class SendNotificationJob implements ShouldQueue
 
     public function handle()
     {
+        Log::info('Send Sms');
         foreach ($this->chunk as $student) {
             try {
                 if ($this->emailEnabled && !empty($student['parent_mail'])) {
