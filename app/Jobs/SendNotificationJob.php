@@ -31,14 +31,13 @@ class SendNotificationJob implements ShouldQueue
 
     public function handle()
     {
-        Log::info('Send Sms');
         foreach ($this->chunk as $student) {
             try {
                 if ($this->emailEnabled && !empty($student['parent_mail'])) {
                     Mail::to($student['parent_mail'])
                         ->send(new SendPdfMail($this->notificationData));
                 }
-
+                Log::info('in try');
                 if ($this->smsEnabled && !empty($student['parent_number'])) {
                     Log::info('in if');
                     NotificationService::sendSms($student['parent_number'], $this->notificationData['body']);
