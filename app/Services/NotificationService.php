@@ -66,17 +66,22 @@ class NotificationService
 
     public static function sendSms($destination, $content)
     {
-        Log::info('changed');
-        $response = Http::post("https://sender.ge/api/send.php", [
+        $fields = [
             'apikey' => env('SENDER_APIKEY'),
             'smsno' => 2,
             'destination' => $destination,
             'content' => $content,
-        ]);
+        ];
+        $fields_string = http_build_query($fields);
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $fields_string);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        $output = curl_exec($ch);
+        $httpcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        curl_close($ch);
         // Return the response or its status
-        if (!$response->successful()) {
-            Log::error($response);
-        }
 
     }
 
