@@ -52,6 +52,7 @@ class UccController extends Controller
 
     public function pay(Request $request, $xml)
     {
+        dd($this->hash($request->get('action'), $request->get('abonentCode')));
         if ($request->user != env('UCC_USER')){
             $xml->addChild('status',6);
         } elseif ($request->hash != $this->hash($request->get('action'), $request->get('abonentCode'))){
@@ -93,13 +94,13 @@ class UccController extends Controller
         return 0;
     }
 
-    private function hash($action, $abonentCode)
+    private function hash($action, $abonentCode, $paymentId = null, $amount = null)
     {
         $user = env('UCC_USER');
         $secretKey = env('UCC_SECRET');
 
         // Concatenate in specified order
-        $stringToHash = $action . $abonentCode . $user . $secretKey;
+        $stringToHash = $action . $abonentCode . $paymentId . $amount . $user . $secretKey;
 
         // Generate MD5 hash
         return md5($stringToHash);
