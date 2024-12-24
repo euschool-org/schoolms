@@ -76,17 +76,15 @@ class UccController extends Controller
 
     private function registerPayment($student, $paymentId, $amount)
     {
-        if (Payment::where('payment_id', $paymentId)->first()){
-            return 4;
-        }
-
+        $nominal = $amount / $student->currency->rate_to_gel;
         Payment::create([
             'student_id' => $student->id,
             'payment_id' => $paymentId,
             'payment_date' => now()->format('Y-m-d H:i:s'),
             'payment_amount' => $amount,
-            'nominal_amount' => $amount / $student->currency->rate_to_gel,
+            'nominal_amount' => $nominal,
             'currency_rate' => $student->currency->rate_to_gel,
+            'percentage' => $nominal / $student->yearlyFee() * 100,
             'discount' => 0,
         ]);
 
