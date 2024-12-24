@@ -66,12 +66,7 @@ class NotificationService
 
     public static function sendSms($destination, $content)
     {
-        Log::info(implode(' ',[
-            'apikey' => env('SENDER_APIKEY'),
-            'smsno' => 2,
-            'destination' => $destination,
-            'content' => $content,
-        ]));
+        Log::info('changed');
         $response = Http::post("https://sender.ge/api/send.php", [
             'apikey' => env('SENDER_APIKEY'),
             'smsno' => 2,
