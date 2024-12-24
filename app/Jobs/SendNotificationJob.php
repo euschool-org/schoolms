@@ -40,6 +40,7 @@ class SendNotificationJob implements ShouldQueue
                 }
 
                 if ($this->smsEnabled && !empty($student['parent_number'])) {
+                    Log::info('in if');
                     NotificationService::sendSms($student['parent_number'], $this->notificationData['body']);
                 }
             } catch (\Exception $e) {
