@@ -80,11 +80,16 @@ class Student extends Model
         }
     }
 
-    public function yearlyFee()
+    public function yearlyFee($invoice = false)
     {
-        $schoolYear = now()->month > 6
-            ? now()->year . '-' . (now()->year + 1)
-            : (now()->year - 1) . '-' . now()->year;
+        if ($invoice) {
+            $schoolYear = now()->year . '-' . (now()->year + 1);
+        } else {
+            $schoolYear = now()->month > 6
+                ? now()->year . '-' . (now()->year + 1)
+                : (now()->year - 1) . '-' . now()->year;
+        }
+
 
         // Dynamically load the sum of the fees for the specified school year
         $this->loadSum([

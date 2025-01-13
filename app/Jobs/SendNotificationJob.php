@@ -35,7 +35,7 @@ class SendNotificationJob implements ShouldQueue
             try {
                 if ($this->emailEnabled && !empty($student['parent_mail'])) {
                     Mail::to($student['parent_mail'])
-                        ->send(new SendPdfMail($this->notificationData));
+                        ->send(new SendPdfMail($this->notificationData, $student));
                 }
                 if ($this->smsEnabled && !empty($student['parent_number'])) {
                     NotificationService::sendSms($student['parent_number'], $this->notificationData['body']);

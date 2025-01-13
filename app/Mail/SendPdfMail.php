@@ -16,12 +16,14 @@ class SendPdfMail extends Mailable
     use Queueable, SerializesModels;
 
     public $data;
+    public $student;
     /**
      * Create a new message instance.
      */
-    public function __construct($data)
+    public function __construct($data, $student)
     {
         $this->data = $data;
+        $this->student = $student;
     }
 
     /**
@@ -54,7 +56,11 @@ class SendPdfMail extends Mailable
         if (!(isset($this->data['attach_invoice']) && $this->data['attach_invoice'])){
             return [];
         }
-        $pdf = Pdf::loadView('pdf.invoice', ['data' => $this->data]);
+        if (now()->month >= 7){
+            $pdf = Pdf::loadView('pdf.current_year_invoice', ['data' => $this->data, 'student' => $this->student]);
+        } else {
+            $pdf = Pdf::loadView('pdf.next_year_invoice', ['data' => $this->data, 'student' => $this->student]);
+        }
 
         return [
             Attachment::fromData(fn () => $pdf->output(), 'invoice.pdf')
