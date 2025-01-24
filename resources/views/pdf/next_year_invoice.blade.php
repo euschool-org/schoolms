@@ -22,8 +22,8 @@
             </tr>
             <tr>
                 <td></td>
-                <td>{{$student->activeBalance() > 0 ? 'გადახდა' : 'დავალიანება'}}</td>
-                <td>{{$student->activeBalance()}}</td>
+                <td>{{($student->year_payment() > $student->last_year_balance + $student->yearlyFee()) ? 'გადახდა' : 'დავალიანება'}}</td>
+                <td>{{abs($student->year_payment() - $student->last_year_balance - $student->yearlyFee())}}</td>
             </tr>
         </tbody>
     </table>

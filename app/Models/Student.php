@@ -101,6 +101,20 @@ class Student extends Model
         return $this->year_fee;
     }
 
+    public function year_payment()
+    {
+        $schoolYear = now()->month > 6
+            ? now()->startOfYear()->setMonth(7)->startOfMonth()
+            : now()->subYear()->startOfYear()->setMonth(7)->startOfMonth();
+
+        $this->loadSum([
+            'payments as year_payment' => function ($query) use ($schoolYear) {
+                $query->where('payment_date','>', $schoolYear);
+            }
+            ], 'nominal_amount');
+        dd($this->year_payment());
+        return $this->year_payment();
+    }
     public function getGradeLabelAttribute()
     {
         if (!$this->grade || !$this->contract_start_date) {

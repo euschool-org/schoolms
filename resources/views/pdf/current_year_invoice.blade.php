@@ -19,12 +19,12 @@
                 <tr>
                     <td>2</td>
                     <td>წინა წლის ბალანსი / Last Year Balance</td>
-                    <td>{{$student->last_year_balance + $student->yearly_payments()}}</td>
+                    <td>{{$student->last_year_balance - $student->year_payment()}}</td>
                 </tr>
                 <tr>
                     <td>3</td>
                     <td>გადახდები / Payments</td>
-                    <td>{{$student->yearly_payments() - $student->last_year_balance}}</td>
+                    <td>{{$student->year_payment() - $student->last_year_balance}}</td>
                 </tr>
             </tbody>
         </table>
