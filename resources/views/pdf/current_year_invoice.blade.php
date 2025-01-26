@@ -2,13 +2,18 @@
 <html>
     <head>
         <title>Invoice PDF</title>
+        <style>
+            body {
+                font-family: 'DejaVu Sans', sans-serif;
+            }
+        </style>
     </head>
     <body>
         <table>
             <thead>
-{{--                <th>#</th>--}}
-{{--                <th>Tuition Fee for {{$student->name}} <br> {{now()->year . '-' . now()->addYear()->year}} Academic Year </th>--}}
-{{--                <th>Price</th>--}}
+                <th>#</th>
+                <th>Tuition Fee for {{$student->name}} <br> {{now()->year . '-' . now()->addYear()->year}} Academic Year </th>
+                <th>Price</th>
             </thead>
             <tbody>
 {{--                <tr>--}}

@@ -2,6 +2,11 @@
 <html>
     <head>
         <title>Invoice PDF</title>
+        <style>
+            body {
+                font-family: 'DejaVu Sans', sans-serif;
+            }
+        </style>
     </head>
     <body>
         <h1>Invoice for დავითი</h1>
@@ -18,11 +23,11 @@
                 <td>სწავლის საფასური / Tuition Fee</td>
                 <td>{{$student->yearlyFee(true)}}</td>
             </tr>
-{{--            <tr>--}}
-{{--                <td></td>--}}
+            <tr>
+                <td>1234</td>
 {{--                <td>{{($student->year_payment() > $student->last_year_balance + $student->yearlyFee()) ? 'გადახდა' : 'დავალიანება'}}</td>--}}
 {{--                <td>{{abs($student->year_payment() - $student->last_year_balance - $student->yearlyFee())}}</td>--}}
-{{--            </tr>--}}
+            </tr>
         </tbody>
     </table>
     </body>

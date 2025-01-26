@@ -112,7 +112,7 @@ class Student extends Model
                 $query->where('payment_date','>', $schoolYear);
             }
             ], 'nominal_amount');
-        dd($this->year_payment());
+
         return $this->year_payment();
     }
     public function getGradeLabelAttribute()
