@@ -113,7 +113,7 @@ class Student extends Model
             }
             ], 'nominal_amount');
 
-        return $this->year_payment();
+        return $this->year_payment;
     }
     public function getGradeLabelAttribute()
     {
