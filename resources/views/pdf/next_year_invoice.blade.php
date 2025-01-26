@@ -4,10 +4,8 @@
         <title>Invoice PDF</title>
     </head>
     <body>
-    {{$sti}}
         <h1>Invoice for დავითი</h1>
         <p>Amount Due: 100$</p>
-
     <table>
         <thead>
             <th>#</th>
@@ -15,16 +13,16 @@
             <th>Price</th>
         </thead>
         <tbody>
-            <tr>
-                <td></td>
-                <td>სწავლის საფასური / Tuition Fee</td>
-                <td>{{$student->yearlyFee(true)}}</td>
-            </tr>
-            <tr>
-                <td></td>
-                <td>{{($student->year_payment() > $student->last_year_balance + $student->yearlyFee()) ? 'გადახდა' : 'დავალიანება'}}</td>
-                <td>{{abs($student->year_payment() - $student->last_year_balance - $student->yearlyFee())}}</td>
-            </tr>
+{{--            <tr>--}}
+{{--                <td></td>--}}
+{{--                <td>სწავლის საფასური / Tuition Fee</td>--}}
+{{--                <td>{{$student->yearlyFee(true)}}</td>--}}
+{{--            </tr>--}}
+{{--            <tr>--}}
+{{--                <td></td>--}}
+{{--                <td>{{($student->year_payment() > $student->last_year_balance + $student->yearlyFee()) ? 'გადახდა' : 'დავალიანება'}}</td>--}}
+{{--                <td>{{abs($student->year_payment() - $student->last_year_balance - $student->yearlyFee())}}</td>--}}
+{{--            </tr>--}}
         </tbody>
     </table>
     </body>
