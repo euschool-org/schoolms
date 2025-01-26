@@ -24,9 +24,9 @@
                 <td>{{$student->yearlyFee(true)}}</td>
             </tr>
             <tr>
-                <td>1234</td>
-{{--                <td>{{($student->year_payment() > $student->last_year_balance + $student->yearlyFee()) ? 'გადახდა' : 'დავალიანება'}}</td>--}}
-{{--                <td>{{abs($student->year_payment() - $student->last_year_balance - $student->yearlyFee())}}</td>--}}
+                <td></td>
+                <td>{{($student->year_payment() > $student->last_year_balance + $student->yearlyFee()) ? 'გადახდა' : 'დავალიანება'}}</td>
+                <td>{{abs($student->year_payment() - $student->last_year_balance - $student->yearlyFee())}}</td>
             </tr>
         </tbody>
     </table>
