@@ -16,10 +16,192 @@
         </style>
     </head>
     <body class="antialiased">
-    <form action="{{route('student.import')}}" method="post" enctype="multipart/form-data">
-        @csrf
-        <input type="file" name="file">
-        <input type="submit">
-    </form>
+    <h1 class="text-red-600 text-2xl font-bold ml-40 pl-36 mt-16">
+        INVOICE#****
+    </h1>
+    <div class="ml-14 mt-10 ">
+        <h1 class="text-black">EUROPEAN SCHOOL LTD</h1>
+        <h1 class="text-black">Legal address: l, skhirtlafze av. 2</h1>
+        <h1 class="text-black">Company ID: 205172917</h1>
+    </div>
+    <h1 class="text-red-600 font-medium ml-14 mt-10">
+        Date:27.08.2024
+    </h1>
+    <div class="w-1/2 ml-14">
+        <table
+            class="min-w-full table-auto mt-6 text-sm border-collapse border border-gray-300"
+        >
+            <thead>
+            <tr>
+                <th class="border border-gray-300 p-2 ">#</th>
+                <th
+                    class="border text-red-600 border-gray-300 p-2 text-center"
+                >
+                    Tuition Fees (სრული დასახელება)
+                    <h1 class="text-red-600 ">(2024-2025 Academic Year)</h1>
+                </th>
+                <th class="border text-black border-gray-300 p-2">
+                    Semester I
+                </th>
+                <th class="border text-black border-gray-300 p-2">
+                    Semester II
+                </th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr class="bg-blue-200">
+                <td class="border-gray-300 p-2 text-center">1</td>
+                <td class="border p-2 text-center">Payment Deadline</td>
+                <td
+                    class="border border-gray-300 p-2 text-center text-red-600 font-bold"
+                >
+                    31-05-24
+                </td>
+                <td
+                    class="border border-gray-300  p-2 text-center text-red-600 font-bold"
+                >
+                    15-12-24
+                </td>
+            </tr>
+            <tr>
+                <td class="border border-gray-300 p-2 text-center">2</td>
+                <td class="border border-gray-300 p-2 text-center ">
+                    Tuition Fees
+                </td>
+                <td
+                    class="border border-gray-300 p-2 pl-20 font-bold text-red-600"
+                >
+                    € 3,500.00
+                </td>
+                <td
+                    class="border border-gray-300 p-2 font-bold text-red-600 pl-20"
+                >
+                    € 3,500.00
+                </td>
+            </tr>
+            <tr class="bg-blue-200">
+                <td class="border border-gray-300 p-2 text-center">3</td>
+                <td class="border border-gray-300 p-2 text-center">
+                    Last Year Balance
+                </td>
+                <td
+                    colspan="2"
+                    class="border font-bold border-gray-300 p-2 text-left pl-20 text-red-600"
+                >
+                    € (1,000.00)
+                </td>
+            </tr>
+            <tr>
+                <td class="border border-gray-300 p-2 text-center">4</td>
+                <td class="border border-gray-300 p-2  text-center">
+                    Payments
+                </td>
+                <td
+                    colspan="2"
+                    class="border font-bold border-gray-300 text-red-600 p-2 text-left pl-20"
+                >
+                    € (2,500.00)
+                </td>
+            </tr>
+            </tbody>
+            <tfoot>
+            <tr class="bg-blue-200">
+                <td class="border border-gray-300 p-2 text-center">5</td>
+                <td
+                    class="border border-gray-300 text-black font-bold p-2 text-right"
+                >
+                    Subtotal €
+                </td>
+                <td
+                    class="border border-gray-300 p-2 text-center font-bold text-black"
+                >
+                    -
+                </td>
+                <td
+                    class="border border-gray-300 p-2  text-black font-bold text-center"
+                >
+                    € 3,500.00
+                </td>
+            </tr>
+            <tr class="bg-blue-200">
+                <td class="border border-gray-300 p-2 text-center">6</td>
+                <td
+                    colspan="2"
+                    class="border text-black border-gray-300 p-2 font-bold text-left pl-20"
+                >
+                    Discount 5% -in case of first semester payment no later than May
+                    <h1>
+                        31 and second semester payment no later than 1st of September
+                    </h1>
+                </td>
+                <td
+                    class="border border-gray-300 p-2 text-center text-red-600 font-bold"
+                >
+                    €(350.00)
+                </td>
+            </tr>
+            <tr>
+                <td
+                    class="text-black border border-blue-500 p-2 font-bold"
+                >
+                    7
+                </td>
+                <td
+                    class="text-black border border-blue-500 p-2 text-right font-bold"
+                >
+                    Total
+                </td>
+                <td
+                    colspan="2"
+                    class="text-black border border-blue-500 pr-24 p-2 text-right font-bold"
+                >
+                    € 3,150.00
+                </td>
+            </tr>
+            </tfoot>
+        </table>
+        <h1 class="text-gray-700 font-bold pt-24">
+            Please write the student's name, surname, and ID in the description
+            while paying. While transferring in GEL, use the exchange rate according
+            to the National Bank of Georgia.
+        </h1>
+    </div>
+    <h1 class="text-black font-bold text-center mr-96 pr-96">
+        For GEL transfer
+    </h1>
+    <h1 class="text-gray-700 font-bold ml-24">BANK: TBCBGE22</h1>
+    <h1 class="text-gray-700 font-bold ml-24">
+        ACCOUNT NUMBER: GE85TB7826136020100007
+    </h1>
+    <h1 class="text-gray-700  font-bold ml-24">EUROPEAN SCHOOL LTD</h1>
+    <h1 class="text-black font-bold text-center mr-96 pr-96">
+        For GEL transfer
+    </h1>
+    <h1 class="text-gray-700 font-bold ml-24 ">BANK: TBCBGE22</h1>
+    <h1 class="text-gray-700 font-bold ml-24">
+        ACCOUNT NUMBER: GE85TB7826136020100007
+    </h1>
+    <h1 class="text-gray-700 font-bold ml-24">EUROPEAN SCHOOL LTD</h1>
+    <h1 class="text-black font-bold text-center mr-96 pr-96">
+        For EUR transfer
+    </h1>
+    <h1 class="text-gray-700 font-bold ml-24 ">
+        Beneficiary’s Bank
+    </h1>
+    <div class=" text-black text-center">
+        <h1 class="mr-5">JSC TBC Bank</h1>
+        <h1>Tbilisi, Georgia</h1>
+        <h1 class="ml-5">Swift: TBCBGE22</h1>
+        <h1>Ben’s IBAN: GE19TB1926136180100002</h1>
+        <h1 class="ml-5">Name of Beneficiary: Shps evropuli skola</h1>
+        <h1>Intermediary Bank: COMMERZBANK AG</h1>
+        <h1 class="ml-20">FRANKFURT/MAIN, GERMANY</h1>
+        <h1 class="ml-5">SWIFT: COBADEFF</h1>
+        <h1 class="mr-5">BLZ: 50040000</h1>
+    </div>
+    <h1 class="text-gray-700 font-bold ml-24 ">Ana Revazishvili</h1>
+    <h1 class="text-gray-700 font-bold ml-24 ">
+        Accountant Assistant
+    </h1>
     </body>
 </html>

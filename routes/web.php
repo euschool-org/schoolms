@@ -23,6 +23,10 @@ Route::get('/', function () {
     return redirect()->route('login');
 });
 
+Route::get('/test', function () {
+    return view('welcome');
+});
+
 Route::middleware(['auth', 'verified'])->controller(StudentController::class)->group(function () {
     Route::get('/dashboard', 'dashboard')->name('dashboard');
     Route::get('/students/form', 'form')->name('student.create');
