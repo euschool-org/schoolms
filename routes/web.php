@@ -6,6 +6,8 @@ use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\StudentController;
+use App\Models\Student;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -24,7 +26,9 @@ Route::get('/', function () {
 });
 
 Route::get('/test', function () {
-    return view('welcome');
+    $pdf = Pdf::loadView('pdf.next_year_invoice', ['student' => Student::find(1)]);
+
+    return $pdf->download('invoice.pdf');
 });
 
 Route::middleware(['auth', 'verified'])->controller(StudentController::class)->group(function () {
