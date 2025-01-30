@@ -26,6 +26,9 @@ Route::get('/', function () {
 });
 
 Route::get('/test', function () {
+    return view('pdf.next_year_invoice', ['student' => Student::find(1)]);
+});
+Route::get('/test/pdf', function () {
     $pdf = Pdf::loadView('pdf.next_year_invoice', ['student' => Student::find(1)]);
 
     return $pdf->download('invoice.pdf');

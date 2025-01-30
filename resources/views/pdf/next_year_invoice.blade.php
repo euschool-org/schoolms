@@ -9,7 +9,7 @@
             font-family: 'DejaVu Sans', sans-serif;
             margin: 0;
             padding: 0;
-            font-size: 12px;
+            font-size: 10px;
         }
 
         .container {
@@ -18,15 +18,15 @@
         }
 
         h1 {
-            font-size: 16px;
+            font-size: 12px;
         }
 
         h3 {
-            font-size: 14px;
+            font-size: 10px;
         }
 
         h4 {
-            font-size: 12px;
+            font-size: 10px;
         }
 
         .header {
@@ -67,7 +67,7 @@
         table th {
             background-color: #f4f4f4;
             text-align: center;
-            font-size: 13px;
+            font-size: 10px;
         }
 
         table td.text-center {
@@ -83,10 +83,40 @@
             line-height: 1.4;
         }
 
-        .signature {
+        .signature-container {
             margin-top: 30px;
+        }
+
+        .signature-info {
             text-align: left;
-            line-height: 1.4;
+            white-space: nowrap;
+        }
+
+        .signature-img img {
+            width: 240px;
+            height: auto;
+            float: left; /* Float the image to the left */
+            margin-left: 200px; /* Add spacing between text and image */
+            margin-top: -70px;
+        }
+
+
+        .instruction-title {
+            font-size: 16px;
+            font-weight: bold;
+            color: black;
+        }
+
+        .signature-name {
+            font-size: 14px;
+            font-weight: bold;
+            color: #4a5568; /* Equivalent to Tailwind 'text-gray-700' */
+        }
+
+        .signature-role {
+            font-size: 12px;
+            font-weight: bold;
+            color: #4a5568;
         }
     </style>
 </head>
@@ -138,9 +168,17 @@
         <h3>100% of the tuition fee must be paid until 31st of May.</h3>
     </div>
 
-    <div class="signature">
-        <h3 class="text-gray-700 font-bold">Ana Revazishvili</h3>
-        <h3 class="text-gray-700 font-bold">Accountant Assistant</h3>
+    <div class="instruction">
+        <span class="instruction-title">*მოკლე ინსტრუქცია გადახდაზე*</span><br>
+    </div>
+    <div class="signature-container">
+        <div class="signature-info">
+            <span class="signature-name">Ana Revazishvili</span><br>
+            <span class="signature-role">Accountant Assistant</span>
+        </div>
+        <div class="signature-img">
+            <img src="{{ public_path('images/signature.jpeg') }}" alt="Signature">
+        </div>
     </div>
 </div>
 </body>
