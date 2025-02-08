@@ -153,11 +153,11 @@
                 @lang("Other Details")
             </span>
     </div>    <div class="grid grid-cols-7 gap-4 mb-4">
-        <div>
-            <input id="payment_due" name="payment_due" type="text" placeholder="@lang('Contract End Date')" value="{{ request('payment_due') }}"
-                   class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
-                   onfocus="(this.type='date')" onblur="if(this.value===''){this.type='text'}">
-        </div>
+{{--        <div>--}}
+{{--            <input id="payment_due" name="payment_due" type="text" placeholder="@lang('Contract End Date')" value="{{ request('payment_due') }}"--}}
+{{--                   class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"--}}
+{{--                   onfocus="(this.type='date')" onblur="if(this.value===''){this.type='text'}">--}}
+{{--        </div>--}}
         <div>
             <input id="parent_account" name="parent_account" type="text" placeholder="@lang('Parent Account')" value="{{ request('parent_account') }}"
                    class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm">
