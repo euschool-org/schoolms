@@ -116,13 +116,13 @@ class StudentExport implements FromCollection, WithHeadings, ShouldAutoSize
             $query->where('contract_end_date', $this->filters['contract_end_date']);
         }
 
-        if (!empty($this->filters['yearly_payment_from'])) {
-            $query->where('yearly_payment', '>=', $this->filters['yearly_payment_from']);
-        }
-
-        if (!empty($this->filters['yearly_payment_to'])) {
-            $query->where('yearly_payment', '<=', $this->filters['yearly_payment_to']);
-        }
+//        if (!empty($this->filters['yearly_payment_from'])) {
+//            $query->where('yearly_payment', '>=', $this->filters['yearly_payment_from']);
+//        }
+//
+//        if (!empty($this->filters['yearly_payment_to'])) {
+//            $query->where('yearly_payment', '<=', $this->filters['yearly_payment_to']);
+//        }
 
         if (!empty($this->filters['currency'])) {
             $query->whereIn('currency', $this->filters['currency']);
@@ -138,10 +138,6 @@ class StudentExport implements FromCollection, WithHeadings, ShouldAutoSize
 
         if (!empty($this->filters['payment_quantity'])) {
             $query->where('payment_quantity', $this->filters['payment_quantity']);
-        }
-
-        if (!empty($this->filters['custom_discount'])) {
-            $query->where('custom_discount', $this->filters['custom_discount']);
         }
 
         return $query->get();

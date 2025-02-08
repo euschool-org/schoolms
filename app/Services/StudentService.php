@@ -40,7 +40,7 @@ class StudentService
 
                     $query->whereBetween('month', [$startDate, $endDate]);
                 },
-            ],'fee')->with('monthly_fees');
+            ],'fee')->with('monthly_fees')->with('currency');
         if ($request->filled('name')) {
             $query->where('name', 'like', '%' . $request->input('name') . '%');
         }
@@ -130,22 +130,22 @@ class StudentService
             }
         }
 
-        if ($request->filled('payment_schedule')) {
-            $paymentSchedule = explode(' to ', $request->input('payment_schedule'));
-            if (isset($paymentSchedule[0])) {
-                $query->where('payment_schedule', '>=', $paymentSchedule[0]);
-            }
-            if (isset($paymentSchedule[1])) {
-                $query->where('payment_schedule', '<=', $paymentSchedule[1]);
-            }
-        }
+//        if ($request->filled('payment_schedule')) {
+//            $paymentSchedule = explode(' to ', $request->input('payment_schedule'));
+//            if (isset($paymentSchedule[0])) {
+//                $query->where('payment_schedule', '>=', $paymentSchedule[0]);
+//            }
+//            if (isset($paymentSchedule[1])) {
+//                $query->where('payment_schedule', '<=', $paymentSchedule[1]);
+//            }
+//        }
 
         if ($request->filled('yearly_payment_from')) {
-            $query->where('yearly_payment', '>=', $request->input('yearly_payment_from'));
+            $query->having('yearly_payments_sum', '>=', $request->input('yearly_payment_from'));
         }
 
         if ($request->filled('yearly_payment_to')) {
-            $query->where('yearly_payment', '<=', $request->input('yearly_payment_to'));
+            $query->having('yearly_payments_sum', '<=', $request->input('yearly_payment_to'));
         }
 
         if ($request->filled('currency')) {
@@ -169,12 +169,10 @@ class StudentService
         if ($request->filled('custom_discount')) {
             $query->where('custom_discount', $request->input('custom_discount'));
         }
-        $totalQuery = clone $query;
-        $totalStudents = $totalQuery->count();
 
-        // Paginate the query
         $perPage = $request->get('per_page', 10);
         $students = $query->paginate($perPage);
+        $totalStudents = $students->total();
 
         $students->each(function ($student) {
             $student->yearly_fee = $student->first_half_fee + $student->second_half_fee;

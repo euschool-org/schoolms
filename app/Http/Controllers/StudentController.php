@@ -29,7 +29,6 @@ class StudentController extends Controller
         'parent_name',
         'parent_mail',
         'parent_number',
-        'yearly_payment',
         'currency_label',
         'parent_account',
         'income_account',
@@ -60,7 +59,7 @@ class StudentController extends Controller
         return view('dashboard', [
             'students' => $data['students'],
             'total_students' => $data['total_students'],
-            'selectedColumns' => json_decode($user->column_preferences,true) ?? self::VALID_COLUMNS,
+            'selectedColumns' => $user->column_preferences ? json_decode($user->column_preferences,true) : self::VALID_COLUMNS,
             'allColumns' => self::VALID_COLUMNS,
         ]);
     }

@@ -33,7 +33,7 @@
         <!-- Filter label -->
         <div>
             <span class="font-semibold">@lang("Filter")</span>
-            <span class="text-gray-400">({{$total_students}} @lang("Result")</span>
+            <span class="text-gray-400">({{$total_students}} @lang("Result"))</span>
         </div>
 
         <!-- Optional collapse arrow (just a placeholder for now) -->
@@ -74,7 +74,7 @@
                    class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm">
         </div>
         <div>
-            <input id="parent_email" name="parent_email" type="email" placeholder="@lang('Parent Mail')"  value="{{ request('parent_email') }}"
+            <input id="parent_mail" name="parent_mail" type="text" placeholder="@lang('Parent Mail')"  value="{{ request('parent_mail') }}"
                    class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm">
         </div>
         <div>
@@ -102,10 +102,10 @@
             <input id="payment_quantity" name="payment_quantity" type="number" placeholder="@lang('Payment Quantity')" value="{{ request('payment_quantity') }}"
                    class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm">
         </div>
-        <div>
-            <input id="custom_discount" name="custom_discount" type="number" placeholder="@lang('Custom Discount')" value="{{ request('custom_discount') }}"
-                   class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm">
-        </div>
+{{--        <div>--}}
+{{--            <input id="custom_discount" name="custom_discount" type="number" placeholder="@lang('Custom Discount')" value="{{ request('custom_discount') }}"--}}
+{{--                   class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm">--}}
+{{--        </div>--}}
     </div>
 
     <div class="mt-3">
@@ -130,13 +130,13 @@
                    placeholder="@lang('Contract End Date')" />
         </div>
 
-        <div x-data x-init="flatpickr($refs.rangeInput, { mode: 'range', dateFormat: 'Y-m-d', rangeSeparator: ' to ' })">
-            <input id="rangeInput" x-ref="rangeInput" type="text"
-                   name="payment_schedule"
-                   class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
-                   value="{{ request('payment_schedule') }}"
-                   placeholder="@lang('Payment Schedule')" />
-        </div>
+{{--        <div x-data x-init="flatpickr($refs.rangeInput, { mode: 'range', dateFormat: 'Y-m-d', rangeSeparator: ' to ' })">--}}
+{{--            <input id="rangeInput" x-ref="rangeInput" type="text"--}}
+{{--                   name="payment_schedule"--}}
+{{--                   class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"--}}
+{{--                   value="{{ request('payment_schedule') }}"--}}
+{{--                   placeholder="@lang('Payment Schedule')" />--}}
+{{--        </div>--}}
 
         <div x-data x-init="flatpickr($refs.rangeInput, { mode: 'range', dateFormat: 'Y-m-d', rangeSeparator: ' to ' })">
             <input id="rangeInput" x-ref="rangeInput" type="text"
