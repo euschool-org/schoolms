@@ -34,6 +34,7 @@ return new class extends Migration
             $table->decimal('custom_discount')->nullable();
             $table->decimal('last_year_balance')->nullable();
             $table->integer('balance_change_year')->nullable();
+            $table->string('payment_code',45)->unique();
             $table->timestamps();
 
             $table->foreign('currency_id')->references('id')->on('currencies');

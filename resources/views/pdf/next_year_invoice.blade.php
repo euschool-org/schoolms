@@ -160,6 +160,15 @@
                 {{abs($student->year_payment() - $student->last_year_balance - $student->yearlyFee())}}
             </td>
         </tr>
+        <tr>
+            <td class="text-center">3</td>
+            <td class="text-center">
+                ფასდაკლება
+            </td>
+            <td class="text-right font-bold">
+                {{$student->yearly_discounts_sum}}
+            </td>
+        </tr>
         </tbody>
     </table>
 

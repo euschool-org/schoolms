@@ -27,8 +27,11 @@ class NotificationService
 
         // Add sums for payments and fees
         $query->withSum(['payments as yearly_payments_sum' => function ($query) use ($startDatePayments, $endDatePayments) {
-            $query->whereBetween('payment_date', [$startDatePayments, $endDatePayments]);
+            $query->whereBetween('payment_date', [$startDatePayments, $endDatePayments])->where('payment_type', 0);
         }], 'nominal_amount')
+            ->withSum(['payments as yearly_discounts_sum' => function ($query) use ($startDatePayments, $endDatePayments) {
+                $query->whereBetween('payment_date', [$startDatePayments, $endDatePayments])->where('payment_type', 3);
+            }], 'nominal_amount')
             ->withSum(['monthly_fees as first_half_fee' => function ($query) use ($firstHalfFeeStart, $firstHalfFeeEnd) {
                 $query->whereBetween('month', [$firstHalfFeeStart, $firstHalfFeeEnd]);
             }], 'fee')

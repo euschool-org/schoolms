@@ -21,12 +21,8 @@
         <div class="col-span-1">
             <x-text-input-label name="income_account" label="Income Account" value="{{ $student->income_account }}" />
         </div>
-
         <div class="col-span-1">
-            <x-select-dropdown :options="[1,2,3,4,5,6,7,8,9,10]" label="Payment Type" name="payment_quantity" value="{{$student->payment_quantity}}" />
-            @error('payment_quantity')
-            <span class="text-red-500 text-sm">{{ $message }}</span>
-            @enderror
+            <x-text-input-label name="payment_code" label="Payment Code" value="{{ $student->payment_code }}" />
         </div>
         <div class="col-span-1">
         </div>

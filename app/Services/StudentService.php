@@ -199,45 +199,76 @@ class StudentService
         if (!$student->contract_start_date || !$student->contract_end_date) {
             return;
         }
-
-        $startDate = Carbon::parse($student->contract_start_date);
-        $endDate = Carbon::parse($student->contract_end_date);
+        $contractStart = Carbon::parse($student->contract_start_date);
+        $contractEnd   = Carbon::parse($student->contract_end_date);
 
         $data = [];
+        $startSchoolYear = $contractStart->month >= 9 ? $contractStart->year : $contractStart->year - 1;
+        $endSchoolYear   = $contractEnd->month >= 9   ? $contractEnd->year   : $contractEnd->year - 1;
 
-        while ($startDate <= $endDate) {
-            if ($startDate->month == 7 || $startDate->month == 8) {
-                $startDate->addMonth();
-                continue;
+        for ($year = $startSchoolYear; $year <= $endSchoolYear; $year++) {
+            $schoolYear = $year . '-' . ($year + 1);
+            $mayFeeDate = Carbon::createFromFormat('Y-m-d', $year . '-05-31');
+            $decFeeDate = Carbon::createFromFormat('Y-m-d', $year . '-12-15');
+
+            if ($mayFeeDate->between($contractStart, $contractEnd, true)) {
+                $data[] = [
+                    'student_id'  => $student->id,
+                    'month'       => $mayFeeDate->toDateString(),  // Stored as "YYYY-MM-DD"
+                    'school_year' => $schoolYear,
+                ];
             }
-
-            $currentYear = $startDate->year;
-            $nextYear = $startDate->month >= 9 ? $currentYear + 1 : $currentYear;
-            $schoolYear = $startDate->month >= 9 ? "$currentYear-$nextYear" : ($currentYear - 1) . "-$currentYear";
-
-            $data[] = [
-                'student_id' => $student->id,
-                'month' => $startDate->copy()->startOfMonth()->toDateString(),
-                'school_year' => $schoolYear,
-                'created_at' => now(),
-                'updated_at' => now(),
-            ];
-
-            $startDate->addMonth();
+            if ($decFeeDate->between($contractStart, $contractEnd, true)) {
+                $data[] = [
+                    'student_id'  => $student->id,
+                    'month'       => $decFeeDate->toDateString(),
+                    'school_year' => $schoolYear,
+                    'created_at'  => now(),
+                    'updated_at'  => now(),
+                ];
+            }
         }
 
         if (!empty($data)) {
-            // Delete existing fees outside the start and end date range
             MonthlyFee::where('student_id', $student->id)
                 ->whereNotBetween('month', [
-                    Carbon::parse($student->contract_start_date)->startOfMonth()->toDateString(),
-                    Carbon::parse($student->contract_end_date)->endOfMonth()->toDateString()
+                    $contractStart->copy()->startOfMonth()->toDateString(),
+                    $contractEnd->copy()->endOfMonth()->toDateString(),
                 ])
                 ->delete();
 
-            // Upsert the data
             MonthlyFee::upsert($data, ['student_id', 'month'], ['school_year', 'updated_at']);
         }
-
     }
+    public function defaultMonths($quantity, $schoolYear)
+    {
+        // Extract the first year from the school year (e.g., 2025 from 2025-2026)
+        $startYear = substr($schoolYear, 0, 4);
+
+        $months = [];
+
+        // If quantity is 1, return May 31st of the start year
+        if ($quantity == 1) {
+            $months[] = "{$startYear}-05-31";  // Format: YYYY-MM-DD
+        }
+
+        // If quantity is 2, return May 31st and December 15th of the start year
+        elseif ($quantity == 2) {
+            $months[] = "{$startYear}-05-31";  // Format: YYYY-MM-DD
+            $months[] = "{$startYear}-12-15";  // Format: YYYY-MM-DD
+        }
+
+        // If quantity is 10, return the 15th of each month from September to June (spanning two years)
+        elseif ($quantity == 10) {
+            $startDate = strtotime("1-Sep-{$startYear}");
+            for ($i = 0; $i < 10; $i++) {
+                // Calculate the 15th of each month in the range from September to June
+                $months[] = date("Y-m-d", strtotime("15-" . date("M-Y", strtotime("+$i month", $startDate))));
+            }
+        }
+
+        return $months;
+    }
+
+
 }

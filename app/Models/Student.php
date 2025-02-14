@@ -31,8 +31,26 @@ class Student extends Model
         'new_student_discount',
         'email_notifications',
         'last_year_balance',
-        'balance_change_year'
+        'balance_change_year',
+        'payment_code'
     ];
+    protected static function booted()
+    {
+        // Automatically set the 'payment_code' when a new student is being created
+        static::creating(function ($student) {
+            // Check if the payment_code is not already set
+            if (empty($student->payment_code)) {
+                // Generate a random 8-digit number and concatenate with 'ES'
+                $student->payment_code = 'ES' . str_pad(rand(0, 99999999), 8, '0', STR_PAD_LEFT);
+
+                // Ensure the generated value is unique by checking the database
+                while (self::where('payment_code', $student->payment_code)->exists()) {
+                    // Generate another 8-digit number if the current one already exists
+                    $student->payment_code = 'ES' . str_pad(rand(0, 99999999), 8, '0', STR_PAD_LEFT);
+                }
+            }
+        });
+    }
 
     public function payments()
     {

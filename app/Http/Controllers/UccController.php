@@ -38,7 +38,7 @@ class UccController extends Controller
         } elseif ($request->get('hash') != $this->hash($request->get('action'), $request->get('abonentCode'))){
             $xml->addChild('status',5);
         } else {
-            $student = Student::where('private_number',$request->abonentCode)->first();
+            $student = Student::where('payment_code',$request->abonentCode)->first();
             if ($student == null){
                 $xml->addChild('status',1);
             } else {
@@ -59,7 +59,7 @@ class UccController extends Controller
         } elseif(Payment::where('payment_id',$request->get('paymentId'))->exists()){
             $xml->addChild('status',4);
         } else {
-            $student = Student::where('private_number',$request->get('abonentCode'))->first();
+            $student = Student::where('payment_code',$request->get('abonentCode'))->first();
             if ($student == null){
                 $xml->addChild('status',1);
             } else {
@@ -84,7 +84,7 @@ class UccController extends Controller
             'payment_amount' => $amount,
             'nominal_amount' => $nominal,
             'currency_rate' => $student->currency->rate_to_gel,
-            'percentage' => $nominal / $student->yearlyFee() * 100,
+            'percentage' => $student->yearlyFee() ? $nominal / $student->yearlyFee() * 100 : 0,
             'discount' => 0,
         ]);
 

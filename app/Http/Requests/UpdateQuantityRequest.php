@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdateFeesRequest extends FormRequest
+class UpdateQuantityRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,9 +22,9 @@ class UpdateFeesRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'fees.*.id' => 'required|exists:monthly_fees,id',
-            'fees.*.fee' => 'required|numeric|min:0',
-            'fees.*.month' => 'required|date_format:Y-m-d',
+            'student_id' => 'required|exists:students,id',
+            'school_year' => 'required|string',
+            'quantity' => 'required|numeric|min:1|max:10',
         ];
     }
 }

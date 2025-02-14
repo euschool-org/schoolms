@@ -15,12 +15,12 @@ class CurrencySeeder extends Seeder
     {
         DB::table('currencies')->insert([
             [
-                'code' => 'USD',
-                'rate_to_gel' => 2,
-            ],
-            [
                 'code' => 'EUR',
                 'rate_to_gel' => 3,
+            ],
+            [
+                'code' => 'USD',
+                'rate_to_gel' => 2,
             ],
             [
                 'code' => 'GEL',

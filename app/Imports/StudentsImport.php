@@ -3,6 +3,7 @@
 namespace App\Imports;
 
 use App\Models\Student;
+use App\Services\StudentService;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
@@ -20,7 +21,9 @@ class StudentsImport implements ToCollection, WithHeadingRow
         try {
             foreach ($collection as $row) {
                 $validatedData = $this->validateRow($row->toArray());
-                Student::create($validatedData);
+                $student = Student::create($validatedData);
+                $studentService = new StudentService();
+                $studentService->syncStudentFees($student);
             }
             DB::commit();
         } catch (\Throwable $th) {

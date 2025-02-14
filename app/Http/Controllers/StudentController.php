@@ -6,6 +6,7 @@ use App\Exports\StudentExport;
 use App\Http\Requests\ImportRequest;
 use App\Http\Requests\StoreStudentRequest;
 use App\Http\Requests\UpdateFeesRequest;
+use App\Http\Requests\UpdateQuantityRequest;
 use App\Http\Requests\UpdateStudentRequest;
 use App\Imports\StudentsImport;
 use App\Models\Currency;
@@ -100,12 +101,19 @@ class StudentController extends Controller
     {
         $student = Student::create($request->all());
         if ($student){
-            if ($request->has('contract_start_date') || $request->has('contract_end_date')) {
-                $this->studentService->syncStudentFees($student);
-            }
             return redirect()->route('student.edit',$student->id)->with('success','Student created successfully');
         } else {
             return redirect()->route('student.create')->with('error','Something went wrong');
+        }
+    }
+
+    public function generateFeeTable(Student $student)
+    {
+        if ($student->contract_start_date || $student->contract_end_date){
+            $this->studentService->syncStudentFees($student);
+            return redirect()->route('student.edit',$student->id)->with('success','Fee table created successfully');
+        } else {
+            return redirect()->route('student.edit',$student->id)->with('error','Fill Contract Dates');
         }
     }
 
@@ -114,9 +122,6 @@ class StudentController extends Controller
         $data = $request->validated();
         $data['currency_id'] = isset($data['currency']) ? Currency::where('code',$data['currency'])->first()->id : 1;
         if ($student->update($data)){
-            if ($request->has('contract_start_date') || $request->has('contract_end_date')) {
-                $this->studentService->syncStudentFees($student);
-            }
             return redirect()->route('student.edit',$student->id)->with('success','Student updated successfully');
         } else {
             return redirect()->route('student.edit',$student->id)->with('error','Student update failed');
@@ -173,16 +178,48 @@ class StudentController extends Controller
 
     public function updateFees(UpdateFeesRequest $request)
     {
-        $fees = collect($request->validated()['fees'])
-            ->mapWithKeys(fn($feeData) => [$feeData['id'] => $feeData['fee']]);
+        $fees = collect($request->validated()['fees']);
 
-        MonthlyFee::whereIn('id', $fees->keys())
+        MonthlyFee::whereIn('id', $fees->pluck('id'))
             ->get()
             ->each(function ($fee) use ($fees) {
-                $fee->fee = $fees[$fee->id];
-                $fee->save();
+                $data = $fees->firstWhere('id', $fee->id);
+                $fee->update([
+                    'fee' => $data['fee'],
+                    'month' => $data['month'],
+                ]);
             });
 
         return redirect()->back()->with('success', __('Fees updated successfully.'));
     }
+
+    public function updateQuantity(UpdateQuantityRequest $request)
+    {
+        $schoolYear = $request->input("school_year");
+        $quantity = $request->input("quantity");
+
+        $oldQuantity = MonthlyFee::where('school_year', $schoolYear)->count();
+
+        if ($quantity == $oldQuantity) {
+            return redirect()->back()->with('success', __('Fees updated successfully.'));
+        }
+
+        // Delete all records for the given school year
+        MonthlyFee::where('school_year', $schoolYear)->delete();
+
+        $months = $this->studentService->defaultMonths($quantity, $schoolYear);
+
+        // Create new records with the given quantity
+        for ($i = 0; $i < $quantity; $i++) {
+            MonthlyFee::create([
+                'student_id' => $request->input("student_id"),
+                'school_year' => $schoolYear,
+                'month' => $months[$i] ?? null,
+            ]);
+        }
+
+        return redirect()->back()->with('success', __('Fees updated successfully.'));
+    }
+
+
 }
