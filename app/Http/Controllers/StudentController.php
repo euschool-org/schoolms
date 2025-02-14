@@ -67,7 +67,6 @@ class StudentController extends Controller
 
     public function form(Student $student = null)
     {
-        dd(now());
         if ($student) {
             $student->load([
                 'payments' => function ($query) {
