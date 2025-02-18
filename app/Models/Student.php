@@ -98,41 +98,64 @@ class Student extends Model
         }
     }
 
+    public function currentFee()
+    {
+        $startDate = now()->subYears(now()->month <= 6 ? 1 : 0)->startOfYear()->setMonth(7)->startOfMonth();
+        $endDate = now();
+        $oneYearAfterStart = $startDate->copy()->addYear();
+
+        // Get the first extra record after endDate but within allowed range
+        $extraRecord = MonthlyFee::where('month', '>', $endDate)
+            ->where('month', '<=', $oneYearAfterStart)
+            ->orderBy('month')
+            ->first();
+
+        // Get the last month value (either last in range or extra record)
+        $lastMonthRecord = MonthlyFee::whereBetween('month', [$startDate, $endDate])
+            ->orderByDesc('month')
+            ->first();
+
+        $lastMonthValue = $extraRecord ? $extraRecord->month : ($lastMonthRecord ? $lastMonthRecord->month : null);
+
+        // Fetch the sum directly instead of using loadSum()
+        $currentFee = $this->monthly_fees()
+            ->whereBetween('month', [$startDate, $endDate])
+            ->when($extraRecord, fn($query) => $query->orWhere('month', $extraRecord->month))
+            ->sum('fee');
+
+        return [
+            'amount' => $currentFee,
+            'date' => $lastMonthValue,
+        ];
+    }
     public function yearlyFee($invoice = false)
     {
-        if ($invoice) {
-            $schoolYear = now()->year . '-' . (now()->year + 1);
-        } else {
-            $schoolYear = now()->month > 6
-                ? now()->year . '-' . (now()->year + 1)
-                : (now()->year - 1) . '-' . now()->year;
-        }
+        // Determine the school year based on the invoice flag
+        $schoolYear = $invoice
+            ? now()->year . '-' . (now()->year + 1)
+            : (now()->month > 6 ? now()->year . '-' . (now()->year + 1) : (now()->year - 1) . '-' . now()->year);
 
-
-        // Dynamically load the sum of the fees for the specified school year
-        $this->loadSum([
-            'monthly_fees as year_fee' => function ($query) use ($schoolYear) {
-                $query->where('school_year', $schoolYear);
-            }
-        ], 'fee');
-
-        return $this->year_fee;
+        // Directly fetch the sum instead of using loadSum()
+        return $this->monthly_fees()
+            ->where('school_year', $schoolYear)
+            ->sum('fee');
     }
 
+    public function eligibleToDiscount()
+    {
+        return true;
+    }
     public function year_payment()
     {
         $schoolYear = now()->month > 6
             ? now()->startOfYear()->setMonth(7)->startOfMonth()
             : now()->subYear()->startOfYear()->setMonth(7)->startOfMonth();
 
-        $this->loadSum([
-            'payments as year_payment' => function ($query) use ($schoolYear) {
-                $query->where('payment_date','>', $schoolYear);
-            }
-            ], 'nominal_amount');
-
-        return $this->year_payment;
+        return $this->payments()
+            ->where('payment_date', '>', $schoolYear)
+            ->sum('nominal_amount');
     }
+
     public function getGradeLabelAttribute()
     {
         if (!$this->grade || !$this->contract_start_date) {

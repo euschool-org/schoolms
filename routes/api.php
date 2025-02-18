@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\StudentController;
 use App\Http\Controllers\UccController;
 use Illuminate\Support\Facades\Route;
 
@@ -15,4 +16,6 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/ucc', [UccController::class, 'ucc'])->name('ucc');
+
+Route::get('/test', [StudentController::class, 'test']);
 

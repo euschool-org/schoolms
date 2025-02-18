@@ -221,5 +221,17 @@ class StudentController extends Controller
         return redirect()->back()->with('success', __('Fees updated successfully.'));
     }
 
-
+    public function test(Request $request){
+        return response()->json(Student::select(
+            'name',
+            'grade',
+            'group',
+            'contract_start_date',
+            'contract_end_date',
+            'parent_name',
+            'parent_mail',
+            'parent_number',
+            'additional_information',
+)->get());
+    }
 }

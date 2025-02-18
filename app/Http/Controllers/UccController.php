@@ -44,7 +44,8 @@ class UccController extends Controller
             } else {
                 $debt = $this->getDebt($student);
                 $xml->addChild('status', 0);
-                $xml->addChild('debt', $debt);
+                $xml->addChild('debt', $debt['amount']);
+                $xml->addChild('date', $debt['date']);
                 $xml->addChild('name', $student->name);
             }
         }
@@ -71,7 +72,14 @@ class UccController extends Controller
 
     private function getDebt($student)
     {
-        return 15;
+        $fee = $student->currentFee();
+        $amount = $student->eligibleToDiscount() ? $fee['amount'] - $student->yearlyFee() * 0.05 : $fee['amount'];
+        $date = $fee['date'];
+
+        return [
+            'amount' => ($student->last_year_balance + $amount - $student->year_payment()) * $student->currency->rate_to_gel,
+            'date' => $date,
+        ];
     }
 
     private function registerPayment($student, $paymentId, $amount)
