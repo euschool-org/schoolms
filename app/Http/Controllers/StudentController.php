@@ -122,6 +122,7 @@ class StudentController extends Controller
         $data = $request->validated();
         $data['currency_id'] = isset($data['currency']) ? Currency::where('code',$data['currency'])->first()->id : 1;
         if ($student->update($data)){
+            $this->studentService->syncStudentFees($student);
             return redirect()->route('student.edit',$student->id)->with('success','Student updated successfully');
         } else {
             return redirect()->route('student.edit',$student->id)->with('error','Student update failed');
@@ -219,19 +220,5 @@ class StudentController extends Controller
         }
 
         return redirect()->back()->with('success', __('Fees updated successfully.'));
-    }
-
-    public function test(Request $request){
-        return response()->json(Student::select(
-            'name',
-            'grade',
-            'group',
-            'contract_start_date',
-            'contract_end_date',
-            'parent_name',
-            'parent_mail',
-            'parent_number',
-            'additional_information',
-)->get());
     }
 }

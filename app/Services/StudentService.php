@@ -223,8 +223,6 @@ class StudentService
                     'student_id'  => $student->id,
                     'month'       => $decFeeDate->toDateString(),
                     'school_year' => $schoolYear,
-                    'created_at'  => now(),
-                    'updated_at'  => now(),
                 ];
             }
         }
