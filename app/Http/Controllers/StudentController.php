@@ -101,6 +101,7 @@ class StudentController extends Controller
     {
         $student = Student::create($request->all());
         if ($student){
+            $this->studentService->syncStudentFees($student);
             return redirect()->route('student.edit',$student->id)->with('success','Student created successfully');
         } else {
             return redirect()->route('student.create')->with('error','Something went wrong');

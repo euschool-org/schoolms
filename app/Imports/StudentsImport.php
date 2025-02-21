@@ -28,7 +28,7 @@ class StudentsImport implements ToCollection, WithHeadingRow
             DB::commit();
         } catch (\Throwable $th) {
             DB::rollBack();
-            throw $th;
+            dd($th);
         }
     }
 
