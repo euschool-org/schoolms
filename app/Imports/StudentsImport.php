@@ -49,7 +49,7 @@ class StudentsImport implements ToCollection, WithHeadingRow
             'new_student_discount' => 'nullable|boolean',
             'parent_name' => 'nullable|string|max:191',
             'parent_mail' => 'nullable|email|max:255',
-            'parent_number' => 'nullable|numeric|max:45',
+            'parent_number' => 'nullable|numeric|digits_between:1,9',
             'email_notifications' => 'nullable|boolean',
             'mobile_notifications' => 'nullable|boolean',
             'last_year_balance' => 'nullable|numeric',
