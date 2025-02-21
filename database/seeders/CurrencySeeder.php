@@ -16,11 +16,11 @@ class CurrencySeeder extends Seeder
         DB::table('currencies')->insert([
             [
                 'code' => 'EUR',
-                'rate_to_gel' => 3,
+                'rate_to_gel' => 2.9,
             ],
             [
                 'code' => 'USD',
-                'rate_to_gel' => 2,
+                'rate_to_gel' => 2.8,
             ],
             [
                 'code' => 'GEL',
