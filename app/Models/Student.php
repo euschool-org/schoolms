@@ -26,8 +26,6 @@ class Student extends Model
         'currency_id',
         'parent_account',
         'income_account',
-        'payment_quantity',
-        'custom_discount',
         'new_student_discount',
         'email_notifications',
         'last_year_balance',
