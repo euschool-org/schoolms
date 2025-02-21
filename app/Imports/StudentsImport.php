@@ -45,16 +45,18 @@ class StudentsImport implements ToCollection, WithHeadingRow
             'contract_end_date' => 'nullable|date',
             'yearly_payment' => 'nullable|numeric',
             'monthly_payment' => 'nullable|numeric',
-            'currency' => 'nullable|string|in:EUR,USD,GEL',
+            'currency_id' => 'nullable|string|in:1,2,3',
             'parent_account' => 'nullable|string|max:12',
             'income_account' => 'nullable|string|max:10',
             'payment_quantity' => 'nullable|integer|max:10',
-            'custom_discount' => 'nullable|numeric|max:100',
+            'new_student_discount' => 'nullable|boolean',
             'parent_name' => 'nullable|string|max:191',
             'parent_mail' => 'nullable|email|max:255',
             'parent_number' => 'nullable|numeric|max:45',
             'email_notifications' => 'nullable|boolean',
             'mobile_notifications' => 'nullable|boolean',
+            'last_year_balance' => 'nullable|numeric',
+            'balance_change_year' => 'nullable|numeric',
         ])->validate();
     }
 }

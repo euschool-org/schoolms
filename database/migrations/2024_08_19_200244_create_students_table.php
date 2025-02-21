@@ -29,9 +29,7 @@ return new class extends Migration
             $table->unsignedBigInteger('currency_id')->default(1);
             $table->string('parent_account',45)->nullable();
             $table->string('income_account',45)->nullable();
-            $table->integer('payment_quantity')->nullable();
             $table->boolean('new_student_discount')->nullable();
-            $table->decimal('custom_discount')->nullable();
             $table->decimal('last_year_balance')->nullable();
             $table->integer('balance_change_year')->nullable();
             $table->string('payment_code',45)->unique();
