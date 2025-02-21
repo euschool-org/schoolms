@@ -23,7 +23,7 @@ class StoreStudentRequest extends FormRequest
     {
         return [
             'name' => 'required|string|max:191',
-            'private_number' => 'nullable|numeric',
+            'private_number' => 'nullable|string|max:45',
             'grade' => 'nullable|integer|max:12',
             'group' => 'nullable|in:ა,ბ,გ,დ,ე,ვ,ზ,თ,ი,კ,A,B,C,D,E,F,G,H,I,J,ქართული,ინგლისური',
             'sector' => 'nullable|in:ქართული,IB,ASAS,ბაღი',
