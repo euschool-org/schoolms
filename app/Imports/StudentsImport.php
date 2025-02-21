@@ -43,7 +43,7 @@ class StudentsImport implements ToCollection, WithHeadingRow
             'additional_information' => 'nullable|string',
             'contract_start_date' => 'nullable|date',
             'contract_end_date' => 'nullable|date',
-            'currency_id' => 'nullable|string|in:1,2,3',
+            'currency_id' => 'nullable|in:1,2,3',
             'parent_account' => 'nullable|string|max:12',
             'income_account' => 'nullable|string|max:10',
             'new_student_discount' => 'nullable|boolean',
