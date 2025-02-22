@@ -27,9 +27,12 @@ class StudentExport implements FromCollection, WithHeadings, ShouldAutoSize
             'grade',
             'group',
             'sector',
-            'parent_name',
-            'parent_mail',
-            'parent_number',
+            'first_parent_name',
+            'first_parent_mail',
+            'first_parent_number',
+            'second_parent_name',
+            'second_parent_mail',
+            'second_parent_number',
             'additional_information',
             'contract_start_date',
             'contract_end_date',
@@ -64,15 +67,24 @@ class StudentExport implements FromCollection, WithHeadings, ShouldAutoSize
         }
 
         if (!empty($this->filters['parent_name'])) {
-            $query->where('parent_name', 'like', '%' . $this->filters['parent_name'] . '%');
+            $query->where(function ($q) {
+                $q->where('first_parent_name', 'like', '%' . $this->filters['parent_name'] . '%')
+                    ->orWhere('second_parent_name', 'like', '%' . $this->filters['parent_name'] . '%');
+            });
         }
 
         if (!empty($this->filters['parent_mail'])) {
-            $query->where('parent_mail', 'like', '%' . $this->filters['parent_mail'] . '%');
+            $query->where(function ($q) {
+                $q->where('first_parent_mail', 'like', '%' . $this->filters['parent_mail'] . '%')
+                    ->orWhere('second_parent_mail', 'like', '%' . $this->filters['parent_mail'] . '%');
+            });
         }
 
         if (!empty($this->filters['parent_number'])) {
-            $query->where('parent_number', 'like', '%' . $this->filters['parent_number'] . '%');
+            $query->where(function ($q) {
+                $q->where('first_parent_number', 'like', '%' . $this->filters['parent_number'] . '%')
+                    ->orWhere('second_parent_number', 'like', '%' . $this->filters['parent_number'] . '%');
+            });
         }
 
         if (!empty($this->filters['pupil_status'])) {
@@ -151,9 +163,12 @@ class StudentExport implements FromCollection, WithHeadings, ShouldAutoSize
             'grade',
             'group',
             'sector',
-            'parent_name',
-            'parent_mail',
-            'parent_number',
+            'first_parent_name',
+            'first_parent_mail',
+            'first_parent_number',
+            'second_parent_name',
+            'second_parent_mail',
+            'second_parent_number',
             'additional_information',
             'contract_start_date',
             'contract_end_date',

@@ -3,6 +3,7 @@
 namespace App\Imports;
 
 use App\Models\Student;
+use App\Services\PaymentService;
 use App\Services\StudentService;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
@@ -23,7 +24,9 @@ class StudentsImport implements ToCollection, WithHeadingRow
                 $validatedData = $this->validateRow($row->toArray());
                 $student = Student::create($validatedData);
                 $studentService = new StudentService();
-                $studentService->syncStudentFees($student);
+                $studentService->importFees($student, $row['payment_quantity'], $row['yearly_fee']);
+                $paymentService = new PaymentService();
+                $paymentService->importPayment($student, $row['payment']);
             }
             DB::commit();
         } catch (\Throwable $th) {
@@ -47,13 +50,19 @@ class StudentsImport implements ToCollection, WithHeadingRow
             'parent_account' => 'nullable|string|max:25',
             'income_account' => 'nullable|string|max:12',
             'new_student_discount' => 'nullable|boolean',
-            'parent_name' => 'nullable|string|max:191',
-            'parent_mail' => 'nullable|email|max:255',
-            'parent_number' => 'nullable|numeric|digits_between:1,9',
+            'first_parent_name' => 'nullable|string|max:191',
+            'first_parent_mail' => 'nullable|email|max:255',
+            'first_parent_number' => 'nullable|numeric|digits_between:1,9',
+            'second_parent_name' => 'nullable|string|max:191',
+            'second_parent_mail' => 'nullable|email|max:255',
+            'second_parent_number' => 'nullable|numeric|digits_between:1,9',
             'email_notifications' => 'nullable|boolean',
             'mobile_notifications' => 'nullable|boolean',
             'last_year_balance' => 'nullable|numeric',
             'balance_change_year' => 'nullable|numeric',
+            'yearly_fee' => 'nullable|numeric',
+            'payment_quantity' => 'nullable|integer',
+            'payment' => 'nullable|numeric',
         ])->validate();
     }
 }

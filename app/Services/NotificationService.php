@@ -56,10 +56,15 @@ class NotificationService
 
         $query->where(function ($q) use ($sendEmail, $sendSms) {
             if ($sendEmail) {
-                $q->whereNotNull('parent_mail');
+                $q->whereNotNull('first_parent_mail')
+                    ->orWhereNotNull('second_parent_mail');
             }
+
             if ($sendSms) {
-                $q->orWhereNotNull('parent_number');
+                $q->orWhere(function ($q2) {
+                    $q2->whereNotNull('first_parent_number')
+                        ->orWhereNotNull('second_parent_number');
+                });
             }
         });
 

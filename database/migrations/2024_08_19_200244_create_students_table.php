@@ -19,9 +19,12 @@ return new class extends Migration
             $table->integer('current_grade')->nullable();
             $table->string('group',45)->nullable();
             $table->string('sector',45)->nullable();
-            $table->string('parent_name',191)->nullable();
-            $table->string('parent_mail',191)->nullable();
-            $table->string('parent_number', 45)->nullable();
+            $table->string('first_parent_name',191)->nullable();
+            $table->string('first_parent_mail',191)->nullable();
+            $table->string('first_parent_number', 45)->nullable();
+            $table->string('second_parent_name',191)->nullable();
+            $table->string('second_parent_mail',191)->nullable();
+            $table->string('second_parent_number', 45)->nullable();
             $table->boolean('email_notifications')->nullable();
             $table->text('additional_information')->nullable();
             $table->date('contract_start_date')->nullable();

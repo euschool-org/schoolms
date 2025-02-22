@@ -27,9 +27,12 @@ class StudentController extends Controller
         'sector',
         'contract_start_date',
         'contract_end_date',
-        'parent_name',
-        'parent_mail',
-        'parent_number',
+        'first_parent_name',
+        'first_parent_mail',
+        'first_parent_number',
+        'second_parent_name',
+        'second_parent_mail',
+        'second_parent_number',
         'currency_label',
         'parent_account',
         'income_account',
@@ -37,13 +40,13 @@ class StudentController extends Controller
         'additional_information',
         'last_year_balance',
         'yearly_fee',
+        'yearly_individual_discounts_sum',
+        'yearly_5p_discounts_sum',
+        'yearly_10p_discounts_sum',
+        'yearly_payments_sum',
         'debt',
         'first_half',
         'second_half',
-        'yearly_payments_sum',
-        'yearly_5p_discounts_sum',
-        'yearly_10p_discounts_sum',
-        'yearly_individual_discounts_sum',
     ];
     public $attachmentService;
 
@@ -199,27 +202,14 @@ class StudentController extends Controller
     {
         $schoolYear = $request->input("school_year");
         $quantity = $request->input("quantity");
-
-        $oldQuantity = MonthlyFee::where('school_year', $schoolYear)->count();
-
-        if ($quantity == $oldQuantity) {
-            return redirect()->back()->with('success', __('Fees updated successfully.'));
+        if ($quantity == MonthlyFee::where('school_year', $schoolYear)->count()) {
+            return true;
         }
 
-        // Delete all records for the given school year
         MonthlyFee::where('school_year', $schoolYear)->delete();
-
-        $months = $this->studentService->defaultMonths($quantity, $schoolYear);
-
-        // Create new records with the given quantity
-        for ($i = 0; $i < $quantity; $i++) {
-            MonthlyFee::create([
-                'student_id' => $request->input("student_id"),
-                'school_year' => $schoolYear,
-                'month' => $months[$i] ?? null,
-            ]);
-        }
+        $this->studentService->registerFees($schoolYear, $quantity, $request->input("student_id"));
 
         return redirect()->back()->with('success', __('Fees updated successfully.'));
     }
+
 }

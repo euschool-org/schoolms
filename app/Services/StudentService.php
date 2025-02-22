@@ -14,6 +14,7 @@ class StudentService
         $data = [];
         $startDatePayments = now()->setMonth(7)->startOfMonth()->subYears(now()->month <= 6 ? 1 : 0);
         $endDatePayments = now()->setMonth(6)->endOfMonth()->addYears(now()->month > 6 ? 1 : 0);
+        $schoolYear = now()->subYears(now()->month < 6 ? 1 : 0)->year . '-' . now()->addYears(now()->month > 6 ? 1 : 0)->year;
         $query = Student::withSum([
             'payments as yearly_payments_sum' => function ($query) use ($startDatePayments, $endDatePayments) {
                 $query->whereBetween('payment_date', [$startDatePayments, $endDatePayments])->where('payment_type', 0);
@@ -27,20 +28,13 @@ class StudentService
             'payments as yearly_individual_discounts_sum' => function ($query) use($startDatePayments, $endDatePayments) {
                 $query->whereBetween('payment_date', [$startDatePayments, $endDatePayments])->where('payment_type', 3);
             }], 'nominal_amount')->withSum([
-            'monthly_fees as first_half_fee' => function ($query){
-                $startDate = now()->subYears(now()->month <= 6 ? 1 : 0)->startOfYear()->setMonth(9)->startOfMonth();
-                $endDate = now()->addYears(now()->month > 6 ? 1 : 0)->startOfYear()->endOfMonth();
-
-                $query->whereBetween('month', [$startDate, $endDate]);
-            }], 'fee')->withSum(
-            [
-                'monthly_fees as second_half_fee' => function ($query){
-                    $startDate = now()->startOfYear()->addYears(now()->month > 6 ? 1 : 0)->endOfMonth();
-                    $endDate = now()->startOfYear()->addYears(now()->month > 6 ? 1 : 0)->setMonth(6)->endOfMonth();
-
-                    $query->whereBetween('month', [$startDate, $endDate]);
-                },
-            ],'fee')->with('monthly_fees')->with('currency');
+            'monthly_fees as yearly_fee' => function ($query) use($schoolYear) {
+                $query->where('school_year', $schoolYear);
+            }], 'fee')->withCount([
+            'monthly_fees as payment_quantity' => function ($query) use ($schoolYear) {
+                $query->where('school_year', $schoolYear);
+            }
+        ])->with('monthly_fees')->with('currency');
         if ($request->filled('name')) {
             $query->where('name', 'like', '%' . $request->input('name') . '%');
         }
@@ -62,15 +56,24 @@ class StudentService
         }
 
         if ($request->filled('parent_name')) {
-            $query->where('parent_name', 'like', '%' . $request->input('parent_name') . '%');
+            $query->where(function ($q) use ($request) {
+                $q->where('first_parent_name', 'like', '%' . $request->input('parent_name') . '%')
+                    ->orWhere('second_parent_name', 'like', '%' . $request->input('parent_name') . '%');
+            });
         }
 
         if ($request->filled('parent_mail')) {
-            $query->where('parent_mail', 'like', '%' . $request->input('parent_mail') . '%');
+            $query->where(function ($q) use ($request) {
+                $q->where('first_parent_mail', 'like', '%' . $request->input('parent_mail') . '%')
+                    ->orWhere('second_parent_mail', 'like', '%' . $request->input('parent_mail') . '%');
+            });
         }
 
         if ($request->filled('parent_number')) {
-            $query->where('parent_number', 'like', '%' . $request->input('parent_number') . '%');
+            $query->where(function ($q) use ($request) {
+                $q->where('first_parent_number', 'like', '%' . $request->input('parent_number') . '%')
+                    ->orWhere('second_parent_number', 'like', '%' . $request->input('parent_number') . '%');
+            });
         }
 
         if ($request->filled('pupil_status')) {
@@ -175,7 +178,7 @@ class StudentService
         $totalStudents = $students->total();
 
         $students->each(function ($student) {
-            $student->yearly_fee = $student->first_half_fee + $student->second_half_fee;
+            $student->first_half_fee = $student->second_half_fee = $student->yearly_fee/2;
             $total_discounts = $student->yearly_5p_discounts_sum + $student->yearly_10p_discounts_sum + $student->yearly_individual_discounts_sum;
             $yearly_payment_sum = $student->yearly_payments_sum + $total_discounts ?? 0;
 
@@ -240,27 +243,17 @@ class StudentService
     }
     public function defaultMonths($quantity, $schoolYear)
     {
-        // Extract the first year from the school year (e.g., 2025 from 2025-2026)
         $startYear = substr($schoolYear, 0, 4);
-
         $months = [];
 
-        // If quantity is 1, return May 31st of the start year
         if ($quantity == 1) {
             $months[] = "{$startYear}-05-31";  // Format: YYYY-MM-DD
-        }
-
-        // If quantity is 2, return May 31st and December 15th of the start year
-        elseif ($quantity == 2) {
+        } elseif ($quantity == 2) {
             $months[] = "{$startYear}-05-31";  // Format: YYYY-MM-DD
             $months[] = "{$startYear}-12-15";  // Format: YYYY-MM-DD
-        }
-
-        // If quantity is 10, return the 15th of each month from September to June (spanning two years)
-        elseif ($quantity == 10) {
+        } elseif ($quantity == 10) {
             $startDate = strtotime("1-Sep-{$startYear}");
             for ($i = 0; $i < 10; $i++) {
-                // Calculate the 15th of each month in the range from September to June
                 $months[] = date("Y-m-d", strtotime("15-" . date("M-Y", strtotime("+$i month", $startDate))));
             }
         }
@@ -268,5 +261,34 @@ class StudentService
         return $months;
     }
 
+    public function registerFees($schoolYear, $quantity, $student_id, $fee = null)
+    {
+        $months = $this->defaultMonths($quantity, $schoolYear);
 
+        for ($i = 0; $i < $quantity; $i++) {
+            MonthlyFee::create([
+                'student_id' => $student_id,
+                'school_year' => $schoolYear,
+                'month' => $months[$i] ?? null,
+                'fee' => $fee ? $fee / $quantity : 0,
+            ]);
+        }
+    }
+
+    public function importFees($student, $quantity = 2, $fee = 0)
+    {
+        if (!$student->contract_start_date || !$student->contract_end_date) {
+            return;
+        }
+        $contractStart = Carbon::parse($student->contract_start_date);
+        $contractEnd   = Carbon::parse($student->contract_end_date);
+
+        $startSchoolYear = $contractStart->month >= 9 ? $contractStart->year : $contractStart->year - 1;
+        $endSchoolYear   = $contractEnd->month >= 9   ? $contractEnd->year   : $contractEnd->year - 1;
+
+        for ($year = $startSchoolYear; $year <= $endSchoolYear; $year++) {
+            $schoolYear = $year . '-' . ($year + 1);
+            $this->registerFees($schoolYear, $quantity, $student->id, $fee);
+        }
+    }
 }

@@ -34,9 +34,12 @@ class UpdateStudentRequest extends FormRequest
             'parent_account' => 'nullable|string|max:25',
             'income_account' => 'nullable|string|max:12',
             'new_student_discount' => 'nullable|boolean',
-            'parent_name' => 'nullable|string|max:191',
-            'parent_mail' => 'nullable|email|max:255',
-            'parent_number' => 'nullable|numeric',
+            'first_parent_name' => 'nullable|string|max:191',
+            'first_parent_mail' => 'nullable|email|max:255',
+            'first_parent_number' => 'nullable|numeric',
+            'second_parent_name' => 'nullable|string|max:191',
+            'second_parent_mail' => 'nullable|email|max:255',
+            'second_parent_number' => 'nullable|numeric',
             'email_notifications' => 'nullable|boolean',
         ];
     }

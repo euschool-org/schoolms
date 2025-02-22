@@ -33,18 +33,42 @@ class SendNotificationJob implements ShouldQueue
     {
         foreach ($this->chunk as $student) {
             try {
-                if ($this->emailEnabled && !empty($student['parent_mail'])) {
-                    Mail::to($student['parent_mail'])
-                        ->send(new SendPdfMail($this->notificationData, $student));
-                }
-                if ($this->smsEnabled && !empty($student['parent_number'])) {
-                    NotificationService::sendSms($student['parent_number'], $this->notificationData['body']);
-                }
+                $this->sendEmails($student);
+                $this->sendSms($student);
             } catch (\Exception $e) {
                 Log::error("Failed to process notification for student ID: {$student['id']}, Error: {$e->getMessage()}");
-
                 $this->fail($e);
             }
         }
     }
+
+    /**
+     * Send email notifications to both parents if emails are provided.
+     */
+    private function sendEmails($student)
+    {
+        if ($this->emailEnabled) {
+            foreach (['first_parent_mail', 'second_parent_mail'] as $emailField) {
+                if (!empty($student[$emailField])) {
+                    Mail::to($student[$emailField])
+                        ->send(new SendPdfMail($this->notificationData, $student));
+                }
+            }
+        }
+    }
+
+    /**
+     * Send SMS notifications to both parents if phone numbers are provided.
+     */
+    private function sendSms($student)
+    {
+        if ($this->smsEnabled) {
+            foreach (['first_parent_number', 'second_parent_number'] as $phoneField) {
+                if (!empty($student[$phoneField])) {
+                    NotificationService::sendSms($student[$phoneField], $this->notificationData['body']);
+                }
+            }
+        }
+    }
+
 }

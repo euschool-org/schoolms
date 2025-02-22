@@ -7,15 +7,29 @@
         @csrf
         @method('PUT')
         <div class="col-span-1">
-            <x-text-input-label name="parent_name" label="Name" value="{{ $student->parent_name }}" />
+            <x-text-input-label name="first_parent_name" label="Name" value="{{ $student->first_parent_name }}" />
         </div>
 
         <div class="col-span-1">
-            <x-text-input-label name="parent_mail" label="Email" value="{{ $student->parent_mail }}" />
+            <x-text-input-label name="first_parent_mail" label="Email" value="{{ $student->first_parent_mail }}" />
         </div>
 
         <div class="col-span-1">
-            <x-text-input-label name="parent_number" label="Phone Number" value="{{ $student->parent_number }}" />
+            <x-text-input-label name="first_parent_number" label="Phone Number" value="{{ $student->first_parent_number }}" />
+        </div>
+
+        <div class="col-span-2"></div>
+
+        <div class="col-span-1">
+            <x-text-input-label name="second_parent_name" label="Name" value="{{ $student->second_parent_name }}" />
+        </div>
+
+        <div class="col-span-1">
+            <x-text-input-label name="second_parent_mail" label="Email" value="{{ $student->second_parent_mail }}" />
+        </div>
+
+        <div class="col-span-1">
+            <x-text-input-label name="second_parent_number" label="Phone Number" value="{{ $student->second_parent_number }}" />
         </div>
 
         <div class="col-span-2"></div>

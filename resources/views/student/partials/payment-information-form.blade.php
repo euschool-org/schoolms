@@ -78,7 +78,7 @@
                    onfocus="(this.type='date')" onblur="if(this.value===''){this.type='text'}" required>
         </div>
         <div class="mb-4 mr-4 flex items-center">
-            <input type="number" name="payment_amount" id="payment_amount" placeholder="@lang('Payment Amount')" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm" required>
+            <input type="text" name="payment_amount" id="payment_amount" placeholder="@lang('Payment Amount')" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm" required>
         </div>
         <div class="mb-4 mr-4 flex items-center">
             <input type="text" name="payer_name" id="payer_name" placeholder="@lang('Payer Name')" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm">
