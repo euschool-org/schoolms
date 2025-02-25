@@ -21,12 +21,12 @@ class PaymentService
         }
     }
 
-    public function importPayment($student, $payment)
+    public function importPayment($student, $payment, $type = 0)
     {
         $data = [
             'payment_date' => now(),
             'payment_amount' => $payment,
-            'payment_type' => 0,
+            'payment_type' => $type,
             'description' => 'იმპორტირებული',
         ];
 

@@ -24,9 +24,18 @@ class StudentsImport implements ToCollection, WithHeadingRow
                 $validatedData = $this->validateRow($row->toArray());
                 $student = Student::create($validatedData);
                 $studentService = new StudentService();
-                $studentService->importFees($student, $row['payment_quantity'], $row['yearly_fee']);
+                $studentService->importFees(
+                    $student,
+                    $row['payment_quantity'] ?? null,
+                    $row['yearly_fee'] ?? null
+                );
                 $paymentService = new PaymentService();
-                $paymentService->importPayment($student, $row['payment']);
+                if (isset($row['payment'])) {
+                    $paymentService->importPayment($student, $row['payment']);
+                }
+                if ($row['individual_discount']){
+                    $paymentService->importPayment($student, $row['individual_discount'], 3);
+                }
             }
             DB::commit();
         } catch (\Throwable $th) {
@@ -63,6 +72,7 @@ class StudentsImport implements ToCollection, WithHeadingRow
             'yearly_fee' => 'nullable|numeric',
             'payment_quantity' => 'nullable|integer',
             'payment' => 'nullable|numeric',
+            'individual_discount' => 'nullable|numeric',
         ])->validate();
     }
 }
