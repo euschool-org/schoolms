@@ -37,7 +37,7 @@ class StudentsImport implements ToCollection, WithHeadingRow
                     $paymentService->importPayment($student, $row['individual_discount'], 3);
                 }
                 if ($row['advance_payment_discount']){
-                    $paymentService->importPayment($student, $row['individual_discount'], 1);
+                    $paymentService->importPayment($student, $row['advance_payment_discount'], 1);
                 }
                 if ($row['new_member_discount']){
                     $paymentService->importPayment($student, $row['new_member_discount'], 2);
