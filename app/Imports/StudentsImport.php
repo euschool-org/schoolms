@@ -36,6 +36,12 @@ class StudentsImport implements ToCollection, WithHeadingRow
                 if ($row['individual_discount']){
                     $paymentService->importPayment($student, $row['individual_discount'], 3);
                 }
+                if ($row['advance_payment_discount']){
+                    $paymentService->importPayment($student, $row['individual_discount'], 1);
+                }
+                if ($row['new_member_discount']){
+                    $paymentService->importPayment($student, $row['new_member_discount'], 2);
+                }
             }
             DB::commit();
         } catch (\Throwable $th) {
@@ -73,6 +79,8 @@ class StudentsImport implements ToCollection, WithHeadingRow
             'payment_quantity' => 'nullable|integer',
             'payment' => 'nullable|numeric',
             'individual_discount' => 'nullable|numeric',
+            'advance_payment_discount' => 'nullable|numeric',
+            'new_member_discount' => 'nullable|numeric',
         ])->validate();
     }
 }
