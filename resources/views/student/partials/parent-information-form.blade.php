@@ -35,7 +35,7 @@
         <div class="col-span-2"></div>
 
         <div class="col-span-1">
-            <x-checkbox-switch name="email_notifications" label="Email Notification" value="{{ $student->email_notifications }}"/>
+            <x-checkbox-switch name="email_notifications" label="Notification" value="{{ $student->email_notifications }}"/>
         </div>
 
         <div class="flex justify-end mt-4 col-span-5">
