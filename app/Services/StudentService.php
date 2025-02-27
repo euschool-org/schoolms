@@ -9,7 +9,7 @@ use Carbon\Carbon;
 
 class StudentService
 {
-    public function getStudents($request)
+    public function getStudents($request, $paginate = true)
     {
         $data = [];
         $startDatePayments = now()->setMonth(7)->startOfMonth()->subYears(now()->month <= 6 ? 1 : 0);
@@ -173,9 +173,15 @@ class StudentService
             $query->where('custom_discount', $request->input('custom_discount'));
         }
 
-        $perPage = $request->get('per_page', 10);
-        $students = $query->paginate($perPage);
-        $totalStudents = $students->total();
+        if ($paginate) {
+            $perPage = $request->get('per_page', 10);
+            $students = $query->paginate($perPage);
+            $totalStudents = $students->total();
+        } else {
+            $students = $query->get();
+            $totalStudents = $students->count();
+        }
+
 
         $students->each(function ($student) {
             $student->first_half_fee = $student->second_half_fee = $student->yearly_fee/2;

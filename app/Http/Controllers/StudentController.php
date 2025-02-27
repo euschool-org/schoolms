@@ -27,12 +27,6 @@ class StudentController extends Controller
         'sector',
         'contract_start_date',
         'contract_end_date',
-        'first_parent_name',
-        'first_parent_mail',
-        'first_parent_number',
-        'second_parent_name',
-        'second_parent_mail',
-        'second_parent_number',
         'currency_label',
         'parent_account',
         'income_account',
@@ -47,6 +41,12 @@ class StudentController extends Controller
         'debt',
         'first_half',
         'second_half',
+        'first_parent_name',
+        'first_parent_mail',
+        'first_parent_number',
+        'second_parent_name',
+        'second_parent_mail',
+        'second_parent_number',
     ];
     public $attachmentService;
 
@@ -155,30 +155,8 @@ class StudentController extends Controller
 
     public function export(Request $request)
     {
-        $filters = $request->only([
-            'name',
-            'private_number',
-            'grade',
-            'group',
-            'sector',
-            'parent_name',
-            'parent_mail',
-            'parent_number',
-            'pupil_status',
-            'additional_information',
-            'contract_start_date',
-            'contract_end_date',
-            'payment_schedule',
-            'yearly_payment_from',
-            'yearly_payment_to',
-            'currency',
-            'parent_account',
-            'income_account',
-            'payment_quantity',
-            'custom_discount',
-        ]);
-
-        return Excel::download(new StudentExport($filters), 'students.xlsx');
+        $students = $this->studentService->getStudents($request, false)['students'];
+        return Excel::download(new StudentExport($students), 'students.xlsx');
     }
 
     public function updateFees(UpdateFeesRequest $request)

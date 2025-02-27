@@ -3,6 +3,7 @@
 namespace App\Exports;
 
 use App\Models\Student;
+use App\Services\StudentService;
 use Carbon\Carbon;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\ShouldAutoSize;
@@ -10,10 +11,10 @@ use Maatwebsite\Excel\Concerns\WithHeadings;
 
 class StudentExport implements FromCollection, WithHeadings, ShouldAutoSize
 {
-    public $filters;
-    public function __construct($filters)
+    public $students;
+    public function __construct($students)
     {
-        $this->filters = $filters;
+        $this->students = $students;
     }
 
     /**
@@ -21,166 +22,57 @@ class StudentExport implements FromCollection, WithHeadings, ShouldAutoSize
     */
     public function collection()
     {
-        $query = Student::select(
-            'name',
-            'private_number',
-            'grade',
-            'group',
-            'sector',
-            'first_parent_name',
-            'first_parent_mail',
-            'first_parent_number',
-            'second_parent_name',
-            'second_parent_mail',
-            'second_parent_number',
-            'additional_information',
-            'contract_start_date',
-            'contract_end_date',
-            'yearly_payment',
-            'monthly_payment',
-            'currency',
-            'parent_account',
-            'income_account',
-            'payment_quantity',
-            'custom_discount',
-            'email_notifications',
-            'mobile_notifications'
-        );
-        if (!empty($this->filters['name'])) {
-            $query->where('name', 'like', '%' . $this->filters['name'] . '%');
-        }
-
-        if (!empty($this->filters['private_number'])) {
-            $query->where('private_number', 'like', '%' . $this->filters['private_number'] . '%');
-        }
-
-        if (!empty($this->filters['grade'])) {
-            $query->whereIn('grade', $this->filters['grade']);
-        }
-
-        if (!empty($this->filters['group'])) {
-            $query->whereIn('group', $this->filters['group']);
-        }
-
-        if (!empty($this->filters['sector'])) {
-            $query->whereIn('sector', $this->filters['sector']);
-        }
-
-        if (!empty($this->filters['parent_name'])) {
-            $query->where(function ($q) {
-                $q->where('first_parent_name', 'like', '%' . $this->filters['parent_name'] . '%')
-                    ->orWhere('second_parent_name', 'like', '%' . $this->filters['parent_name'] . '%');
-            });
-        }
-
-        if (!empty($this->filters['parent_mail'])) {
-            $query->where(function ($q) {
-                $q->where('first_parent_mail', 'like', '%' . $this->filters['parent_mail'] . '%')
-                    ->orWhere('second_parent_mail', 'like', '%' . $this->filters['parent_mail'] . '%');
-            });
-        }
-
-        if (!empty($this->filters['parent_number'])) {
-            $query->where(function ($q) {
-                $q->where('first_parent_number', 'like', '%' . $this->filters['parent_number'] . '%')
-                    ->orWhere('second_parent_number', 'like', '%' . $this->filters['parent_number'] . '%');
-            });
-        }
-
-        if (!empty($this->filters['pupil_status'])) {
-            $pupilStatus = $this->filters['pupil_status'];
-
-            $query->where(function ($query) use ($pupilStatus) {
-                $now = Carbon::now();
-
-                if (in_array('active', $pupilStatus)) {
-                    // Add condition for 'active', including cases where contract_end_date is null
-                    $query->orWhere(function ($query) use ($now) {
-                        $query->whereDate('contract_start_date', '<=', $now)
-                            ->where(function ($query) use ($now) {
-                                $query->whereDate('contract_end_date', '>=', $now)
-                                    ->orWhereNull('contract_end_date');
-                            });
-                    });
-                }
-
-                if (in_array('past', $pupilStatus)) {
-                    // Add condition for 'past'
-                    $query->orWhere(function ($query) use ($now) {
-                        $query->whereDate('contract_end_date', '<', $now);
-                    });
-                }
-
-                if (in_array('future', $pupilStatus)) {
-                    // Add condition for 'future'
-                    $query->orWhere(function ($query) use ($now) {
-                        $query->whereDate('contract_start_date', '>', $now);
-                    });
-                }
-            });
-        }
-
-        if (!empty($this->filters['additional_information'])) {
-            $query->where('additional_information', 'like', '%' . $this->filters['additional_information'] . '%');
-        }
-
-        if (!empty($this->filters['contract_end_date'])) {
-            $query->where('contract_end_date', $this->filters['contract_end_date']);
-        }
-
-//        if (!empty($this->filters['yearly_payment_from'])) {
-//            $query->where('yearly_payment', '>=', $this->filters['yearly_payment_from']);
-//        }
-//
-//        if (!empty($this->filters['yearly_payment_to'])) {
-//            $query->where('yearly_payment', '<=', $this->filters['yearly_payment_to']);
-//        }
-
-        if (!empty($this->filters['currency'])) {
-            $query->whereIn('currency', $this->filters['currency']);
-        }
-
-        if (!empty($this->filters['parent_account'])) {
-            $query->where('parent_account', $this->filters['parent_account']);
-        }
-
-        if (!empty($this->filters['income_account'])) {
-            $query->where('income_account', $this->filters['income_account']);
-        }
-
-        if (!empty($this->filters['payment_quantity'])) {
-            $query->where('payment_quantity', $this->filters['payment_quantity']);
-        }
-
-        return $query->get();
+        return $this->students->map(function ($student) {
+            return [
+                'name' => $student->name,
+                'private_number' => $student->private_number,
+                'grade' => $student->grade,
+                'group' => $student->group,
+                'sector' => $student->sector,
+                'additional_information' => $student->additional_information,
+                'contract_start_date' => $student->contract_start_date,
+                'contract_end_date' => $student->contract_end_date,
+                'currency' => $student->currency->code, // Assuming currency has a `name` column
+                'parent_account' => $student->parent_account,
+                'income_account' => $student->income_account,
+                'payment_quantity' => $student->payment_quantity,
+                'yearly_fee' => $student->yearly_fee,
+                'custom_discount' => $student->custom_discount,
+                'email_notifications' => $student->email_notifications,
+                'mobile_notifications' => $student->mobile_notifications,
+                'first_parent_name' => $student->first_parent_name,
+                'first_parent_mail' => $student->first_parent_mail,
+                'first_parent_number' => $student->first_parent_number,
+                'second_parent_name' => $student->second_parent_name,
+                'second_parent_mail' => $student->second_parent_mail,
+                'second_parent_number' => $student->second_parent_number,
+            ];
+        });
     }
 
     public function headings(): array
     {
         return [
-            'name',
-            'private_number',
-            'grade',
-            'group',
-            'sector',
-            'first_parent_name',
-            'first_parent_mail',
-            'first_parent_number',
-            'second_parent_name',
-            'second_parent_mail',
-            'second_parent_number',
-            'additional_information',
-            'contract_start_date',
-            'contract_end_date',
-            'yearly_payment',
-            'monthly_payment',
-            'currency',
-            'parent_account',
-            'income_account',
-            'payment_quantity',
-            'custom_discount',
-            'email_notifications',
-            'mobile_notifications'
+                'name',
+                'private_number',
+                'grade',
+                'group',
+                'sector',
+                'additional_information',
+                'contract_start_date',
+                'contract_end_date',
+                'currency',
+                'parent_account',
+                'income_account',
+                'payment_quantity',
+                'yearly_fee',
+                'email_notifications',
+                'first_parent_name',
+                'first_parent_mail',
+                'first_parent_number',
+                'second_parent_name',
+                'second_parent_mail',
+                'second_parent_number',
         ];
     }
 }

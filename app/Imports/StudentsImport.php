@@ -33,13 +33,13 @@ class StudentsImport implements ToCollection, WithHeadingRow
                 if (isset($row['payment'])) {
                     $paymentService->importPayment($student, $row['payment']);
                 }
-                if ($row['individual_discount']){
+                if (isset($row['individual_discount']) && $row['individual_discount']){
                     $paymentService->importPayment($student, $row['individual_discount'], 3);
                 }
-                if ($row['advance_payment_discount']){
+                if (isset($row['advance_payment_discount']) && $row['advance_payment_discount']){
                     $paymentService->importPayment($student, $row['advance_payment_discount'], 1);
                 }
-                if ($row['new_member_discount']){
+                if (isset($row['new_member_discount']) && $row['new_member_discount']){
                     $paymentService->importPayment($student, $row['new_member_discount'], 2);
                 }
             }
