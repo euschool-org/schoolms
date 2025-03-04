@@ -42,9 +42,11 @@ class UccController extends Controller
             if ($student == null){
                 $xml->addChild('status',1);
             } else {
-                $debt = $this->getDebt($student);
+                $debt = $student->currentFee();
                 $xml->addChild('status', 0);
-                $xml->addChild('debt', $debt['amount']);
+                $xml->addChild('debt', $debt['debt']);
+                $xml->addChild('next', $debt['next']);
+                $xml->addChild('total', $debt['amount']);
                 $xml->addChild('date', $debt['date']);
                 $xml->addChild('name', $student->name);
             }
@@ -68,18 +70,6 @@ class UccController extends Controller
                 $xml->addChild('status', $statusCode);
             }
         }
-    }
-
-    private function getDebt($student)
-    {
-        $fee = $student->currentFee();
-        $amount = $student->eligibleToDiscount() ? $fee['amount'] - $student->yearlyFee() * 0.05 : $fee['amount'];
-        $date = $fee['date'];
-
-        return [
-            'amount' => ($student->last_year_balance + $amount - $student->year_payment()) * $student->currency->rate_to_gel,
-            'date' => $date,
-        ];
     }
 
     private function registerPayment($student, $paymentId, $amount)

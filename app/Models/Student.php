@@ -101,38 +101,30 @@ class Student extends Model
 
     public function currentFee()
     {
-        $startDate = now()->subYears(now()->month <= 6 ? 1 : 0)->startOfYear()->setMonth(7)->startOfMonth();
-        $endDate = now();
-        $oneYearAfterStart = $startDate->copy()->addYear();
-
-        // Get the first extra record after endDate but within allowed range
-        $extraRecord = MonthlyFee::where('month', '>', $endDate)
-            ->where('month', '<=', $oneYearAfterStart)
+        $extraRecord = $this->monthly_fees()->where('month', '>', now())
             ->orderBy('month')
             ->first();
 
-        // Get the last month value (either last in range or extra record)
-        $lastMonthRecord = MonthlyFee::whereBetween('month', [$startDate, $endDate])
-            ->orderByDesc('month')
-            ->first();
-
-        $lastMonthValue = $extraRecord ? $extraRecord->month : ($lastMonthRecord ? $lastMonthRecord->month : null);
-
-        // Fetch the sum directly instead of using loadSum()
         $currentFee = $this->monthly_fees()
-            ->whereBetween('month', [$startDate, $endDate])
-            ->when($extraRecord, fn($query) => $query->orWhere('month', $extraRecord->month))
+            ->where('school_year', 'LIKE','%'.($this->balance_change_year + 1).'%')
+            ->where('month', '<=', now())
             ->sum('fee');
 
+        $fee = $extraRecord->fee ?? 0;
+        $debt = $currentFee + $this->last_year_balance - $this->year_payment();
+        $next = $this->eligibleToDiscount() ? $fee * 0.95 : $fee;
+
         return [
-            'amount' => $currentFee,
-            'date' => $lastMonthValue,
+            'debt' => $debt,
+            'next' => $next,
+            'amount' => ($debt + $next) > 0 ? $debt + $next : 0,
+            'date' => $extraRecord->month ?? null,
         ];
     }
-    public function yearlyFee($invoice = false)
+    public function yearlyFee($advance = false)
     {
         // Determine the school year based on the invoice flag
-        $schoolYear = $invoice
+        $schoolYear = $advance
             ? now()->year . '-' . (now()->year + 1)
             : (now()->month > 6 ? now()->year . '-' . (now()->year + 1) : (now()->year - 1) . '-' . now()->year);
 
@@ -144,7 +136,36 @@ class Student extends Model
 
     public function eligibleToDiscount()
     {
-        return true;
+        $schoolYear = now()->year . '-' . (now()->year + 1);
+        $month = now()->month;
+        $mayFee = $this->monthly_fees()->where('month', now()->year . '-05-31')->first()->fee;
+        if ($month < 6 || $month > 9 || $this->payment_quantity($schoolYear) != 2 || !$mayFee){
+            return false;
+        }
+        $startDate = now()->month(6)->startOfMonth();
+        $endDate = now()->month(6)->endOfMonth();
+        $this->loadSum(['payments as june_payments' => function ($query) use ($startDate, $endDate) {
+            $query->whereBetween('payment_date', [$startDate, $endDate]);
+        }], 'nominal_amount');
+        if ($month > 6) {
+            return $mayFee + $this->last_year_balance + $this->june_payments < 0 ;
+        } else {
+            $this->loadSum(['payments as year_payments' => function ($query){
+                $query->whereBetween('payment_date', [now()->subYear()->month(7)->startOfMonth(), now()->month(5)->endOfMonth()]);
+            }], 'nominal_amount');
+
+            return $this->yearlyFee() + $this->last_year_balance + $mayFee - $this->year_payments < 0 ;
+        }
+
+    }
+
+    public function payment_quantity($schoolYear)
+    {
+        $this->loadCount(['monthly_fees as payment_quantity' => function ($query) use ($schoolYear) {
+            $query->where('school_year', $schoolYear);
+        }]);
+
+        return $this->payment_quantity;
     }
     public function year_payment()
     {
