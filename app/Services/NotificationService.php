@@ -15,51 +15,38 @@ class NotificationService
         // Define date ranges for payments and fees
         $startDatePayments = now()->setMonth(7)->startOfMonth()->subYears(now()->month <= 6 ? 1 : 0);
         $endDatePayments = now()->setMonth(6)->endOfMonth()->addYears(now()->month > 6 ? 1 : 0);
+        $schoolYear = $startDatePayments->year . '-' . $endDatePayments->year;
 
-        $firstHalfFeeStart = now()->subYears(now()->month <= 6 ? 1 : 0)->startOfYear()->setMonth(9)->startOfMonth();
-        $firstHalfFeeEnd = now()->addYears(now()->month > 6 ? 1 : 0)->startOfYear()->endOfMonth();
-
-        $secondHalfFeeStart = now()->startOfYear()->addYears(now()->month > 6 ? 1 : 0)->endOfMonth();
-        $secondHalfFeeEnd = now()->startOfYear()->addYears(now()->month > 6 ? 1 : 0)->setMonth(6)->endOfMonth();
-
-        // Start the query with the mandatory filter
-        $query = Student::query();
-
-        // Add sums for payments and fees
-        $query->withSum(['payments as yearly_payments_sum' => function ($query) use ($startDatePayments, $endDatePayments) {
-            $query->whereBetween('payment_date', [$startDatePayments, $endDatePayments])->where('payment_type', 0);
+        $query = Student::query()->withSum(['payments as yearly_payments_sum' => function ($query) use ($startDatePayments, $endDatePayments) {
+            $query->whereBetween('payment_date', [$startDatePayments, $endDatePayments]);
         }], 'nominal_amount')
-            ->withSum(['payments as yearly_discounts_sum' => function ($query) use ($startDatePayments, $endDatePayments) {
-                $query->whereBetween('payment_date', [$startDatePayments, $endDatePayments])->where('payment_type', 3);
-            }], 'nominal_amount')
-            ->withSum(['monthly_fees as first_half_fee' => function ($query) use ($firstHalfFeeStart, $firstHalfFeeEnd) {
-                $query->whereBetween('month', [$firstHalfFeeStart, $firstHalfFeeEnd]);
+            ->withSum(['monthly_fees as yearly_fee' => function ($query) use ($schoolYear) {
+                $query->where('school_year', $schoolYear);
             }], 'fee')
-            ->withSum(['monthly_fees as second_half_fee' => function ($query) use ($secondHalfFeeStart, $secondHalfFeeEnd) {
-                $query->whereBetween('month', [$secondHalfFeeStart, $secondHalfFeeEnd]);
-            }], 'fee');
+            ->withCount(['monthly_fees as payment_quantity' => function ($query) use ($schoolYear) {
+                $query->where('school_year', $schoolYear);
+            }]);
 
         $query->where('email_notifications', 1)->having(function ($q) use ($selectedGroups) {
             if (in_array('prev_year', $selectedGroups)) {
-                $q->havingRaw('(last_year_balance - yearly_payments_sum) > 0');
+                $q->havingRaw('(COALESCE(last_year_balance, 0) - COALESCE(yearly_payments_sum, 0)) > 0');
             }
             if (in_array('semester_1', $selectedGroups)) {
-                $q->orHavingRaw('(last_year_balance + first_half_fee - yearly_payments_sum) > 0');
+                $q->orHavingRaw('(COALESCE(last_year_balance, 0) + (COALESCE(yearly_fee, 0)/2) - COALESCE(yearly_payments_sum, 0)) > 0');
             }
             if (in_array('semester_2', $selectedGroups)) {
-                $q->orHavingRaw('(last_year_balance + first_half_fee + second_half_fee - yearly_payments_sum) > 0');
+                $q->orHavingRaw('(COALESCE(last_year_balance, 0) + COALESCE(yearly_fee, 0) - COALESCE(yearly_payments_sum, 0)) > 0');
             }
             if (in_array('monthly_reminder', $selectedGroups)) {
-                $q->orHavingRaw('payment_quantity = 10');
+                $q->orHavingRaw('COALESCE(payment_quantity, 0) = 10');
             }
         });
-
+        dd($query->get());
         $query->where(function ($q) use ($sendEmail, $sendSms) {
             if ($sendEmail) {
                 $q->whereNotNull('first_parent_mail')
                     ->orWhereNotNull('second_parent_mail');
             }
-
             if ($sendSms) {
                 $q->orWhere(function ($q2) {
                     $q2->whereNotNull('first_parent_number')
@@ -68,7 +55,6 @@ class NotificationService
             }
         });
 
-        // Execute and return the result
         return $query->get();
     }
 
