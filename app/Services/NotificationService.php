@@ -41,7 +41,7 @@ class NotificationService
                 $q->orHavingRaw('COALESCE(payment_quantity, 0) = 10');
             }
         });
-        dd($query->get());
+
         $query->where(function ($q) use ($sendEmail, $sendSms) {
             if ($sendEmail) {
                 $q->whereNotNull('first_parent_mail')
