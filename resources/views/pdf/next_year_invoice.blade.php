@@ -154,10 +154,10 @@
         <tr>
             <td class="text-center">2</td>
             <td class="text-center">
-                {{($student->year_payment() > $student->last_year_balance + $student->yearlyFee()) ? 'გადახდა' : 'დავალიანება'}}
+                {{($student->yearly_payments_sum > $student->last_year_balance + $student->yearlyFee()) ? 'გადახდა' : 'დავალიანება'}}
             </td>
             <td class="text-right font-bold">
-                {{abs($student->year_payment() - $student->last_year_balance - $student->yearlyFee())}}
+                {{abs($student->yearly_payments_sum - $student->last_year_balance - $student->yearlyFee())}}
             </td>
         </tr>
         @if($student->individual_discount)
