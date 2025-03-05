@@ -56,12 +56,7 @@ class SendPdfMail extends Mailable
         if (!(isset($this->data['attach_invoice']) && $this->data['attach_invoice'])){
             return [];
         }
-        if (now()->month >= 7){
-            $pdf = Pdf::loadView('pdf.current_year_invoice', ['data' => $this->data, 'student' => $this->student]);
-        } else {
-            $pdf = Pdf::loadView('pdf.next_year_invoice', ['data' => $this->data, 'student' => $this->student]);
-        }
-
+        $pdf = Pdf::loadView('pdf.next_year_invoice', ['data' => $this->data, 'student' => $this->student]);
         return [
             Attachment::fromData(fn () => $pdf->output(), 'invoice.pdf')
                 ->withMime('application/pdf'),

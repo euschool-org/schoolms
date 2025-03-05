@@ -20,6 +20,9 @@ class NotificationService
         $query = Student::query()->withSum(['payments as yearly_payments_sum' => function ($query) use ($startDatePayments, $endDatePayments) {
             $query->whereBetween('payment_date', [$startDatePayments, $endDatePayments]);
         }], 'nominal_amount')
+            ->withSum(['payments as individual_discount' => function ($query){
+                $query->where('payment_type',3)->whereBetween('payment_date', [now()->startOfYear(), now()->endOfYear()]);
+            }], 'nominal_amount')
             ->withSum(['monthly_fees as yearly_fee' => function ($query) use ($schoolYear) {
                 $query->where('school_year', $schoolYear);
             }], 'fee')
