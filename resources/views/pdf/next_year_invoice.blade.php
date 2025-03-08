@@ -101,10 +101,8 @@
         }
 
 
-        .instruction-title {
-            font-size: 16px;
-            font-weight: bold;
-            color: black;
+        .instruction {
+            margin-top: 30px;
         }
 
         .signature-name {
@@ -223,38 +221,38 @@
 
     <div class="notes">
         @if($student->next_payment_quantity == 1)
-        <h3>სწავლის საფასურის 100%-ის გადახდის ვადაა 31 მაისი.</h3>
-        <h3>100% of the tuition fee must be paid until 31st of May.</h3>
+        <div>სწავლის საფასურის 100%-ის გადახდის ვადაა 31 მაისი.</div>
+        <div>100% of the tuition fee must be paid until 31st of May.</div>
         @elseif($student->next_payment_quantity == 2)
             @if(now()->month > 6 && !$student->eligibleToDiscount())
-            <h3>
+            <div>
                 სწავლის საფასურის 50%-ის გადახდის ვადაა 31 მაისი, დარჩენილი 50%-ის – 15 დეკემბერი.
-            </h3>
-            <h3>
+            </div>
+            <div>
                 50% of the tuiton fee must be paid until 31st of May, the remaining 50% - until 15th of December.
-            </h3>
+            </div>
             @else
-            <h3>
+            <div>
                 სწავლის საფასურის 50%-ის გადახდის ვადაა 31 მაისი, დარჩენილი 50%-ის – 15 დეკემბერი.<br>
                 (არჩევითი 5%-იანი ფასდაკლება: როდესაც პირველი ნახევარი გადახდილია დროულად, სრული თანხის მხოლოდ 45% შეგიძლიათ გადაიხადოთ 1-ელ აგვისტომდე.)
-            </h3>
-            <h3>
+            </div>
+            <div>
                 50% of the tuiton fee must be paid until 31st of May, the remaining 50% - until 15th of December.<br>
                 (Optional 5% discount: if the first 50% is paid in due time, only the 45% of the annual tuition fee can be paid no later than 1st of August.)
-            </h3>
+            </div>
             @endif
         @elseif($student->next_payment_quantity == 10)
-        <h3>
+        <div>
             სწავლის საფასურის 1/10 გადახდილი უნდა იქნას ყოველი თვის ბოლოს, სექტემბრიდან ივნისის ჩათვლით.
-        </h3>
-        <h3>
+        </div>
+        <div>
             1/10 of the annual tuition fee must be paid at the end of each month, from September to June.
-        </h3>
+        </div>
         @endif
     </div>
 
     <div class="instruction">
-        <span class="instruction-title">თანხის გადასახდელად შეგიძლიათ გამოიყენოთ ბანკის მობილური აპლიკაცია/სწრაფი გადახდის ტერმინალი. გადახდაში აირჩიეთ <b>განათლება</b>, მოძებნეთ <b>ევროპული სკოლა</b> და მიუთითეთ მოსწავლის იდენტიფიკატორი.
+        <span>თანხის გადასახდელად შეგიძლიათ გამოიყენოთ ბანკის მობილური აპლიკაცია/სწრაფი გადახდის ტერმინალი. გადახდაში აირჩიეთ <b>განათლება</b>, მოძებნეთ <b>ევროპული სკოლა</b> და მიუთითეთ მოსწავლის იდენტიფიკატორი.
             <br>
             To pay the amount, you can use the bank's mobile application/Paybox. In Payment select <b>Education</b>, search for <b>European School</b> and enter the student identifier.
         </span>
