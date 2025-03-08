@@ -256,7 +256,8 @@
     <div class="instruction">
         <span class="instruction-title">თანხის გადასახდელად შეგიძლიათ გამოიყენოთ ბანკის მობილური აპლიკაცია/სწრაფი გადახდის ტერმინალი. გადახდაში აირჩიეთ <b>განათლება</b>, მოძებნეთ <b>ევროპული სკოლა</b> და მიუთითეთ მოსწავლის იდენტიფიკატორი.
             <br>
-To pay the amount, you can use the bank's mobile application/Paybox. In Payment select <b>Education</b>, search for <b>European School</b> and enter the student identifier.</span><br>
+            To pay the amount, you can use the bank's mobile application/Paybox. In Payment select <b>Education</b>, search for <b>European School</b> and enter the student identifier.
+        </span>
     </div>
     <div class="signature-container">
         <div class="signature-info">
