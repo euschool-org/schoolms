@@ -38,7 +38,7 @@ class NewMemberDiscount extends Command
             ->withSum(['payments as apr_may_calc' => function ($query) {
                 $query->whereBetween('payment_date', [
                     now()->startOfYear()->setMonth(4)->startOfMonth(),
-                    now()->startOfYear()->setMonth(5)->endOfMonth()
+                    now()->startOfYear()->setMonth(5)->setDay(15)->endOfDay(),
                 ]);
             }], 'nominal_amount')
             ->get();

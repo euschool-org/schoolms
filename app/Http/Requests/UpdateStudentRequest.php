@@ -46,6 +46,7 @@ class UpdateStudentRequest extends FormRequest
             'second_parent_mail' => 'nullable|email|max:255',
             'second_parent_number' => 'nullable|numeric',
             'email_notifications' => 'nullable|boolean',
+            'payment_code' => 'nullable|string|max:10|unique:students,payment_code',
         ];
     }
 }
