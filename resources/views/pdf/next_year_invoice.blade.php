@@ -154,7 +154,7 @@
            $nextYearFee = $student->yearlyFee(true);
            $semesterFee = $nextYearFee/2;
            $balance = $student->yearly_payments_sum - $student->last_year_balance - $student->yearlyFee();
-           $firstHalfBalance = min($semesterFee,max($semesterFee - $balance - $discount, 0));
+           $firstHalfBalance = max($semesterFee - $balance - $discount, 0);
            $secondHalfBalance = min($semesterFee, $nextYearFee - $balance - $discount);
         @endphp
         <tbody>
@@ -170,7 +170,7 @@
                 {{($balance > 0) ? 'გადახდა' : 'დავალიანება'}}
             </td>
             <td class="text-right font-bold">
-                {{abs($balance) . ' ' . $symbol}}
+                {{-$balance . ' ' . $symbol}}
             </td>
             <td class="text-right font-bold">
             </td>
@@ -182,7 +182,7 @@
                 ფასდაკლება
             </td>
             <td class="text-right font-bold">
-                {{$student->individual_discount . ' ' . $symbol}}
+                -{{$student->individual_discount . ' ' . $symbol}}
             </td>
             <td class="text-right font-bold">
 
