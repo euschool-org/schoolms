@@ -21,6 +21,9 @@
                         <!-- Button 3 -->
                         <x-checkbox-blue-button item="semester_2" label="Second Semester Debt"/>
 
+                        <!-- Button 3 -->
+                        <x-checkbox-blue-button item="next_year" label="Next Year Debt"/>
+
                         <!-- Button 4 -->
                         <x-checkbox-blue-button item="monthly_reminder" label="Monthly Reminder"/>
 

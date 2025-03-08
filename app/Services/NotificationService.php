@@ -21,13 +21,16 @@ class NotificationService
             $query->whereBetween('payment_date', [$startDatePayments, $endDatePayments]);
         }], 'nominal_amount')
             ->withSum(['payments as individual_discount' => function ($query){
-                $query->where('payment_type',3)->whereBetween('payment_date', [now()->startOfYear(), now()->endOfYear()]);
+                $query->where('payment_type',3)->whereBetween('payment_date', [now()->setMonth(7)->startOfMonth(), now()->addYear()->setMonth(6)->endOfMonth()]);
             }], 'nominal_amount')
             ->withSum(['monthly_fees as yearly_fee' => function ($query) use ($schoolYear) {
                 $query->where('school_year', $schoolYear);
             }], 'fee')
             ->withCount(['monthly_fees as payment_quantity' => function ($query) use ($schoolYear) {
                 $query->where('school_year', $schoolYear);
+            }])
+            ->withCount(['monthly_fees as next_payment_quantity' => function ($query) use ($schoolYear) {
+                $query->where('school_year', now()->year . '-' . (now()->year+1));
             }]);
 
         $query->where('email_notifications', 1)->having(function ($q) use ($selectedGroups) {
@@ -42,6 +45,8 @@ class NotificationService
             }
             if (in_array('monthly_reminder', $selectedGroups)) {
                 $q->orHavingRaw('COALESCE(payment_quantity, 0) = 10');
+            } else {
+                $q->HavingRaw('COALESCE(next_payment_quantity, 0) != 10');
             }
         });
 

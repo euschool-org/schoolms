@@ -142,8 +142,8 @@ class Student extends Model
         if ($month < 6 || $month > 9 || $this->payment_quantity($schoolYear) != 2 || !$mayFee){
             return false;
         }
-        $startDate = now()->month(6)->startOfMonth();
-        $endDate = now()->month(6)->endOfMonth();
+        $startDate = now()->setMonth(6)->startOfMonth();
+        $endDate = now()->setMonth(6)->endOfMonth();
         $this->loadSum(['payments as june_payments' => function ($query) use ($startDate, $endDate) {
             $query->whereBetween('payment_date', [$startDate, $endDate]);
         }], 'nominal_amount');

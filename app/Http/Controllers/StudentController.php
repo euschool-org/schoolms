@@ -181,7 +181,7 @@ class StudentController extends Controller
         $schoolYear = $request->input("school_year");
         $quantity = $request->input("quantity");
         if ($quantity == MonthlyFee::where('school_year', $schoolYear)->count()) {
-            return true;
+            return redirect()->back()->with('success', __('Fees updated successfully.'));
         }
 
         MonthlyFee::where('school_year', $schoolYear)->delete();
