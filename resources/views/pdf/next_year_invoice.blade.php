@@ -143,21 +143,33 @@
             <th>#</th>
             <th>Tuition Fee for {{$student->name}}<br>({{now()->year}}-{{now()->addYear()->year}} Academic Year)</th>
             <th>Semester I</th>
+            <th>Semester 2</th>
         </tr>
         </thead>
+        @php
+        $discount = $student->individual_discount ?? 0;
+        $nextYearFee = $student->yearlyFee(true);
+        $semesterFee = $nextYearFee/2;
+        $balance = $student->yearly_payments_sum - $student->last_year_balance - $student->yearlyFee();
+        $firstHalfBalance = max($semesterFee - $balance - $discount, 0);
+        $secondHalfBalance = min($semesterFee, $nextYearFee - $balance - $discount);
+        @endphp
         <tbody>
         <tr>
             <td class="text-center">1</td>
             <td class="text-center">სწავლის საფასური / Tuition Fee</td>
-            <td class="text-right font-bold">{{$student->yearlyFee(true)}}</td>
+            <td class="text-right font-bold">{{$semesterFee}}</td>
+            <td class="text-right font-bold">{{$semesterFee}}</td>
         </tr>
         <tr>
             <td class="text-center">2</td>
             <td class="text-center">
-                {{($student->yearly_payments_sum > $student->last_year_balance + $student->yearlyFee()) ? 'გადახდა' : 'დავალიანება'}}
+                {{($balance > 0) ? 'გადახდა' : 'დავალიანება'}}
             </td>
             <td class="text-right font-bold">
-                {{abs($student->yearly_payments_sum - $student->last_year_balance - $student->yearlyFee())}}
+                {{abs($balance)}}
+            </td>
+            <td class="text-right font-bold">
             </td>
         </tr>
         @if($student->individual_discount)
@@ -169,8 +181,46 @@
             <td class="text-right font-bold">
                 {{$student->individual_discount}}
             </td>
+            <td class="text-right font-bold">
+
+            </td>
         </tr>
         @endif
+        <tr>
+            <td class="text-center"></td>
+            <td class="text-center font-bold">
+                ჯამი
+            </td>
+            <td class="text-right font-bold">
+                {{$firstHalfBalance}}
+            </td>
+            <td class="text-right font-bold">
+                {{$secondHalfBalance}}
+            </td>
+        </tr>
+        <tr>
+            <td class="text-center">4</td>
+            <td class="text-right font-bold">
+                ჯამი
+            </td>
+            <td class="text-right font-bold">
+                {{$firstHalfBalance}}
+            </td>
+            <td class="text-right font-bold">
+                {{$secondHalfBalance}}
+            </td>
+        </tr>
+        <tr>
+            <td class="text-center">5</td>
+            <td class="text-center font-bold">
+                სრული თანხა
+            </td>
+            <td class="text-right">
+            </td>
+            <td class="text-right font-bold">
+                {{$nextYearFee - $balance - $discount}}
+            </td>
+        </tr>
         </tbody>
     </table>
 

@@ -58,24 +58,19 @@ class NotificationController extends Controller
             $quota = $this->getRemainingQuotaForDay($currentDay);
 
             if ($quota <= 0) {
-                // Move to the next day if quota is full
                 $currentDay = $currentDay->addDay();
                 $quota = $this->getRemainingQuotaForDay($currentDay);
             }
 
-            // Slice the chunk if it exceeds the remaining quota
             $emailsToSend = $chunk->take($quota);
             $remainingEmails = $chunk->slice($quota);
-            // Schedule emails for the current day
             Queue::later(
                 $currentDay,
                 new SendNotificationJob($emailsToSend, $notificationData, $emailEnabled, $smsEnabled)
             );
 
-            // Update the quota table
             $this->incrementQuotaForDay($currentDay, $emailsToSend->count());
 
-            // Add remaining emails back to the collection for future days
             if ($remainingEmails->isNotEmpty()) {
                 $chunks->prepend($remainingEmails);
             }
