@@ -158,15 +158,15 @@ class StudentService
         }
 
         if ($request->filled('parent_account')) {
-            $query->where('parent_account', $request->input('parent_account'));
+            $query->where('parent_account', 'like', '%'.$request->input('parent_account').'%');
         }
 
         if ($request->filled('income_account')) {
-            $query->where('income_account', $request->input('income_account'));
+            $query->where('income_account', 'like', '%'.$request->input('income_account').'%');
         }
 
         if ($request->filled('payment_quantity')) {
-            $query->where('payment_quantity', $request->input('payment_quantity'));
+            $query->having('payment_quantity', $request->input('payment_quantity'));
         }
 
         if ($request->filled('custom_discount')) {

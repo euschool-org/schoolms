@@ -8,6 +8,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\StudentController;
 use App\Models\Student;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -24,15 +25,11 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return redirect()->route('login');
 });
-
-Route::get('/test', function () {
-    return view('pdf.next_year_invoice', ['student' => Student::find(1)]);
+Route::get('/reset/db', function () {
+    Artisan::call('migrate:fresh', ['--seed' => true]);
+    return 'Database has been refreshed and seeded successfully!';
 });
-Route::get('/test/pdf', function () {
-    $pdf = Pdf::loadView('pdf.next_year_invoice', ['student' => Student::find(1)]);
 
-    return $pdf->download('invoice.pdf');
-});
 
 Route::middleware(['auth', 'verified'])->controller(StudentController::class)->group(function () {
     Route::get('/dashboard', 'dashboard')->name('dashboard');
