@@ -20,6 +20,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        Carbon::setTestNow(Carbon::parse('2025-09-01 00:00:00'));
+//        Carbon::setTestNow(Carbon::parse('2025-09-01 00:00:00'));
     }
 }
