@@ -36,6 +36,7 @@ class StudentController extends Controller
         'yearly_5p_discounts_sum',
         'yearly_10p_discounts_sum',
         'yearly_payments_sum',
+        'final_balance',
         'debt',
         'first_half',
         'second_half',

@@ -195,6 +195,8 @@ class StudentService
 
             $yearly_payment_sum = max($yearly_payment_sum - $student->first_half_fee,0);
             $student->second_half = $student->second_half_fee - $yearly_payment_sum;
+
+            $student->final_balance = $student->first_half + $student->second_half + $student->debt;
         });
         // Return the students and total count
         $data['students'] = $students;
