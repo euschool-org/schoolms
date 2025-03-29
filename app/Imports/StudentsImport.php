@@ -71,6 +71,7 @@ class StudentsImport implements ToCollection, WithHeadingRow
             'second_parent_mail' => 'nullable|email|max:255',
             'second_parent_number' => 'nullable|numeric|digits_between:1,9',
             'email_notifications' => 'nullable|boolean',
+            'new_student_discount' => 'nullable|boolean',
             'mobile_notifications' => 'nullable|boolean',
             'last_year_balance' => 'nullable|numeric',
             'balance_change_year' => 'nullable|numeric',
