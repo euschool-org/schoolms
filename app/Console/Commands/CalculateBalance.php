@@ -39,7 +39,7 @@ class CalculateBalance extends Command
 
         foreach ($students as $student) {
             if ($student->balance_change_year != now()->year) {
-                $student->last_year_balance  = $student->yearlyFee() + $student->last_year_balance - $student->total_payments;
+                $student->last_year_balance  = $student->lastYearFee() + $student->last_year_balance - $student->total_payments;
                 $student->balance_change_year = now()->year;
                 $student->current_grade = $student->grade_label;
                 $student->save();

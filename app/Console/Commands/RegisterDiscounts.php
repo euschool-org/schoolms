@@ -29,10 +29,10 @@ class RegisterDiscounts extends Command
     public function handle()
     {
         $now = now();
-//        if (!($now->month === 9 && $now->day === 1 && $now->hour === 0)) {
-//            $this->info('Discount Task skipped: Outside the allowed time range.');
-//            return CommandAlias::SUCCESS;
-//        }
+        if (!($now->month === 9 && $now->day === 1 && $now->hour === 0)) {
+            $this->info('Discount Task skipped: Outside the allowed time range.');
+            return CommandAlias::SUCCESS;
+        }
         $students = Student::whereNot(function ($query) {
             $query->where(function ($query) {
                 $query->where('sector', 'ქართული')->where('current_grade', 12);

@@ -134,6 +134,17 @@ class Student extends Model
             ->sum('fee');
     }
 
+    public function lastYearFee($advance = false)
+    {
+        // Determine the school year based on the invoice flag
+        $schoolYear = (now()->year-1) . '-' . now()->year;
+
+        // Directly fetch the sum instead of using loadSum()
+        return $this->monthly_fees()
+            ->where('school_year', $schoolYear)
+            ->sum('fee');
+    }
+
     public function eligibleToDiscount()
     {
         $schoolYear = now()->year . '-' . (now()->year + 1);
