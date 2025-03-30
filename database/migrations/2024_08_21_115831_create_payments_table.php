@@ -18,7 +18,7 @@ return new class extends Migration
             $table->dateTime('payment_date');
             $table->decimal('payment_amount');
             $table->decimal('nominal_amount');
-            $table->decimal('percentage');
+            $table->decimal('percentage')->nullable();
             $table->decimal('currency_rate', 8, 4);
             $table->string('payer_name', 191)->nullable();
             $table->integer('payment_type')->default(0);

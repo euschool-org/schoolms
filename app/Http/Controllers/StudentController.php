@@ -82,6 +82,7 @@ class StudentController extends Controller
                     $query->orderBy('month', 'asc');
                 },
             ]);
+            $student->final_balance = $student->last_year_balance + $student->yearlyFee() - $student->year_payment();
             $update = true;
         } else {
             $student = new Student([

@@ -33,12 +33,16 @@ class RegisterDiscounts extends Command
             $this->info('Discount Task skipped: Outside the allowed time range.');
             return CommandAlias::SUCCESS;
         }
-        $students = Student::whereNot(function ($query) {
-            $query->where(function ($query) {
-                $query->where('sector', 'ქართული')->where('current_grade', 12);
-            })->orWhere(function ($query) {
-                $query->whereIn('sector', ['IB', 'ASAS'])->whereIn('current_grade', [11, 12]);
-            });
+        $students = Student::whereNotIn('id', function ($query) {
+            $query->select('id')
+                ->from('students')
+                ->where(function ($query) {
+                    $query->where('sector', 'ქართული')
+                        ->where('current_grade', 12);
+                })->orWhere(function ($query) {
+                    $query->whereIn('sector', ['IB', 'ASAS'])
+                        ->whereIn('current_grade', [11, 12]);
+                });
         })->whereDoesntHave('payments', function ($query) {
             $query->whereYear('payment_date', now()->year)->where('payment_type', '>', 0);
             })->with('currency')->withSum(['payments as before_calc' => function ($query) {
@@ -58,7 +62,8 @@ class RegisterDiscounts extends Command
         foreach ($students as $student) {
             $balance_before_may = -$student->last_year_balance - $student->before_calc;
             $balance_till_august = -$student->last_year_balance + $student->after_calc;
-            if ($balance_before_may > ($student->year_fee * 0.5) && $balance_till_august > ($student->year_fee * 0.95)) {
+
+            if ($balance_before_may >= ($student->year_fee * 0.5) && $balance_till_august >= ($student->year_fee * 0.95)) {
                 Payment::create([
                     'student_id' => $student->id,
                     'payment_date' => now()->setMonth(9)->startOfMonth(),

@@ -28,6 +28,9 @@ class NewMemberDiscount extends Command
     public function handle()
     {
         $students = Student::where('new_student_discount', 1)
+            ->whereDoesntHave('payments', function ($query) {
+                $query->where('payment_type',2)->where('payment_date', '>', now()->startOfYear());
+            })
             ->withSum(['monthly_fees as year_fee' => function ($query) {
                 $query->where('school_year', now()->year . '-' . (now()->year + 1));
             }], 'fee')

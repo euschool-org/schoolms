@@ -30,6 +30,11 @@ Route::get('/reset/db', function () {
     return 'Database has been refreshed and seeded successfully!';
 });
 
+Route::get('/discount', function () {
+    Artisan::call('app:register-discounts');
+    return 'Discount';
+});
+
 
 Route::middleware(['auth', 'verified'])->controller(StudentController::class)->group(function () {
     Route::get('/dashboard', 'dashboard')->name('dashboard');

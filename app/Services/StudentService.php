@@ -188,15 +188,15 @@ class StudentService
             $total_discounts = $student->yearly_5p_discounts_sum + $student->yearly_10p_discounts_sum + $student->yearly_individual_discounts_sum;
             $yearly_payment_sum = $student->yearly_payments_sum + $total_discounts ?? 0;
 
-            $student->debt = max($student->last_year_balance - $yearly_payment_sum, 0);
+            $student->debt = max(round($student->last_year_balance - $yearly_payment_sum,2), 0);
 
             $yearly_payment_sum = max($yearly_payment_sum - $student->last_year_balance,0);
-            $student->first_half =max($student->first_half_fee - $yearly_payment_sum, 0);
+            $student->first_half = max(round($student->first_half_fee - $yearly_payment_sum,2), 0);
 
             $yearly_payment_sum = max($yearly_payment_sum - $student->first_half_fee,0);
-            $student->second_half = $student->second_half_fee - $yearly_payment_sum;
+            $student->second_half = round($student->second_half_fee - $yearly_payment_sum,2);
 
-            $student->final_balance = $student->first_half + $student->second_half + $student->debt;
+            $student->final_balance = round($student->first_half + $student->second_half + $student->debt,2);
         });
         // Return the students and total count
         $data['students'] = $students;
@@ -214,11 +214,13 @@ class StudentService
         $contractEnd   = Carbon::parse($student->contract_end_date);
 
         $data = [];
+        $schoolYear = [];
         $startSchoolYear = $contractStart->month >= 9 ? $contractStart->year : $contractStart->year - 1;
         $endSchoolYear   = $contractEnd->month >= 9   ? $contractEnd->year   : $contractEnd->year - 1;
 
         for ($year = $startSchoolYear; $year <= $endSchoolYear; $year++) {
             $schoolYear = $year . '-' . ($year + 1);
+            $allSchoolYears[] = $schoolYear;
             $mayFeeDate = Carbon::createFromFormat('Y-m-d', $year . '-05-31');
             $decFeeDate = Carbon::createFromFormat('Y-m-d', $year . '-12-15');
 
@@ -240,10 +242,7 @@ class StudentService
 
         if (!empty($data)) {
             MonthlyFee::where('student_id', $student->id)
-                ->whereNotBetween('month', [
-                    $contractStart->copy()->startOfMonth()->toDateString(),
-                    $contractEnd->copy()->endOfMonth()->toDateString(),
-                ])
+                ->whereNotIn('school_year', $allSchoolYears)
                 ->delete();
 
             MonthlyFee::upsert($data, ['student_id', 'month'], ['school_year', 'updated_at']);

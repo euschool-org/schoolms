@@ -25,6 +25,7 @@
             <x-text-input-label name="payment_code" label="Payment Code" value="{{ $student->payment_code }}" />
         </div>
         <div class="col-span-1">
+            <x-text-input-label name="final_balance" label="Final Balance" value="{{ $student->final_balance }}" />
         </div>
         <div class="col-span-1">
             <x-checkbox-switch name="new_student_discount" label="New Student Discount" value="{{$student->new_student_discount}}"/>
