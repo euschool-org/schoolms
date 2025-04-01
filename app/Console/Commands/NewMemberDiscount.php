@@ -34,15 +34,18 @@ class NewMemberDiscount extends Command
             ->withSum(['monthly_fees as year_fee' => function ($query) {
                 $query->where('school_year', now()->year . '-' . (now()->year + 1));
             }], 'fee')
-            ->withSum(['payments as apr_may_calc' => function ($query) {
+            ->withSum(['monthly_fees as last_fee' => function ($query) {
+                $query->where('school_year', now()->subYear()->year . '-' . now()->year);
+            }], 'fee')
+            ->withSum(['payments as year_payments' => function ($query) {
                 $query->whereBetween('payment_date', [
-                    now()->startOfYear()->setMonth(4)->startOfMonth(),
+                    now()->subYear()->setMonth(7)->startOfMonth(),
                     now()->startOfYear()->setMonth(5)->setDay(15)->endOfDay(),
                 ]);
             }], 'nominal_amount')
             ->get();
         foreach ($students as $student) {
-            if ($student->apr_may_calc >= $student->year_fee * 0.9) {
+            if ($student->year_payments - $student->last_year_balance - $student->last_fee >= $student->year_fee * 0.9) {
                 Payment::create([
                     'student_id' => $student->id,
                     'payment_date' => now()->setMonth(9)->startOfMonth(),

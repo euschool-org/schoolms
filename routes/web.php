@@ -31,7 +31,7 @@ Route::get('/reset/db', function () {
 });
 
 Route::get('/discount', function () {
-    Artisan::call('app:register-discounts');
+    Artisan::call('app:new-member-discount');
     return 'Discount';
 });
 

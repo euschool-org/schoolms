@@ -132,7 +132,7 @@
     </div>
 
     <div class="date">
-        Date: 27.08.2024
+        Date: {{now()->format('d/m/Y')}}
     </div>
 
     <table>

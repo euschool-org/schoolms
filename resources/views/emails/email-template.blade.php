@@ -4,6 +4,6 @@
         <title> {{ $data['subject'] }}</title>
     </head>
     <body>
-    {{ $data['body'] }}
+    <p>{!! nl2br($data['body']) !!}</p>
     </body>
 </html>
