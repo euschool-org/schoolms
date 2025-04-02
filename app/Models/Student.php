@@ -149,9 +149,12 @@ class Student extends Model
     {
         $schoolYear = now()->year . '-' . (now()->year + 1);
         $month = now()->month;
-        $mayFee = $this->monthly_fees()->where('month', now()->year . '-05-31')->first()->fee;
-        if ($month < 6 || $month > 9 || $this->payment_quantity($schoolYear) != 2 || !$mayFee){
+        $mayFeeRec = $this->monthly_fees()->where('month', now()->year . '-05-31')->first();
+
+        if ($month < 6 || $month > 9 || $this->payment_quantity($schoolYear) != 2 || !$mayFeeRec){
             return false;
+        } else {
+            $mayFee = $mayFeeRec->fee ?? 0;
         }
         $startDate = now()->setMonth(6)->startOfMonth();
         $endDate = now()->setMonth(6)->endOfMonth();
