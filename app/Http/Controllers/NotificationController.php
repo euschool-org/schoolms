@@ -58,21 +58,4 @@ class NotificationController extends Controller
         return redirect()->back()->with('success', 'All notifications have been scheduled.');
     }
 
-    private function getRemainingQuotaForDay($day)
-    {
-        // Get the number of scheduled emails for the given day
-        $quota = \DB::table('daily_email_quota')->where('date', $day->toDateString())->value('emails_scheduled');
-
-        return 250 - ($quota ?? 0); // Return remaining quota
-    }
-
-    private function incrementQuotaForDay($day, $count)
-    {
-        // Increment the scheduled emails for the given day
-        DB::table('daily_email_quota')->updateOrInsert(
-            ['date' => $day->toDateString()],
-            ['emails_scheduled' => \DB::raw("emails_scheduled + $count"), 'updated_at' => now()]
-        );
-    }
-
 }

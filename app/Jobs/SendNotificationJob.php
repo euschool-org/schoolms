@@ -33,6 +33,7 @@ class SendNotificationJob implements ShouldQueue
     {
         foreach ($this->chunk as $student) {
             try {
+                Log::error($student);
                 $this->sendEmails($student);
                 $this->sendSms($student);
             } catch (\Exception $e) {
