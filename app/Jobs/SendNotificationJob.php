@@ -37,6 +37,7 @@ class SendNotificationJob implements ShouldQueue
                 $this->sendSms($student);
             } catch (\Exception $e) {
                 Log::error("Failed to process notification for student ID: {$student->id}, Error: {$e->getMessage()}");
+                $this->fail($e);
             }
         }
     }
