@@ -15,7 +15,7 @@ class StudentSeeder extends Seeder
         DB::table('students')->insert([
                 'name' => 'გიორგი გორგაძე',
                 'private_number' => '01010010101',
-                'first_parent_email' => 'datigabashvili@gmail.com',
+                'first_parent_mail' => 'datigabashvili@gmail.com',
                 'first_parent_number' => '558248843',
                 'payment_code' => 'ES35911916'
         ]);
