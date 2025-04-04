@@ -122,7 +122,7 @@
 <div class="container">
     <div class="header">
         <img src="{{ public_path('images/logo.png') }}" alt="Logo">
-        <h1 class="title">INVOICE #***</h1>
+        <h1 class="title">INVOICE {{substr(Str::uuid()->toString(), 0, 8)}}</h1>
     </div>
 
     <div class="company-info">
