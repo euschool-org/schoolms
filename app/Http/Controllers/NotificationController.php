@@ -50,7 +50,7 @@ class NotificationController extends Controller
         $smsEnabled = $request->input('sms_notification');
 
         $chunks = collect($students)->chunk(100); // Process in smaller chunks for queuing efficiency
-        dd($chunks);
+
         foreach ($chunks as $chunk) {
             Queue::push(new SendNotificationJob($chunk, $notificationData, $emailEnabled, $smsEnabled));
         }
