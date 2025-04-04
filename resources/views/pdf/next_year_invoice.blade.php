@@ -167,7 +167,7 @@
         <tr>
             <td class="text-center">2</td>
             <td class="text-center">
-                {{($balance > 0) ? 'გადახდა' : 'დავალიანება'}}
+                {{($balance > 0) ? 'გადახდა / Payment ' : 'დავალიანება / Debt'}}
             </td>
             <td class="text-right font-bold">
                 {{-$balance . ' ' . $symbol}}
@@ -179,7 +179,7 @@
         <tr>
             <td class="text-center">3</td>
             <td class="text-center">
-                ფასდაკლება
+                ფასდაკლება / Discount
             </td>
             <td class="text-right font-bold">
                 -{{$student->individual_discount . ' ' . $symbol}}
@@ -195,7 +195,7 @@
         <tr>
             <td class="text-center">4</td>
             <td class="text-right font-bold">
-                ჯამი
+                ჯამი / Subtotal
             </td>
             <td class="text-right font-bold">
                 {{$firstHalfBalance . ' ' . $symbol}}
@@ -210,7 +210,7 @@
         <tr>
             <td class="text-center">5</td>
             <td class="text-center font-bold" colspan="2">
-                სრული თანხა
+                სრული თანხა / Total
             </td>
             <td class="text-right font-bold" >
                 {{$nextYearFee - $balance - $discount}} {{$symbol}}
