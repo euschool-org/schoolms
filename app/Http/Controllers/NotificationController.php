@@ -49,53 +49,11 @@ class NotificationController extends Controller
         $emailEnabled = $request->input('email_notification');
         $smsEnabled = $request->input('sms_notification');
 
-        foreach ($students as $student) {
-            if ($emailEnabled) {
-                $emails = array_filter([
-                    $student->first_parent_mail ?? null,
-                    $student->second_parent_mail ?? null,
-                ]);
-                foreach ($emails as $email) {
-                    Mail::to($email)->send(new SendPdfMail($notificationData, $student));
-                }
-            }
-            if ($smsEnabled) {
-                $phoneNumbers = array_filter([
-                    $student->first_parent_number ?? null,
-                    $student->second_parent_number ?? null,
-                ]);
-                foreach ($phoneNumbers as $number) {
-                    NotificationService::sendSms($number, $notificationData['body']);
-                }
-            }
+        $chunks = collect($students)->chunk(100); // Process in smaller chunks for queuing efficiency
+        dd($chunks);
+        foreach ($chunks as $chunk) {
+            Queue::push(new SendNotificationJob($chunk, $notificationData, $emailEnabled, $smsEnabled));
         }
-
-//        $chunkSize = 250; // Daily email limit
-//        $chunks = collect($students)->chunk($chunkSize);
-//
-//        $currentDay = now()->startOfDay();
-//
-//        foreach ($chunks as $chunk) {
-//            $quota = $this->getRemainingQuotaForDay($currentDay);
-//
-//            if ($quota <= 0) {
-//                $currentDay = $currentDay->addDay();
-//                $quota = $this->getRemainingQuotaForDay($currentDay);
-//            }
-//
-//            $emailsToSend = $chunk->take($quota);
-//            $remainingEmails = $chunk->slice($quota);
-//            Queue::later(
-//                $currentDay,
-//                new SendNotificationJob($students, $notificationData, $emailEnabled, $smsEnabled);
-//            );
-//
-//            $this->incrementQuotaForDay($currentDay, $emailsToSend->count());
-//
-//            if ($remainingEmails->isNotEmpty()) {
-//                $chunks->prepend($remainingEmails);
-//            }
-//        }
 
         return redirect()->back()->with('success', 'All notifications have been scheduled.');
     }

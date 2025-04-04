@@ -36,8 +36,7 @@ class SendNotificationJob implements ShouldQueue
                 $this->sendEmails($student);
                 $this->sendSms($student);
             } catch (\Exception $e) {
-                Log::error("Failed to process notification for student ID: {$student['id']}, Error: {$e->getMessage()}");
-                $this->fail($e);
+                Log::error("Failed to process notification for student ID: {$student->id}, Error: {$e->getMessage()}");
             }
         }
     }
@@ -49,8 +48,8 @@ class SendNotificationJob implements ShouldQueue
     {
         if ($this->emailEnabled) {
             foreach (['first_parent_mail', 'second_parent_mail'] as $emailField) {
-                if (!empty($student[$emailField])) {
-                    Mail::to($student[$emailField])
+                if (!empty($student->$emailField)) {
+                    Mail::to($student->$emailField)
                         ->send(new SendPdfMail($this->notificationData, $student));
                 }
             }
@@ -64,11 +63,10 @@ class SendNotificationJob implements ShouldQueue
     {
         if ($this->smsEnabled) {
             foreach (['first_parent_number', 'second_parent_number'] as $phoneField) {
-                if (!empty($student[$phoneField])) {
-                    NotificationService::sendSms($student[$phoneField], $this->notificationData['body']);
+                if (!empty($student->$phoneField)) {
+                    NotificationService::sendSms($student->$phoneField, $this->notificationData['body']);
                 }
             }
         }
     }
-
 }

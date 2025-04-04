@@ -151,9 +151,9 @@
                3 => '₾',
            };
            $discount = $student->individual_discount ?? 0;
-           $nextYearFee = $student->yearlyFee(true);
+           $nextYearFee = $student->upcoming_yearly_fee;
            $semesterFee = $nextYearFee/2;
-           $balance = $student->yearly_payments_sum - $student->last_year_balance - $student->yearlyFee();
+           $balance = $student->yearly_payments_sum - $student->last_year_balance - $student->yearly_fee;
            $firstHalfBalance = max($semesterFee - $balance - $discount, 0);
            $secondHalfBalance = min($semesterFee, $nextYearFee - $balance - $discount);
         @endphp

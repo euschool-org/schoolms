@@ -26,6 +26,10 @@ class NotificationService
             ->withSum(['monthly_fees as yearly_fee' => function ($query) use ($schoolYear) {
                 $query->where('school_year', $schoolYear);
             }], 'fee')
+            ->withSum([
+                'monthly_fees as upcoming_yearly_fee' => function ($query) use($schoolYear) {
+                    $query->where('school_year', now()->year . '-' . now()->addYear()->year);
+                }], 'fee')
             ->withCount(['monthly_fees as payment_quantity' => function ($query) use ($schoolYear) {
                 $query->where('school_year', $schoolYear);
             }])
