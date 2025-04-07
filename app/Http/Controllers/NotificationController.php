@@ -57,5 +57,4 @@ class NotificationController extends Controller
 
         return redirect()->back()->with('success', 'All notifications have been scheduled.');
     }
-
 }
