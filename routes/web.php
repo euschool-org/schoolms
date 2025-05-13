@@ -35,6 +35,12 @@ Route::get('/discount', function () {
     return 'Discount';
 });
 
+Route::get('/calculate', function () {
+    Artisan::call('app:calculate-balance');
+    return 'balance';
+});
+
+
 
 Route::middleware(['auth', 'verified'])->controller(StudentController::class)->group(function () {
     Route::get('/dashboard', 'dashboard')->name('dashboard');
